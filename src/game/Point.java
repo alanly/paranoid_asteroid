@@ -13,7 +13,7 @@ public class Point extends Point2D.Double {
 		this(p.x, p.y);
 	}
 
-	public void move(int x, int y) {
+	public void move(double x, double y) {
 		this.x += x;
 		this.y += y;
 	}
