@@ -10,8 +10,8 @@ import org.junit.Test;
 
 public class PointTest {
 	double DELTA = 1e-15;
-	private double x = 2.0;
-	private double y = 7.0;
+	private double x;
+	private double y;
 	private double xMax = 10;
 	private double yMax = 10;
 	private Point point;
@@ -20,6 +20,9 @@ public class PointTest {
 	
 	@Before
 	public void setUp() {
+		x = 2.0;
+		y = 7.0;
+		
 		point = new Point(x, y);
 		pointPoint = new Point(new Point2D.Double(x, y));
 		pointEdge = new Point(xMax, yMax);
