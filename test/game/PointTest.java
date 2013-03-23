@@ -68,4 +68,16 @@ public class PointTest {
 		assertEquals(1, pointEdge.x, DELTA);
 		assertEquals(1, pointEdge.y, DELTA);
 	}
+	
+	@Test
+	public void testMoveWithWrapAround() {
+		point.move(1, 1, xMax, yMax);
+		pointEdge.move(1, 1, xMax, yMax);
+		
+		assertEquals(x + 1, point.x, DELTA);
+		assertEquals(y + 1, point.y, DELTA);
+		
+		assertEquals(1, pointEdge.x, DELTA);
+		assertEquals(1, pointEdge.y, DELTA);
+	}
 }

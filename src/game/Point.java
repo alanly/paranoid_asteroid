@@ -17,6 +17,11 @@ public class Point extends Point2D.Double {
 		this.x += x;
 		this.y += y;
 	}
+	
+	public void move(double x, double y, double xMax, double yMax) {
+		this.move(x, y);
+		this.wrapAround(xMax, yMax);
+	}
 
 	public void wrapAround(double xMax, double yMax) {
 		if (this.x > xMax) {
