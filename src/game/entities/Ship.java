@@ -48,7 +48,7 @@ public class Ship extends Entity {
 			
 			for (BulletFiredListener listener : bulletFiredListeners) {
 				// Origin is the tip of the ship, the first vertex
-				listener.bulletFired(new BulletFiredEvent(this, now, vertices[0], angle));
+				listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle));
 			}
 		}
 	}
