@@ -20,6 +20,8 @@ public class GameField extends Canvas {
 		alive = true;
 		paused = false;
 		entities = new ArrayList<Entity>();
+		
+		this.addKeyListener(InputHandler.getInstance());
 	}
 	
 	public void start() {
