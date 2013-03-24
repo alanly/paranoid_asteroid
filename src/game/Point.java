@@ -55,6 +55,14 @@ public class Point extends Point2D.Double {
 	 * @param yMax the max y value
 	 */
 	public void wrapAround(double xMax, double yMax) {
+		if (this.x < 0) {
+			this.x = (this.x % xMax) + xMax;
+		}
+		
+		if (this.y < 0) {
+			this.y = (this.y % yMax) + yMax;
+		}
+		
 		if (this.x > xMax) {
 			this.x = this.x % xMax;
 		}

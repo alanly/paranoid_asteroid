@@ -80,4 +80,13 @@ public class PointTest {
 		assertEquals(1, pointEdge.x, DELTA);
 		assertEquals(1, pointEdge.y, DELTA);
 	}
+	
+	@Test
+	public void testWrapAroundTopLeft() {
+		point.move(-3, -8);
+		point.wrapAround(xMax, yMax);
+		
+		assertEquals(xMax - 1, point.x, DELTA);
+		assertEquals(yMax - 1, point.y, DELTA);
+	}
 }
