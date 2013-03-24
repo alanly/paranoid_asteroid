@@ -12,11 +12,13 @@ public class GameField extends Canvas {
 	private static final double FPS = 30.0;
 	private static final double NSPF = NANOS_IN_SECOND / FPS;
 	
+	private int level;
 	private boolean alive;
 	private boolean paused;
 	private List<Entity> entities;
 	
 	public GameField() {
+		level = 1;
 		alive = true;
 		paused = false;
 		entities = new ArrayList<Entity>();
