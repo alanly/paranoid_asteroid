@@ -61,7 +61,7 @@ public class GameField extends Canvas implements KeyListener {
 	private void initializeEntities() {
 		int asteroidCount = level * 2;
 		
-		player = new Ship(WIDTH / 2, HEIGHT / 2);
+		player = new Ship(new Point(WIDTH / 2, HEIGHT / 2));
 		
 		for (int i = 0; i < asteroidCount; i++) {
 			// Add asteroid here
