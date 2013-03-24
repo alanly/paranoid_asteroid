@@ -2,6 +2,10 @@ package game;
 
 import game.Point;
 
+/**
+ * An entity is any object that has a location on the game field and can be updated.
+ *
+ */
 public abstract class Entity {
 	public final static double FULL_CIRCLE_DEG = 360.0;
 	public final static double FULL_CIRCLE_RAD = 2 * Math.PI;
