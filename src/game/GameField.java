@@ -1,5 +1,7 @@
 package game;
 
+import game.entities.Entity;
+
 import java.awt.Canvas;
 import java.util.ArrayList;
 import java.util.List;
