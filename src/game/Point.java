@@ -3,7 +3,7 @@ package game;
 import java.awt.geom.Point2D;
 
 /**
- * Point extends Point2D.Double to add extra functionality
+ * Point extends Point2D.Double to add extra functionality.
  *
  */
 public class Point extends Point2D.Double {
