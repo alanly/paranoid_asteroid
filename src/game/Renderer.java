@@ -1,5 +1,6 @@
 package game;
 
+import game.entities.Bullet;
 import game.entities.Entity;
 import game.entities.Ship;
 
@@ -13,6 +14,8 @@ public class Renderer {
 	public static void render(Entity e, Graphics2D g) {
 		if (e instanceof Ship) {
 			renderShip((Ship) e, g);
+		} else if (e instanceof Bullet) {
+			renderBullet((Bullet) e, g);
 		}
 	}
 	
@@ -33,6 +36,15 @@ public class Renderer {
 		g.setColor(ENTITY_COLOR);
 		g.drawPolygon(p);
 		
+		g.setColor(oldColor);
+	}
+	
+	private static void renderBullet(Bullet e, Graphics g) {
+		Point origin = e.getCenter();
+		Color oldColor = g.getColor();
+	
+		g.setColor(ENTITY_COLOR);
+		g.drawRect((int) origin.x, (int) origin.y, 1, 1);
 		g.setColor(oldColor);
 	}
 }

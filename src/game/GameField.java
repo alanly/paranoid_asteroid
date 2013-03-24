@@ -1,5 +1,6 @@
 package game;
 
+import game.entities.Bullet;
 import game.entities.Entity;
 import game.entities.Ship;
 
@@ -12,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class GameField extends Canvas implements KeyListener, BulletFiredListener {
@@ -26,6 +28,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	private int level;
 	private boolean alive;
 	private boolean paused;
+	private List<Bullet> bullets;
 	private List<Entity> entities;
 	private Ship player;
 	
@@ -33,6 +36,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 		level = 1;
 		alive = true;
 		paused = false;
+		bullets = new ArrayList<Bullet>();
 		entities = new ArrayList<Entity>();
 		
 		this.setBackground(new Color(0x292b36));
@@ -59,7 +63,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	}
 	
 	public void bulletFired(BulletFiredEvent e) {
-		System.out.println("Bullet fired");
+		bullets.add(new Bullet(e.getSource(), e.getOrigin(), e.getAngle()));
 	}
 	
 	private void initializeEntities() {
@@ -107,6 +111,26 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	private void update(long delta) {
 		player.update(delta);
 		
+		updateBullets(delta);
+		updateEntities(delta);
+	}
+	
+	private void updateBullets(long delta) {
+		Iterator<Bullet> i = bullets.iterator();
+		Bullet b;
+		
+		while(i.hasNext()) {
+			b = i.next();
+			
+			if (b.isExpired()) {
+				i.remove();
+			} else {
+				b.update(delta);
+			}
+		}
+	}
+	
+	private void updateEntities(long delta) {
 		for (Entity e : entities) {
 			e.update(delta);
 		}
@@ -128,6 +152,10 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 		
 		// Render entities
 		Renderer.render(player, g);
+		
+		for (Bullet b : bullets) {
+			Renderer.render(b, g);
+		}
 		
 		for (Entity e : entities) {
 			Renderer.render(e, g);
