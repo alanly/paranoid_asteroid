@@ -15,13 +15,12 @@ public class BulletFiredEvent {
 	/**
 	 * Constructs a new BulletFiredEvent.
 	 * @param source the source of the bullet
-	 * @param time the time the bullet was fired
 	 * @param origin the origin of the bullet
 	 * @param angle the angle of the bullet
 	 */
-	public BulletFiredEvent(Entity source, long timeFired, Point origin, double angle) {
+	public BulletFiredEvent(Entity source, Point origin, double angle) {
 		this.source = source;
-		this.timeFired = timeFired;
+		this.timeFired = System.nanoTime();
 		this.origin = origin;
 		this.angle = angle;
 	}
