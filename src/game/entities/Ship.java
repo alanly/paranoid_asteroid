@@ -14,17 +14,29 @@ public class Ship extends Entity {
 	private double linearSpeed = 0;
 	private double angle = Math.PI / 2;
 
+	/**
+	 * Constructs a new ship
+	 * @param center the center of the ship
+	 */
 	public Ship(Point center) {
 		this.setCenter(center);
 		initializeVertices();
 	}
 
+	/**
+	 * Updates the state of the ship
+	 * @param delta the time since the last update
+	 */
 	public void update(long delta) {
 		updateSpeed(delta);
 		updateAngle(delta);
 		updateVertices(delta);
 	}
 
+	/**
+	 * Updates the speed of the ship
+	 * @param delta the time since the last update
+	 */
 	public void updateSpeed(long delta) {
 		if (InputHandler.getInstance().getUpKey().isPressed()) {
 			// Accelerate
@@ -37,6 +49,10 @@ public class Ship extends Entity {
 		}
 	}
 
+	/**
+	 * Updates the angle of the ship
+	 * @param delta the time since the last update
+	 */
 	private void updateAngle(long delta) {
 		double deltaAngle = 0;
 		double angularSpeed = MIN_ANGULAR_SPEED
@@ -59,6 +75,10 @@ public class Ship extends Entity {
 		angle = (angle - deltaAngle) % FULL_CIRCLE_RAD;
 	}
 
+	/**
+	 * Updates the position of each vertex of the ship
+	 * @param delta the time since the last update
+	 */
 	private void updateVertices(long delta) {
 		double distance = linearSpeed * delta;
 		double dx = distance * Math.cos(angle);
@@ -75,10 +95,17 @@ public class Ship extends Entity {
 		getCenter().wrapAround(GameField.WIDTH, GameField.HEIGHT, vertices);
 	}
 	
+	/**
+	 * Returns the ship's vertices
+	 * @return the ship's vertices
+	 */
 	public Point[] getVertices() {
 		return vertices;
 	}
 
+	/**
+	 * Initializes the vertices of the ship
+	 */
 	private void initializeVertices() {
 		this.vertices = new Point[] {
 				new Point(getX(), getY() - 10),
