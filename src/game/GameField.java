@@ -14,7 +14,7 @@ import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameField extends Canvas implements KeyListener {
+public class GameField extends Canvas implements KeyListener, BulletFiredListener {
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 600;
 	
@@ -58,10 +58,16 @@ public class GameField extends Canvas implements KeyListener {
 	public void keyTyped(KeyEvent e) {
 	}
 	
+	public void bulletFired(BulletFiredEvent e) {
+		System.out.println("Bullet fired");
+	}
+	
 	private void initializeEntities() {
 		int asteroidCount = level * 2;
 		
+		// Create player and listen to its bullet fired events
 		player = new Ship(new Point(WIDTH / 2, HEIGHT / 2));
+		player.addBulletFiredListener(this);
 		
 		for (int i = 0; i < asteroidCount; i++) {
 			// Add asteroid here
