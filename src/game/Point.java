@@ -63,4 +63,23 @@ public class Point extends Point2D.Double {
 			this.y = this.y % yMax;
 		}
 	}
+	
+	/**
+	 * Rotates this point about the origin through the number of radians in angle
+	 * @param origin the center of rotation
+	 * @param angle the angle of rotation
+	 */
+	public void rotate(Point2D.Double origin, double angle) {
+		double cos = Math.cos(angle);
+		double sin = Math.sin(angle);
+
+		this.x -= origin.x;
+		this.y -= origin.y;
+
+		double x = this.x * cos - this.y * sin;
+		double y = this.x * sin + this.y * cos;
+
+		this.x = x + origin.x;
+		this.y = y + origin.y;
+	}
 }
