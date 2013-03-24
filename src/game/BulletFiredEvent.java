@@ -19,9 +19,9 @@ public class BulletFiredEvent {
 	 * @param origin the origin of the bullet
 	 * @param angle the angle of the bullet
 	 */
-	public BulletFiredEvent(Entity source, long time, Point origin, double angle) {
+	public BulletFiredEvent(Entity source, long timeFired, Point origin, double angle) {
 		this.source = source;
-		this.timeFired = time;
+		this.timeFired = timeFired;
 		this.origin = origin;
 		this.angle = angle;
 	}
