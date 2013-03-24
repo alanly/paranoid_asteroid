@@ -1,7 +1,7 @@
 package game;
 
 /**
- * A bullet fired listener will have its bullet fired event called when a BulletFiredEvent occurs.
+ * A bullet fired listener will have its bullet fired method called when a BulletFiredEvent occurs.
  *
  */
 public interface BulletFiredListener {
