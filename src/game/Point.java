@@ -82,4 +82,40 @@ public class Point extends Point2D.Double {
 		this.x = x + origin.x;
 		this.y = y + origin.y;
 	}
+	
+	/**
+	 * Will wrap this around and bring every point with it
+	 * @param xMax the max x value
+	 * @param yMax the max y value
+	 * @param points the points that will be carried over
+	 */
+	public void wrapAround(double xMax, double yMax, Point... points) {
+		if (this.x < 0) {
+			this.x += xMax;
+			
+			for (Point p : points) {
+				p.x += xMax;
+			}
+		} else if (this.x > xMax) {
+			this.x -= xMax;
+			
+			for (Point p : points) {
+				p.x -= xMax;
+			}
+		}
+		
+		if (this.y < 0) {
+			this.y += yMax;
+			
+			for (Point p : points) {
+				p.y += yMax;
+			}
+		} else if (this.y > yMax) {
+			this.y -= yMax;
+			
+			for (Point p : points) {
+				p.y -= yMax;
+			}
+		}
+	}
 }
