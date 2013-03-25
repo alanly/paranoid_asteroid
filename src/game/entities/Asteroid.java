@@ -3,6 +3,8 @@ package game.entities;
 import game.Point;
 import game.ui.GameField;
 
+import java.awt.Polygon;
+
 public class Asteroid extends Entity {
 	private static double LINEAR_SPEED_VARIANCE = 0.3;
 	private static double MIN_LINEAR_SPEED = 3e-8;
@@ -25,6 +27,22 @@ public class Asteroid extends Entity {
 	}
 
 	public void update(long delta) {
+		updateVertices(delta);
+		updateBounds();
+	}
+	
+	public Point[] getVertices() {
+		return vertices;
+	}
+
+	private void initializeVertices() {
+		this.vertices[0] = new Point(this.getX() - 10, this.getY() - 10);
+		this.vertices[1] = new Point(this.getX() + 10, this.getY() - 10);
+		this.vertices[2] = new Point(this.getX() + 10, this.getY() + 10);
+		this.vertices[3] = new Point(this.getX() - 10, this.getY() + 10);
+	}
+	
+	private void updateVertices(long delta) {
 		double distance = speed * delta;
 		double dx = distance * Math.cos(angle);
 		double dy = distance * Math.sin(angle);
@@ -39,17 +57,19 @@ public class Asteroid extends Entity {
 
 		// Wrap around
 		getCenter().wrapAround(GameField.WIDTH, GameField.HEIGHT, vertices);
+		
 	}
 	
-	public Point[] getVertices() {
-		return vertices;
-	}
-
-	private void initializeVertices() {
-		this.vertices[0] = new Point(this.getX() - 10, this.getY() - 10);
-		this.vertices[1] = new Point(this.getX() + 10, this.getY() - 10);
-		this.vertices[2] = new Point(this.getX() + 10, this.getY() + 10);
-		this.vertices[3] = new Point(this.getX() - 10, this.getY() + 10);
+	private void updateBounds() {
+		int[] x = new int[this.vertices.length];
+		int[] y = new int[this.vertices.length];
+		
+		for (int i = 0; i < this.vertices.length; i++) {
+			x[i] = (int) this.vertices[i].getX();
+			y[i] = (int) this.vertices[i].getY();
+		}
+		
+		setBounds(new Polygon(x, y, x.length));
 	}
 
 }
