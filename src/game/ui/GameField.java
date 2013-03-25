@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Area;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,9 +29,9 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	
 	private static final long serialVersionUID = 1L;
 	private static final long NANOS_IN_SECOND = 1000000000;
-	private static final long FPS = 30;
+	private static final long FPS = 25;
 	private static final double NSPF = NANOS_IN_SECOND / FPS;
-	private static final double HALF_RATE = NSPF * 2;
+	private static final double NS_Collision = NSPF * 2;
 	
 	private int level;
 	private boolean alive;
@@ -115,7 +116,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 				render(delta);
 			}
 			
-			if (lastCollisionCheck >= HALF_RATE) {
+			if (lastCollisionCheck >= NS_Collision) {
 				lastCollisionCheck = 0;
 				collisionCheck();
 			}
@@ -187,16 +188,45 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	
 	private void collisionCheck() {
 		// Loop through bullets on outer, it's faster when there are no bullets!
-		for (Bullet b : bullets) {
+		Iterator<Bullet> bulletIterator = bullets.iterator();
+		
+		while(bulletIterator.hasNext()) {
+			Bullet b = bulletIterator.next();
+			
 			if (player.getBounds().intersects((Rectangle)b.getBounds())) {
 				// Check collision with player
-				System.out.println("Player / Bullet(" + b.hashCode() + ")");
+				bulletIterator.remove();
+				alive = false;
+				System.out.println("Player was shot by " + b.getSource());
 			} else {
 				// No player collision, check other entities
-				for (Entity e : entities) {
+				Iterator<Entity> entityIterator = entities.iterator();
+				
+				while (entityIterator.hasNext()) {
+					Entity e = entityIterator.next();
+					
 					if (e.getBounds().intersects((Rectangle)b.getBounds())) {
-						System.out.println("Entity " + e.hashCode() + " / Bullet(" + b.hashCode() + ")");
+						bulletIterator.remove();
+						entityIterator.remove();
+						System.out.println("Entity " + e + " was shot by " + b.getSource());
 					}
+				}
+			}
+		}
+		
+		Iterator<Entity> entityIterator = entities.iterator();
+		
+		while(entityIterator.hasNext()) {
+			Entity e = entityIterator.next();
+			
+			if (e instanceof Asteroid) {
+				Area area = new Area(player.getBounds());
+				area.intersect(new Area(e.getBounds()));
+				
+				if (!area.isEmpty()) {
+					entityIterator.remove();
+					alive = false;
+					System.out.println("Player crashed into " + e);
 				}
 			}
 		}
