@@ -4,6 +4,7 @@ import events.BulletFiredEvent;
 import events.BulletFiredListener;
 import game.InputHandler;
 import game.Point;
+import game.entities.Asteroid;
 import game.entities.Bullet;
 import game.entities.Entity;
 import game.entities.Ship;
@@ -78,7 +79,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 		player.addBulletFiredListener(this);
 		
 		for (int i = 0; i < asteroidCount; i++) {
-			// Add asteroid here
+			entities.add(new Asteroid(Point.getRandom(WIDTH, HEIGHT)));
 		}
 	}
 	
