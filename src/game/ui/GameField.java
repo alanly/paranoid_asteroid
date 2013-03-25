@@ -29,9 +29,11 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	
 	private static final long serialVersionUID = 1L;
 	private static final long NANOS_IN_SECOND = 1000000000;
-	private static final long FPS = 25;
-	private static final double NSPF = NANOS_IN_SECOND / FPS;
-	private static final double NS_Collision = NSPF * 2;
+	private static final long FPS = 45;
+	private static final double SPF = 1 / FPS;
+	private static final double NANOS_PER_FRAME = NANOS_IN_SECOND * SPF;
+	private static final double NANOS_PER_COLLISION = NANOS_PER_FRAME * 2;
+	private static final double NANOS_PER_RENDER = NANOS_PER_FRAME * 1.5;
 	
 	private int level;
 	private boolean alive;
@@ -51,6 +53,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 		this.addKeyListener(InputHandler.getInstance());
 		this.addKeyListener(this);
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		this.requestFocusInWindow();
 	}
 	
 	public void start() {
@@ -88,6 +91,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	
 	private void loop() {
 		long delta, now, lastLoop = System.nanoTime();
+		long lastUpdate = 0;
 		long lastRender = 0;
 		long lastSecond = 0;
 		long lastCollisionCheck = 0;
@@ -103,26 +107,34 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 				continue;
 			}
 			
+			lastUpdate += delta;
 			lastRender += delta;
 			lastCollisionCheck += delta;
 			lastSecond += delta;
 			
-			// Process every loop
-			update(delta);
+			// Process updates
 			
-			// Process once for every frame in a second
-			if (lastRender >= NSPF) {
-				lastRender = 0;
-				render(delta);
-			}
 			
-			if (lastCollisionCheck >= NS_Collision) {
+			// Process collisions
+			if (lastCollisionCheck > NANOS_PER_COLLISION) {
 				lastCollisionCheck = 0;
 				collisionCheck();
 			}
 			
+			// Process renders
+			if (lastRender > NANOS_PER_RENDER) {
+				lastRender = 0;
+				render();
+			}
+			
+			// Process updates
+			if (lastUpdate > NANOS_PER_FRAME) {
+				lastUpdate = 0;
+				update(delta);
+			}
+			
 			// Process once per second
-			if (lastSecond >= NANOS_IN_SECOND) {
+			if (lastSecond > NANOS_IN_SECOND) {
 				lastSecond = 0;
 			}
 		}
@@ -156,7 +168,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 		}
 	}
 	
-	private void render(long delta) {
+	private void render() {
 		// Prepare buffer strategy and graphics
 		BufferStrategy bufferStrategy = getBufferStrategy();
 
@@ -193,7 +205,8 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 		while(bulletIterator.hasNext()) {
 			Bullet b = bulletIterator.next();
 			
-			if (player.getBounds().intersects((Rectangle)b.getBounds())) {
+			// Player cannot shoot self
+			if (player != b.getSource() && player.getBounds().intersects((Rectangle)b.getBounds())) {
 				// Check collision with player
 				bulletIterator.remove();
 				alive = false;
@@ -221,7 +234,9 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 			
 			if (e instanceof Asteroid) {
 				Area area = new Area(player.getBounds());
-				area.intersect(new Area(e.getBounds()));
+				area.intersect(
+					new Area(e.getBounds())
+				);
 				
 				if (!area.isEmpty()) {
 					entityIterator.remove();
