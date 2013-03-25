@@ -1,14 +1,5 @@
 package game.ui;
 
-import events.BulletFiredEvent;
-import events.BulletFiredListener;
-import game.InputHandler;
-import game.Point;
-import game.entities.Asteroid;
-import game.entities.Bullet;
-import game.entities.Entity;
-import game.entities.Ship;
-
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,6 +12,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import events.BulletFiredEvent;
+import events.BulletFiredListener;
+import game.InputHandler;
+import game.Point;
+import game.entities.Asteroid;
+import game.entities.Bullet;
+import game.entities.Entity;
+import game.entities.Ship;
+
 public class GameField extends Canvas implements KeyListener, BulletFiredListener {
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 600;
@@ -29,6 +29,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	private static final long NANOS_IN_SECOND = 1000000000;
 	private static final long FPS = 30;
 	private static final double NSPF = NANOS_IN_SECOND / FPS;
+	private static final double HALF_RATE = NSPF * 2;
 	
 	private int level;
 	private boolean alive;
@@ -85,8 +86,9 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	
 	private void loop() {
 		long delta, now, lastLoop = System.nanoTime();
-		long lastFrame = 0;
+		long lastRender = 0;
 		long lastSecond = 0;
+		long lastCollisionCheck = 0;
 		
 		while(alive) {
 			// Adjust counters
@@ -99,16 +101,22 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 				continue;
 			}
 			
-			lastFrame += delta;
+			lastRender += delta;
+			lastCollisionCheck += delta;
 			lastSecond += delta;
 			
 			// Process every loop
 			update(delta);
 			
 			// Process once for every frame in a second
-			if (lastFrame >= NSPF) {
-				lastFrame = 0;
+			if (lastRender >= NSPF) {
+				lastRender = 0;
 				render(delta);
+			}
+			
+			if (lastCollisionCheck >= HALF_RATE) {
+				lastCollisionCheck = 0;
+				collisionCheck();
 			}
 			
 			// Process once per second
@@ -174,5 +182,15 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 		// Clean up and show
 		g.dispose();
 		bufferStrategy.show();
+	}
+	
+	private void collisionCheck() {
+		for (Bullet b : bullets) {
+			// Check collision with player
+			
+			for (Entity e : entities) {
+				// Check collision with other entities
+			}
+		}
 	}
 }
