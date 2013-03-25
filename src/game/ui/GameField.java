@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -185,11 +186,18 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	}
 	
 	private void collisionCheck() {
+		// Loop through bullets on outer, it's faster when there are no bullets!
 		for (Bullet b : bullets) {
-			// Check collision with player
-			
-			for (Entity e : entities) {
-				// Check collision with other entities
+			if (player.getBounds().intersects((Rectangle)b.getBounds())) {
+				// Check collision with player
+				System.out.println("Player / Bullet(" + b.hashCode() + ")");
+			} else {
+				// No player collision, check other entities
+				for (Entity e : entities) {
+					if (e.getBounds().intersects((Rectangle)b.getBounds())) {
+						System.out.println("Entity " + e.hashCode() + " / Bullet(" + b.hashCode() + ")");
+					}
+				}
 			}
 		}
 	}
