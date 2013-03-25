@@ -3,7 +3,7 @@ package game.entities;
 import game.Point;
 import game.ui.GameField;
 
-import java.awt.Color;
+import java.awt.Rectangle;
 
 public class Bullet extends Entity {
 	private static final double MAX_TIME_TO_LIVE = 2.0e9;
@@ -14,14 +14,14 @@ public class Bullet extends Entity {
 	private double angle;
 	private double timeToLive = MAX_TIME_TO_LIVE;
 
-	private Color color = Color.RED;
-
 	public Bullet(Entity source, Point center, double angle) {
 		setCenter(center);
 		
 		this.expired = false;
 		this.source = source;
 		this.angle = angle;
+		
+		setBounds(new Rectangle((int)center.x, (int)center.y, 1, 1));
 	}
 
 	public void update(long delta) {
@@ -31,38 +31,37 @@ public class Bullet extends Entity {
 		
 		timeToLive -= delta;
 
-		updateColor();
 		updateCenter(delta);
+		updateBounds();
 
 		if (timeToLive < 0) {
 			this.expired = true;
 		}
 	}
-
-	private void updateColor() {
-		int red = (int) (256.0 * timeToLive / MAX_TIME_TO_LIVE);
-
-		red = Math.max(0, Math.min(red, 255));
-
-		color = new Color(red, color.getGreen(), color.getGreen());
-	}
-
-	private void updateCenter(long delta) {
-		double distance = LINEAR_SPEED * delta;
-
-		// Move center
-		getCenter().move(distance * Math.cos(angle),
-				-distance * Math.sin(angle));
-
-		// Wrap around
-		getCenter().wrapAround(GameField.WIDTH, GameField.HEIGHT);
-	}
-
+	
 	public Entity getSource() {
 		return source;
 	}
 	
 	public boolean isExpired() {
 		return this.expired;
+	}
+
+	private void updateCenter(long delta) {
+		double distance = LINEAR_SPEED * delta;
+		double dx = distance * Math.cos(angle);
+		double dy = -distance * Math.sin(angle);
+
+		// Move center
+		getCenter().move(dx, dy);
+
+		// Wrap around
+		getCenter().wrapAround(GameField.WIDTH, GameField.HEIGHT);
+	}
+	
+	private void updateBounds() {
+		Rectangle bounds = (Rectangle) getBounds();
+		bounds.x = (int) getCenter().x;
+		bounds.y = (int) getCenter().y;
 	}
 }
