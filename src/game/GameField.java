@@ -1,5 +1,7 @@
 package game;
 
+import events.BulletFiredEvent;
+import events.BulletFiredListener;
 import game.entities.Bullet;
 import game.entities.Entity;
 import game.entities.Ship;
