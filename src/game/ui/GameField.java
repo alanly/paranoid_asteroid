@@ -88,11 +88,16 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 		long lastFrame = 0;
 		long lastSecond = 0;
 		
-		while(alive && !paused) {
+		while(alive) {
 			// Adjust counters
 			now = System.nanoTime();
 			delta = now - lastLoop;
 			lastLoop = now;
+			
+			// Bail if paused
+			if (paused) {
+				continue;
+			}
 			
 			lastFrame += delta;
 			lastSecond += delta;
