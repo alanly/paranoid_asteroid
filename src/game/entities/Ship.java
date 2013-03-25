@@ -129,11 +129,10 @@ public class Ship extends Entity {
 	 * Initializes the vertices of the ship.
 	 */
 	private void initializeVertices() {
-		this.vertices = new Point[] {
-			new Point(getX(), getY() - 10),
-			new Point(getX() - 5, getY() + 5),
-			new Point(getX() + 5, getY() + 5)
-		};
+		this.vertices = new Point[3];
+		this.vertices[0] = new Point(getX(), getY() - 10);
+		this.vertices[1] = new Point(getX() - 5, getY() + 5);
+		this.vertices[2] = new Point(getX() + 5, getY() + 5);
 		
 		updateBounds();
 	}
