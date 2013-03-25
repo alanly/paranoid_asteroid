@@ -1,4 +1,4 @@
-package game;
+package events;
 
 /**
  * A bullet fired listener will have its bullet fired method called when a BulletFiredEvent occurs.

@@ -1,5 +1,6 @@
-package game;
+package events;
 
+import game.Point;
 import game.entities.Entity;
 
 /**

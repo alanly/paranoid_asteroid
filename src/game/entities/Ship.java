@@ -1,7 +1,7 @@
 package game.entities;
 
-import game.BulletFiredEvent;
-import game.BulletFiredListener;
+import events.BulletFiredEvent;
+import events.BulletFiredListener;
 import game.GameField;
 import game.InputHandler;
 import game.Point;
