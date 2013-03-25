@@ -1,5 +1,6 @@
-package game;
+package game.ui;
 
+import game.Point;
 import game.entities.Bullet;
 import game.entities.Entity;
 import game.entities.Ship;

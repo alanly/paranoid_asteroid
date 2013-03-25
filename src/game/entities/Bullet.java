@@ -1,7 +1,7 @@
 package game.entities;
 
-import game.GameField;
 import game.Point;
+import game.ui.GameField;
 
 import java.awt.Color;
 
