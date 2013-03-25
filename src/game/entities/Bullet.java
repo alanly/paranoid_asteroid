@@ -8,12 +8,10 @@ import java.awt.Color;
 public class Bullet extends Entity {
 	private static final double MAX_TIME_TO_LIVE = 2.0e9;
 	private static final double LINEAR_SPEED = 4.0e-7;
-	private static final double MAX_LINEAR_SPEED = 4.0e-7;
 
 	private boolean expired;
 	private Entity source;
 	private double angle;
-	private double linearSpeed = MAX_LINEAR_SPEED;
 	private double timeToLive = MAX_TIME_TO_LIVE;
 
 	private Color color = Color.RED;
@@ -50,7 +48,7 @@ public class Bullet extends Entity {
 	}
 
 	private void updateCenter(long delta) {
-		double distance = linearSpeed * delta;
+		double distance = LINEAR_SPEED * delta;
 
 		// Move center
 		getCenter().move(distance * Math.cos(angle),
