@@ -31,15 +31,13 @@ public class Asteroid extends Entity {
 		updateBounds();
 	}
 	
-	public Point[] getVertices() {
-		return vertices;
-	}
-
 	private void initializeVertices() {
 		this.vertices[0] = new Point(this.getX() - 10, this.getY() - 10);
 		this.vertices[1] = new Point(this.getX() + 10, this.getY() - 10);
 		this.vertices[2] = new Point(this.getX() + 10, this.getY() + 10);
 		this.vertices[3] = new Point(this.getX() - 10, this.getY() + 10);
+		
+		updateBounds();
 	}
 	
 	private void updateVertices(long delta) {
