@@ -7,9 +7,9 @@ import game.entities.Entity;
 import game.entities.Ship;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 
 /**
  * Responsible for rendering entities.
@@ -38,23 +38,10 @@ public class Renderer {
 	 * @param e the ship
 	 * @param g the graphics object
 	 */
-	private static void renderShip(Ship e, Graphics g) {
-		Point[] vertices = e.getVertices();
+	private static void renderShip(Ship e, Graphics2D g) {
 		Color oldColor = g.getColor();
-		
-		int[] x = new int[vertices.length];
-		int[] y = new int[vertices.length];
-		
-		for (int i = 0; i < vertices.length; i++) {
-			x[i] = (int) vertices[i].getX();
-			y[i] = (int) vertices[i].getY();
-		}
-		
-		Polygon p = new Polygon(x, y, x.length);
-		
 		g.setColor(ENTITY_COLOR);
-		g.drawPolygon(p);
-		
+		g.drawPolygon((Polygon)e.getBounds());
 		g.setColor(oldColor);
 	}
 	
@@ -63,12 +50,10 @@ public class Renderer {
 	 * @param e the bullet
 	 * @param g the graphics object
 	 */
-	private static void renderBullet(Bullet e, Graphics g) {
-		Point origin = e.getCenter();
+	private static void renderBullet(Bullet e, Graphics2D g) {
 		Color oldColor = g.getColor();
-	
 		g.setColor(ENTITY_COLOR);
-		g.drawRect((int) origin.x, (int) origin.y, 1, 1);
+		g.draw((Rectangle)e.getBounds());
 		g.setColor(oldColor);
 	}
 	
@@ -77,7 +62,7 @@ public class Renderer {
 	 * @param e the asteroid
 	 * @param g the graphics object
 	 */
-	private static void renderAsteroid(Asteroid e, Graphics g) {
+	private static void renderAsteroid(Asteroid e, Graphics2D g) {
 		Point[] vertices = e.getVertices();
 		Color oldColor = g.getColor();
 		
