@@ -6,6 +6,7 @@ import game.InputHandler;
 import game.Point;
 import game.ui.GameField;
 
+import java.awt.Polygon;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class Ship extends Entity {
 		updateSpeed(delta);
 		updateAngle(delta);
 		updateVertices(delta);
+		updateBounds();
 		
 		long now = System.nanoTime();
 		
@@ -122,22 +124,32 @@ public class Ship extends Entity {
 		
 		getCenter().wrapAround(GameField.WIDTH, GameField.HEIGHT, vertices);
 	}
-	
-	/**
-	 * Returns the ship's vertices.
-	 * @return the ship's vertices
-	 */
-	public Point[] getVertices() {
-		return vertices;
-	}
 
 	/**
 	 * Initializes the vertices of the ship.
 	 */
 	private void initializeVertices() {
 		this.vertices = new Point[] {
-				new Point(getX(), getY() - 10),
-				new Point(getX() - 5, getY() + 5),
-				new Point(getX() + 5, getY() + 5) };
+			new Point(getX(), getY() - 10),
+			new Point(getX() - 5, getY() + 5),
+			new Point(getX() + 5, getY() + 5)
+		};
+		
+		updateBounds();
+	}
+	
+	/**
+	 * Updates the bounding shape of the ship
+	 */
+	private void updateBounds() {
+		int[] x = new int[this.vertices.length];
+		int[] y = new int[this.vertices.length];
+		
+		for (int i = 0; i < this.vertices.length; i++) {
+			x[i] = (int) this.vertices[i].getX();
+			y[i] = (int) this.vertices[i].getY();
+		}
+		
+		setBounds(new Polygon(x, y, x.length));
 	}
 }
