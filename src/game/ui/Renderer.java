@@ -11,8 +11,18 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 
+/**
+ * Responsible for rendering entities.
+ *
+ */
 public class Renderer {
 	private static Color ENTITY_COLOR = new Color(0xF0F0F0);
+	
+	/**
+	 * Delegates rendering the entity to its proper method if it exists.
+	 * @param e the entity
+	 * @param g the graphics object
+	 */
 	public static void render(Entity e, Graphics2D g) {
 		if (e instanceof Ship) {
 			renderShip((Ship) e, g);
@@ -23,6 +33,11 @@ public class Renderer {
 		}
 	}
 	
+	/**
+	 * Renders a ship entity.
+	 * @param e the ship
+	 * @param g the graphics object
+	 */
 	private static void renderShip(Ship e, Graphics g) {
 		Point[] vertices = e.getVertices();
 		Color oldColor = g.getColor();
@@ -43,6 +58,11 @@ public class Renderer {
 		g.setColor(oldColor);
 	}
 	
+	/**
+	 * Renders a bullet entity.
+	 * @param e the bullet
+	 * @param g the graphics object
+	 */
 	private static void renderBullet(Bullet e, Graphics g) {
 		Point origin = e.getCenter();
 		Color oldColor = g.getColor();
@@ -52,6 +72,11 @@ public class Renderer {
 		g.setColor(oldColor);
 	}
 	
+	/**
+	 * Renders an asteroid entity.
+	 * @param e the asteroid
+	 * @param g the graphics object
+	 */
 	private static void renderAsteroid(Asteroid e, Graphics g) {
 		Point[] vertices = e.getVertices();
 		Color oldColor = g.getColor();
