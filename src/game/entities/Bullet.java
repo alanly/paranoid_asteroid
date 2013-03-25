@@ -21,7 +21,7 @@ public class Bullet extends Entity {
 		this.source = source;
 		this.angle = angle;
 		
-		setBounds(new Rectangle((int)center.x, (int)center.y, 1, 1));
+		setBounds(new Rectangle((int)center.x, (int)center.y, 2, 2));
 	}
 
 	public void update(long delta) {
