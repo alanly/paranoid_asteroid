@@ -126,4 +126,11 @@ public class Point extends Point2D.Double {
 			}
 		}
 	}
+	
+	public static Point getRandom(int xMax, int yMax) {
+		int x = (int)((xMax + 1) * Math.random());
+		int y = (int)((yMax + 1) * Math.random());
+		
+		return new Point(x, y);
+	}
 }

@@ -1,6 +1,7 @@
 package game.ui;
 
 import game.Point;
+import game.entities.Asteroid;
 import game.entities.Bullet;
 import game.entities.Entity;
 import game.entities.Ship;
@@ -17,6 +18,8 @@ public class Renderer {
 			renderShip((Ship) e, g);
 		} else if (e instanceof Bullet) {
 			renderBullet((Bullet) e, g);
+		} else if (e instanceof Asteroid) {
+			renderAsteroid((Asteroid) e, g);
 		}
 	}
 	
@@ -46,6 +49,25 @@ public class Renderer {
 	
 		g.setColor(ENTITY_COLOR);
 		g.drawRect((int) origin.x, (int) origin.y, 1, 1);
+		g.setColor(oldColor);
+	}
+	
+	private static void renderAsteroid(Asteroid e, Graphics g) {
+		Point[] vertices = e.getVertices();
+		Color oldColor = g.getColor();
+		
+		int[] x = new int[vertices.length];
+		int[] y = new int[vertices.length];
+		
+		for (int i = 0; i < vertices.length; i++) {
+			x[i] = (int) vertices[i].getX();
+			y[i] = (int) vertices[i].getY();
+		}
+		
+		Polygon p = new Polygon(x, y, vertices.length);
+		
+		g.setColor(ENTITY_COLOR);
+		g.drawPolygon(p);
 		g.setColor(oldColor);
 	}
 }
