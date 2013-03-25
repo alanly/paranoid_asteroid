@@ -1,5 +1,7 @@
 package game.entities;
 
+import java.awt.Shape;
+
 import game.Point;
 
 /**
@@ -11,6 +13,7 @@ public abstract class Entity {
 	public final static double FULL_CIRCLE_RAD = 2 * Math.PI;
 	
 	private Point center;
+	private Shape bounds;
 	
 	/**
 	 * Updates the entity's state based on how much time has passed.
@@ -43,6 +46,14 @@ public abstract class Entity {
 	}
 	
 	/**
+	 * Gets the entity's bounds.
+	 * @return the entity's bounds
+	 */
+	public Shape getBounds() {
+		return this.bounds;
+	}
+	
+	/**
 	 * Sets the entity's center Point x-coordinate.
 	 * @param x the entity's center Point x-coordinate
 	 */
@@ -64,5 +75,13 @@ public abstract class Entity {
 	 */
 	public void setCenter(Point center) {
 		this.center = center;
+	}
+	
+	/**
+	 * Sets the entity's bounds.
+	 * @param bounds the entity's bounds
+	 */
+	public void setBounds(Shape bounds) {
+		this.bounds = bounds;
 	}
 }
