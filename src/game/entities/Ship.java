@@ -2,9 +2,9 @@ package game.entities;
 
 import events.BulletFiredEvent;
 import events.BulletFiredListener;
-import game.GameField;
 import game.InputHandler;
 import game.Point;
+import game.ui.GameField;
 
 import java.util.LinkedList;
 import java.util.List;

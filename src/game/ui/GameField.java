@@ -1,7 +1,9 @@
-package game;
+package game.ui;
 
 import events.BulletFiredEvent;
 import events.BulletFiredListener;
+import game.InputHandler;
+import game.Point;
 import game.entities.Bullet;
 import game.entities.Entity;
 import game.entities.Ship;
