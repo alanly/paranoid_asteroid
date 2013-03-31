@@ -62,7 +62,11 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	}
 	
 	public void start() {
-		initializeEntities();
+		// Create player and listen to its bullet fired events
+		player = new Ship(new Point(WIDTH / 2, HEIGHT / 2));
+		player.addBulletFiredListener(this);
+		
+		populateField();
 		loop();
 	}
 	
@@ -83,12 +87,8 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 		SoundEffect.FIRE_BULLET.play();
 	}
 	
-	private void initializeEntities() {
+	private void populateField() {
 		int asteroidCount = level * 2;
-		
-		// Create player and listen to its bullet fired events
-		player = new Ship(new Point(WIDTH / 2, HEIGHT / 2));
-		player.addBulletFiredListener(this);
 		
 		for (int i = 0; i < asteroidCount; i++) {
 			entities.add(new Asteroid(Point.getRandom(WIDTH, HEIGHT)));
@@ -265,6 +265,14 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 					SoundEffect.EXPLOSION.play();
 				}
 			}
+		}
+	}
+	
+	private void nextLevel() {
+		if (levelEnded) {
+			
+			
+			levelEnded = false;
 		}
 	}
 }
