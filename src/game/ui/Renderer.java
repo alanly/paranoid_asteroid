@@ -6,6 +6,7 @@ import game.entities.Entity;
 import game.entities.Ship;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -16,6 +17,7 @@ import java.awt.Rectangle;
  */
 public class Renderer {
 	private static Color ENTITY_COLOR = new Color(0xF0F0F0);
+	private static Font POINTS_FONT = new Font("Consolas", Font.PLAIN, 14);
 	
 	/**
 	 * Delegates rendering the entity to its proper method if it exists.
@@ -30,6 +32,23 @@ public class Renderer {
 		} else if (e instanceof Asteroid) {
 			renderAsteroid((Asteroid) e, g);
 		}
+	}
+	
+	/**
+	 * Renders the HUD (points, level).
+	 * @param points the points to render
+	 * @param points the level to render
+	 * @param g the graphics object
+	 */
+	public static void renderHUD(long points, int level, Graphics2D g) {
+		Font oldFont = g.getFont();
+		Color oldColor = g.getColor();
+		g.setFont(POINTS_FONT);
+		g.setColor(ENTITY_COLOR);
+		g.drawString("Points: " + points, 4, 16);
+		g.drawString(" Level: " + level, 4, 32);
+		g.setFont(oldFont);
+		g.setColor(oldColor);
 	}
 	
 	/**
