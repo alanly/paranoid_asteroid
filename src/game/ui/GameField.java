@@ -37,12 +37,15 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	private static final double NANOS_PER_RENDER = NANOS_PER_FRAME * 1.5;
 	
 	private static final long POINTS_ASTEROID = 1000;
-	private static final long POINTS_CLEAR_LEVEL = 1000;
+	private static final long POINTS_CLEAR_LEVEL = 2000;
 	
 	private int level = 1;
 	private long points = 0;
+	private long pointsFluid = points;
+	private double multiplier = 1;
 	private boolean alive = true;
 	private boolean paused = false;
+	private boolean levelEnded = false;
 	private List<Bullet> bullets;
 	private List<Entity> entities;
 	private Ship player;
@@ -99,7 +102,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 		long lastSecond = 0;
 		long lastCollisionCheck = 0;
 		
-		while(alive) {
+		while(alive && !levelEnded) {
 			// Adjust counters
 			now = System.nanoTime();
 			delta = now - lastLoop;
@@ -145,6 +148,11 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 		
 		updateBullets(delta);
 		updateEntities(delta);
+		
+		if (pointsFluid < points) {
+			pointsFluid += 2;
+			Math.min(points, pointsFluid);
+		}
 	}
 	
 	private void updateBullets(long delta) {
@@ -193,6 +201,9 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 			Renderer.render(e, g);
 		}
 		
+		// Render HUD
+		Renderer.renderHUD(pointsFluid, level, g);
+		
 		// Clean up and show
 		g.dispose();
 		bufferStrategy.show();
@@ -222,7 +233,18 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 						bulletIterator.remove();
 						entityIterator.remove();
 						SoundEffect.ASTEROID_BREAK.play();
+						
+						if (b.getSource() == player) {
+							points += multiplier * POINTS_ASTEROID;
+						}
 					}
+				}
+				
+				if (entities.size() == 0) {
+					level++;
+					points += multiplier * POINTS_CLEAR_LEVEL;
+					multiplier += 0.5;
+					levelEnded = true;
 				}
 			}
 		}
