@@ -18,6 +18,7 @@ import events.BulletFiredEvent;
 import events.BulletFiredListener;
 import game.InputHandler;
 import game.Point;
+import game.SoundEffect;
 import game.entities.Asteroid;
 import game.entities.Bullet;
 import game.entities.Entity;
@@ -75,6 +76,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	
 	public void bulletFired(BulletFiredEvent e) {
 		bullets.add(new Bullet(e.getSource(), e.getOrigin(), e.getAngle()));
+		SoundEffect.FIRE_BULLET.play();
 	}
 	
 	private void initializeEntities() {
@@ -222,6 +224,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 						bulletIterator.remove();
 						entityIterator.remove();
 						System.out.println("Entity " + e + " was shot by " + b.getSource());
+						SoundEffect.ASTEROID_BREAK.play();
 					}
 				}
 			}
