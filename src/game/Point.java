@@ -127,9 +127,18 @@ public class Point extends Point2D.Double {
 		}
 	}
 	
-	public static Point getRandom(int xMax, int yMax) {
-		int x = (int)((xMax + 1) * Math.random());
-		int y = (int)((yMax + 1) * Math.random());
+	public static Point getRandom(int xMax, int yMax, Point p, int radius) {
+		int x;
+		int y;
+		int distance;
+		
+		do {
+			x = (int)((xMax + 1) * Math.random());
+			y = (int)((yMax + 1) * Math.random());
+			
+			// Calculate distance d = sqrt(dx^2 + dy^2)
+			distance = (int)Math.sqrt((p.x - x)*(p.x - x) + (p.y - y)*(p.y - y));
+		} while (distance < radius);
 		
 		return new Point(x, y);
 	}
