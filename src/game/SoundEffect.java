@@ -10,6 +10,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public enum SoundEffect {
+	ASTEROID_BREAK("asteroid_break.wav"),
 	EXPLOSION("explosion.wav"),
 	FIRE_BULLET("fire_bullet.wav"),
 	POWER_UP("power_up.wav");
