@@ -158,7 +158,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 		updateEntities(delta);
 		
 		if (pointsFluid < points) {
-			pointsFluid += 2;
+			pointsFluid += 2 * multiplier;
 			Math.min(points, pointsFluid);
 		}
 	}
