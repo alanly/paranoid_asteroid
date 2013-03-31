@@ -48,7 +48,6 @@ public enum SoundEffect {
 		// Play from beginning
 		clip.setFramePosition(0);
 		clip.start();
-		System.out.println("Starting " + this.name());
 	}
 	
 	static void init() {
