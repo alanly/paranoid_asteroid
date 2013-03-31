@@ -11,6 +11,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public enum SoundEffect {
 	ASTEROID_BREAK("asteroid_break.wav"),
+	BACKGROUND("background3.wav"),
 	EXPLOSION("explosion.wav"),
 	FIRE_BULLET("fire_bullet.wav"),
 	POWER_UP("power_up.wav");
@@ -43,6 +44,10 @@ public enum SoundEffect {
 		// Stop clip if it is playing already
 		if (clip.isRunning()) {
 			clip.stop();
+		}
+		
+		if (this == BACKGROUND) {
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
 		}
 		
 		// Play from beginning
