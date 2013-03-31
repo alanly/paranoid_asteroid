@@ -241,7 +241,6 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 				);
 				
 				if (!area.isEmpty()) {
-					entityIterator.remove();
 					alive = false;
 					SoundEffect.EXPLOSION.play();
 				}
