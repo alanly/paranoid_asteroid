@@ -102,7 +102,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 		long lastSecond = 0;
 		long lastCollisionCheck = 0;
 		
-		while(alive && !levelEnded) {
+		while(alive) {
 			// Adjust counters
 			now = System.nanoTime();
 			delta = now - lastLoop;
@@ -110,6 +110,12 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 			
 			// Bail if paused
 			if (paused) {
+				continue;
+			}
+			
+			if (levelEnded) {
+				nextLevel();
+				levelEnded = false;
 				continue;
 			}
 			
@@ -270,7 +276,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	
 	private void nextLevel() {
 		if (levelEnded) {
-			
+			populateField();
 			
 			levelEnded = false;
 		}
