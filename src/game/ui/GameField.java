@@ -29,12 +29,13 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	public static final int HEIGHT = 600;
 	
 	private static final long serialVersionUID = 1L;
-	private static final long NANOS_IN_SECOND = 1000000000;
+	private static final long NANOS_PER_SECOND = 1000000000;
 	private static final long FPS = 45;
 	private static final double SPF = 1 / FPS;
-	private static final double NANOS_PER_FRAME = NANOS_IN_SECOND * SPF;
-	private static final double NANOS_PER_COLLISION = NANOS_PER_FRAME * 2;
-	private static final double NANOS_PER_RENDER = NANOS_PER_FRAME * 1.5;
+	private static final long NANOS_PER_FRAME = (long)(NANOS_PER_SECOND * SPF);
+	private static final long NANOS_PER_COLLISION = NANOS_PER_FRAME * 2;
+	private static final long NANOS_PER_RENDER = (long)(NANOS_PER_FRAME * 1.5);
+	private static final long NANOS_PER_LEVEL_WAIT = NANOS_PER_SECOND * 2;
 	
 	private static final int SAFE_RADIUS = 100;
 	
@@ -102,6 +103,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 		long lastUpdate = 0;
 		long lastRender = 0;
 		long lastSecond = 0;
+		long waitUntil = 0;
 		long lastCollisionCheck = 0;
 		
 		while(alive) {
@@ -111,13 +113,15 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 			lastLoop = now;
 			
 			// Bail if paused
-			if (paused) {
+			if (paused || now < waitUntil) {
 				continue;
 			}
+			
 			
 			if (levelEnded) {
 				nextLevel();
 				levelEnded = false;
+				waitUntil = now + NANOS_PER_LEVEL_WAIT;
 				continue;
 			}
 			
@@ -145,7 +149,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 			}
 			
 			// Process once per second
-			if (lastSecond > NANOS_IN_SECOND) {
+			if (lastSecond > NANOS_PER_SECOND) {
 				lastSecond = 0;
 			}
 		}
