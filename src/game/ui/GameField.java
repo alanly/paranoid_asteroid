@@ -115,9 +115,6 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 			lastCollisionCheck += delta;
 			lastSecond += delta;
 			
-			// Process updates
-			
-			
 			// Process collisions
 			if (lastCollisionCheck > NANOS_PER_COLLISION) {
 				lastCollisionCheck = 0;
