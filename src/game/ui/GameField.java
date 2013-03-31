@@ -212,7 +212,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 				// Check collision with player
 				bulletIterator.remove();
 				alive = false;
-				System.out.println("Player was shot by " + b.getSource());
+				SoundEffect.EXPLOSION.play();
 			} else {
 				// No player collision, check other entities
 				Iterator<Entity> entityIterator = entities.iterator();
@@ -223,7 +223,6 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 					if (e.getBounds().intersects((Rectangle)b.getBounds())) {
 						bulletIterator.remove();
 						entityIterator.remove();
-						System.out.println("Entity " + e + " was shot by " + b.getSource());
 						SoundEffect.ASTEROID_BREAK.play();
 					}
 				}
@@ -244,7 +243,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 				if (!area.isEmpty()) {
 					entityIterator.remove();
 					alive = false;
-					System.out.println("Player crashed into " + e);
+					SoundEffect.EXPLOSION.play();
 				}
 			}
 		}

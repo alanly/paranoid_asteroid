@@ -11,16 +11,23 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public enum SoundEffect {
 	ASTEROID_BREAK("asteroid_break.wav"),
-	BACKGROUND("background3.wav"),
-	EXPLOSION("explosion.wav"),
+	EXPLOSION("explosion2.wav"),
 	FIRE_BULLET("fire_bullet.wav"),
-	POWER_UP("power_up.wav");
+	POWER_UP("power_up.wav"),
+	BACKGROUND("background3.wav", true);
 	
 	private static final String resourcePath = "resources/sounds/";
 	
 	private Clip clip;
+	private boolean repeat;
 	
 	SoundEffect(String filename) {
+		this(filename, false);
+	}
+	
+	SoundEffect(String filename, boolean repeat) {
+		this.repeat = repeat;
+		
 		try {
 			// Get URL to resource
 			URL url = this.getClass().getClassLoader().getResource(resourcePath + filename);
@@ -46,7 +53,7 @@ public enum SoundEffect {
 			clip.stop();
 		}
 		
-		if (this == BACKGROUND) {
+		if (this.repeat) {
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
 		}
 		
