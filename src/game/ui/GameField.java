@@ -36,17 +36,18 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	private static final double NANOS_PER_COLLISION = NANOS_PER_FRAME * 2;
 	private static final double NANOS_PER_RENDER = NANOS_PER_FRAME * 1.5;
 	
-	private int level;
-	private boolean alive;
-	private boolean paused;
+	private static final long POINTS_ASTEROID = 1000;
+	private static final long POINTS_CLEAR_LEVEL = 1000;
+	
+	private int level = 1;
+	private long points = 0;
+	private boolean alive = true;
+	private boolean paused = false;
 	private List<Bullet> bullets;
 	private List<Entity> entities;
 	private Ship player;
 	
 	public GameField() {
-		level = 1;
-		alive = true;
-		paused = false;
 		bullets = new ArrayList<Bullet>();
 		entities = new ArrayList<Entity>();
 		
