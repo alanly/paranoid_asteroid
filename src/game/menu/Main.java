@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 public class Main extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
-	private JButton singlePBtn, versusPBtn, contestPBtn, optionsBtn, instructionsBtn, creditsBtn, highscoresBtn, exitBtn;
+	private JButton loadGBtn, singlePBtn, versusPBtn, contestPBtn, optionsBtn, instructionsBtn, creditsBtn, highscoresBtn, exitBtn;
 	private GridLayout gLayout;
 	
 	/**
@@ -20,6 +20,14 @@ public class Main extends JPanel {
 	 * @param game Game instance
 	 */
 	public Main(final CardLayout cl, final JPanel parentPanel, Game game) {
+		
+		loadGBtn = new JButton("Load Saved Game");
+		loadGBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Load Saved Game!!!!!");
+				//TODO: start single game activity
+			}
+		});
 		
 		singlePBtn = new JButton("Single Player Game");
 		singlePBtn.addActionListener(new ActionListener() {
@@ -87,6 +95,7 @@ public class Main extends JPanel {
 		gLayout = new GridLayout(0,1);
 		this.setLayout(gLayout);
 		
+		this.add(loadGBtn);
 		this.add(singlePBtn);
 		this.add(versusPBtn);
 		this.add(contestPBtn);
