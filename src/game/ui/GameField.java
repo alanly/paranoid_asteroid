@@ -35,7 +35,7 @@ public class GameField extends Canvas implements KeyListener, BulletFiredListene
 	private static final long NANOS_PER_FRAME = (long)(NANOS_PER_SECOND * SPF);
 	private static final long NANOS_PER_COLLISION = NANOS_PER_FRAME * 2;
 	private static final long NANOS_PER_RENDER = (long)(NANOS_PER_FRAME * 1.5);
-	private static final long NANOS_PER_LEVEL_WAIT = NANOS_PER_SECOND * 2;
+	private static final long NANOS_PER_LEVEL_WAIT = (long)(NANOS_PER_SECOND * 0.75);
 	
 	private static final int SAFE_RADIUS = 100;
 	
