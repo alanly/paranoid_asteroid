@@ -1,4 +1,3 @@
-package game.menu;
 import java.awt.*;
 import javax.swing.*;
 
