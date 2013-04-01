@@ -1,4 +1,3 @@
-package game.menu;
 /**
  * STUB
  * @author drr
