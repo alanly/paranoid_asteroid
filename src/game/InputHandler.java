@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class InputHandler implements KeyListener {
-	private static InputHandler instance;
+	private static InputHandler instance = new InputHandler();
 
 	private Key up = new Key();
 	private Key down = new Key();
@@ -13,10 +13,6 @@ public class InputHandler implements KeyListener {
 	private Key space = new Key();
 
 	public static InputHandler getInstance() {
-		if (instance == null) {
-			instance = new InputHandler();
-		}
-
 		return instance;
 	}
 
