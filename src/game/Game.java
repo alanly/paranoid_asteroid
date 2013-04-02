@@ -18,8 +18,8 @@ import java.util.List;
 
 public class Game implements BulletFiredListener, KeyListener {
 	// Time constants
-	private static final double FPS = 20;
-	private static final double UPS = FPS * 2;
+	private static final double FPS = 30;
+	private static final double UPS = FPS * 1.25;
 	
 	private static final double NANOS_PER_SECOND = 1e9;
 	private static final double NANOS_PER_RENDER = NANOS_PER_SECOND / FPS;
