@@ -43,12 +43,12 @@ public class Game implements BulletFiredListener, KeyListener {
 	private List<Bullet> bullets;
 	private List<Entity> entities;
 	private Ship ship;
-	private GameRenderer gameRenderer;
+	private GameCanvas canvas;
 		
 	public Game() {
 		this.bullets = new ArrayList<Bullet>();
 		this.entities = new ArrayList<Entity>();
-		this.gameRenderer = null;
+		this.canvas = null;
 	}
 	
 	public void start() {
@@ -108,8 +108,8 @@ public class Game implements BulletFiredListener, KeyListener {
 		return this.entities;
 	}
 	
-	public void setGameRenderer(GameRenderer renderer) {
-		this.gameRenderer = renderer;
+	public void setGameCanvas(GameCanvas canvas) {
+		this.canvas = canvas;
 	}
 	
 	private void populateField() {
@@ -152,7 +152,9 @@ public class Game implements BulletFiredListener, KeyListener {
 			
 			// Try to render and check collision
 			if (timeSinceLastRender > NANOS_PER_RENDER) {
-				gameRenderer.renderGame(this);
+				if (canvas != null) {
+					canvas.renderGame(this);
+				}
 				
 				// Reset timer
 				timeSinceLastRender = 0;
