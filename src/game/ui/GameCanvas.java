@@ -1,5 +1,7 @@
 package game.ui;
 
+import game.Game;
+import game.GameRenderer;
 import game.InputHandler;
 import game.entities.Bullet;
 import game.entities.Entity;
@@ -13,20 +15,27 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 import java.util.List;
 
-public class GameCanvas extends Canvas {
+public class GameCanvas extends Canvas implements GameRenderer {
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 600;
 	
 	private static final long serialVersionUID = 1L;
 	
-	public GameCanvas() {
+	public GameCanvas(Game game) {
+		game.setGameRenderer(this);
+		this.addKeyListener(game);
 		this.setBackground(new Color(0x292b36));
 		this.addKeyListener(InputHandler.getInstance());
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.requestFocusInWindow();
 	}
 	
-	public void render(Ship player, List<Bullet> bullets, List<Entity> entities, long pointsFluid, int level) {
+	public void renderGame(Game game) {
+		Ship ship = game.getShip();
+		List<Bullet> bullets = game.getBullets();
+		List<Entity> entities = game.getEntities();
+		long pointsFluid = game.getPointsFluid();
+		int level = game.getLevel();
 		// Prepare buffer strategy and graphics
 		BufferStrategy bufferStrategy = getBufferStrategy();
 
@@ -41,7 +50,7 @@ public class GameCanvas extends Canvas {
 		super.paint(g);
 		
 		// Render entities
-		Renderer.render(player, g);
+		Renderer.render(ship, g);
 		
 		for (Bullet b : bullets) {
 			Renderer.render(b, g);

@@ -18,14 +18,13 @@ import java.util.List;
 
 public class Game implements BulletFiredListener, KeyListener {
 	// Time constants
-	private static final long FPS = 45;
-	private static final long NANOS_PER_SECOND = 1000000000;
-	private static final double SPF = 1 / FPS;
-	private static final long NANOS_PER_FRAME = (long)(NANOS_PER_SECOND * SPF);
-	private static final long NANOS_PER_COLLISION = NANOS_PER_FRAME * 2;
-	private static final long NANOS_PER_RENDER = (long)(NANOS_PER_FRAME * 1.5);
-	private static final long NANOS_PER_LEVEL_WAIT = (long)(NANOS_PER_SECOND * 0.75);
-
+	private static final double FPS = 20;
+	private static final double UPS = FPS * 2;
+	
+	private static final double NANOS_PER_SECOND = 1e9;
+	private static final double NANOS_PER_RENDER = NANOS_PER_SECOND / FPS;
+	private static final double NANOS_PER_UPDATE = NANOS_PER_SECOND / UPS;
+	
 	private static final int SAFE_RADIUS = 100;
 	
 	// Points constants
@@ -43,21 +42,19 @@ public class Game implements BulletFiredListener, KeyListener {
 	// Game components
 	private List<Bullet> bullets;
 	private List<Entity> entities;
-	private Ship player;
-	
-	private GameCanvas canvas;
-	
-	public Game(GameCanvas canvas) {
+	private Ship ship;
+	private GameRenderer gameRenderer;
+		
+	public Game() {
 		this.bullets = new ArrayList<Bullet>();
 		this.entities = new ArrayList<Entity>();
-		this.canvas = canvas;
-		this.canvas.addKeyListener(this);
+		this.gameRenderer = null;
 	}
 	
 	public void start() {
 		// Create player and listen to its bullet fired events
-		player = new Ship(new Point(GameCanvas.WIDTH / 2, GameCanvas.HEIGHT / 2));
-		player.addBulletFiredListener(this);
+		ship = new Ship(new Point(GameCanvas.WIDTH / 2, GameCanvas.HEIGHT / 2));
+		ship.addBulletFiredListener(this);
 		
 		populateField();
 		loop();
@@ -83,8 +80,16 @@ public class Game implements BulletFiredListener, KeyListener {
 		}
 	}
 	
+	public Ship getShip() {
+		return this.ship;
+	}
+	
 	public long getPoints() {
 		return points;
+	}
+	
+	public long getPointsFluid() {
+		return this.pointsFluid;
 	}
 	
 	public int getLevel() {
@@ -95,73 +100,77 @@ public class Game implements BulletFiredListener, KeyListener {
 		return multiplier;
 	}
 	
+	public List<Bullet> getBullets() {
+		return this.bullets;
+	}
+	
+	public List<Entity> getEntities() {
+		return this.entities;
+	}
+	
+	public void setGameRenderer(GameRenderer renderer) {
+		this.gameRenderer = renderer;
+	}
+	
 	private void populateField() {
 		int asteroidCount = level * 2;
 		
 		for (int i = 0; i < asteroidCount; i++) {
-			entities.add(new Asteroid(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, player.getCenter(), SAFE_RADIUS)));
+			entities.add(new Asteroid(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, ship.getCenter(), SAFE_RADIUS)));
 		}
 	}
 	
 	private void loop() {
-		long delta, now, lastLoop = System.nanoTime();
-		long lastUpdate = 0;
-		long lastRender = 0;
-		long lastSecond = 0;
-		long waitUntil = 0;
-		long lastCollisionCheck = 0;
+		long currentTime = System.nanoTime();
+		long lastTime = currentTime;
 		
-		while(player.isAlive()) {
-			// Adjust counters
-			now = System.nanoTime();
-			delta = now - lastLoop;
-			lastLoop = now;
+		long delta;
+		long timeSinceLastRender = 0;
+		long timeSinceLastUpdate = 0;
+		
+		while(ship.isAlive()) {
+			// Calculate delta
+			lastTime = currentTime;
+			currentTime = System.nanoTime();
+			delta = currentTime - lastTime;
 			
 			// Bail if paused
-			if (paused || now < waitUntil) {
+			if (paused) {
 				continue;
 			}
 			
-			
+			// Go to next level, skip update and render
 			if (levelEnded) {
 				nextLevel();
 				levelEnded = false;
-				waitUntil = now + NANOS_PER_LEVEL_WAIT;
 				continue;
 			}
 			
-			lastUpdate += delta;
-			lastRender += delta;
-			lastCollisionCheck += delta;
-			lastSecond += delta;
+			// Update times since
+			timeSinceLastRender += delta;
+			timeSinceLastUpdate += delta;
 			
-			// Process collisions
-			if (lastCollisionCheck > NANOS_PER_COLLISION) {
-				lastCollisionCheck = 0;
+			// Try to render and check collision
+			if (timeSinceLastRender > NANOS_PER_RENDER) {
+				gameRenderer.renderGame(this);
+				
+				// Reset timer
+				timeSinceLastRender = 0;
+			}
+			
+			// Try to update
+			if (timeSinceLastUpdate > NANOS_PER_UPDATE) {
+				update(timeSinceLastUpdate);
 				collisionCheck();
-			}
-			
-			// Process renders
-			if (lastRender > NANOS_PER_RENDER) {
-				lastRender = 0;
-				canvas.render(player, bullets, entities, pointsFluid, level);
-			}
-			
-			// Process updates
-			if (lastUpdate > NANOS_PER_FRAME) {
-				lastUpdate = 0;
-				update(delta);
-			}
-			
-			// Process once per second
-			if (lastSecond > NANOS_PER_SECOND) {
-				lastSecond = 0;
+				
+				// Reset timer
+				timeSinceLastUpdate = 0;
 			}
 		}
 	}
 	
 	private void update(long delta) {
-		player.update(delta);
+		ship.update(delta);
 		
 		updateBullets(delta);
 		updateEntities(delta);
@@ -201,10 +210,10 @@ public class Game implements BulletFiredListener, KeyListener {
 			Bullet b = bulletIterator.next();
 			
 			// Player cannot shoot self
-			if (player != b.getSource() && player.getBounds().intersects((Rectangle)b.getBounds())) {
+			if (ship != b.getSource() && ship.getBounds().intersects((Rectangle)b.getBounds())) {
 				// Check collision with player
 				bulletIterator.remove();
-				player.die();
+				ship.die();
 				SoundEffect.EXPLOSION.play();
 			} else {
 				// No player collision, check other entities
@@ -218,7 +227,7 @@ public class Game implements BulletFiredListener, KeyListener {
 						entityIterator.remove();
 						SoundEffect.ASTEROID_BREAK.play();
 						
-						if (b.getSource() == player) {
+						if (b.getSource() == ship) {
 							points += multiplier * POINTS_ASTEROID;
 						}
 					}
@@ -239,13 +248,13 @@ public class Game implements BulletFiredListener, KeyListener {
 			Entity e = entityIterator.next();
 			
 			if (e instanceof Asteroid) {
-				Area area = new Area(player.getBounds());
+				Area area = new Area(ship.getBounds());
 				area.intersect(
 					new Area(e.getBounds())
 				);
 				
 				if (!area.isEmpty()) {
-					player.die();
+					ship.die();
 					SoundEffect.EXPLOSION.play();
 				}
 			}
