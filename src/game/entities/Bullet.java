@@ -1,7 +1,7 @@
 package game.entities;
 
 import game.Point;
-import game.ui.GameField;
+import game.ui.GameCanvas;
 
 import java.awt.Rectangle;
 
@@ -56,7 +56,7 @@ public class Bullet extends Entity {
 		getCenter().move(dx, dy);
 
 		// Wrap around
-		getCenter().wrapAround(GameField.WIDTH, GameField.HEIGHT);
+		getCenter().wrapAround(GameCanvas.WIDTH, GameCanvas.HEIGHT);
 	}
 	
 	private void updateBounds() {

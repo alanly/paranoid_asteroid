@@ -1,7 +1,7 @@
 package game.entities;
 
 import game.Point;
-import game.ui.GameField;
+import game.ui.GameCanvas;
 
 import java.awt.Polygon;
 
@@ -54,7 +54,7 @@ public class Asteroid extends Entity {
 		}
 
 		// Wrap around
-		getCenter().wrapAround(GameField.WIDTH, GameField.HEIGHT, vertices);
+		getCenter().wrapAround(GameCanvas.WIDTH, GameCanvas.HEIGHT, vertices);
 		
 	}
 	

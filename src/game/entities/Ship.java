@@ -4,17 +4,17 @@ import events.BulletFiredEvent;
 import events.BulletFiredListener;
 import game.InputHandler;
 import game.Point;
-import game.ui.GameField;
+import game.ui.GameCanvas;
 
 import java.awt.Polygon;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Ship extends Entity {
-	private final static double BULLET_FIRE_DELAY = 5e8;
-	private final static double MAX_LINEAR_SPEED = 3.4e-7;
-	private final static double MIN_ANGULAR_SPEED = 5e-9;
-	private final static double ACCELERATION = 1.0e-15;
+	private static final double BULLET_FIRE_DELAY = 5e8;
+	private static final double MAX_LINEAR_SPEED = 3.4e-7;
+	private static final double MIN_ANGULAR_SPEED = 5e-9;
+	private static final double ACCELERATION = 1.0e-15;
 
 	private Point[] vertices;
 	private List<BulletFiredListener> bulletFiredListeners;
@@ -22,6 +22,7 @@ public class Ship extends Entity {
 	private double linearSpeed = 0;
 	private double angle = Math.PI / 2;
 	private long lastFired = 0;
+	private boolean alive = true;
 
 	/**
 	 * Constructs a new ship.
@@ -78,6 +79,21 @@ public class Ship extends Entity {
 	public void addBulletFiredListener(BulletFiredListener l) {
 		this.bulletFiredListeners.add(l);
 	}
+	
+	/**
+	 * Returns true if the ship is alive, false otherwise.
+	 * @return true if the ship is alive, false otherwise
+	 */
+	public boolean isAlive() {
+		return this.alive;
+	}
+	
+	/**
+	 * Kills the ship.
+	 */
+	public void die() {
+		this.alive = false;
+	}
 
 	/**
 	 * Updates the angle of the ship.
@@ -122,7 +138,7 @@ public class Ship extends Entity {
 			vertex.move(dx, -dy);
 		}
 		
-		getCenter().wrapAround(GameField.WIDTH, GameField.HEIGHT, vertices);
+		getCenter().wrapAround(GameCanvas.WIDTH, GameCanvas.HEIGHT, vertices);
 	}
 
 	/**
