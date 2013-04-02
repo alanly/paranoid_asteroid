@@ -45,13 +45,13 @@ public class Game implements BulletFiredListener, KeyListener {
 	private List<Entity> entities;
 	private Ship player;
 	
-	private GameCanvas field;
+	private GameCanvas canvas;
 	
-	public Game(GameCanvas field) {
+	public Game(GameCanvas canvas) {
 		this.bullets = new ArrayList<Bullet>();
 		this.entities = new ArrayList<Entity>();
-		this.field = field;
-		this.field.addKeyListener(this);
+		this.canvas = canvas;
+		this.canvas.addKeyListener(this);
 	}
 	
 	public void start() {
@@ -144,7 +144,7 @@ public class Game implements BulletFiredListener, KeyListener {
 			// Process renders
 			if (lastRender > NANOS_PER_RENDER) {
 				lastRender = 0;
-				field.render(player, bullets, entities, pointsFluid, level);
+				canvas.render(player, bullets, entities, pointsFluid, level);
 			}
 			
 			// Process updates
