@@ -1,3 +1,4 @@
+package game.menu;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
