@@ -1,3 +1,4 @@
+package game.menu;
 /**
  * Highscore Object
  * contains score and other information

@@ -1,3 +1,4 @@
+package game.menu;
 
 public class CardLayoutTest {
 
