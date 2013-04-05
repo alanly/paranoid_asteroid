@@ -1,4 +1,4 @@
-package game.menu;
+package game.ui.menu;
 /**
  * STUB
  * @author drr
