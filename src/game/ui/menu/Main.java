@@ -1,4 +1,4 @@
-package game.menu;
+package game.ui.menu;
 import java.awt.CardLayout;
 import java.awt.GridLayout;
 import java.awt.event.*;
