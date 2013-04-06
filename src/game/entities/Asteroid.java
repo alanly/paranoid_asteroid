@@ -21,7 +21,13 @@ public abstract class Asteroid extends Entity {
 	private double speed = MIN_LINEAR_SPEED;
 
 	public static Asteroid buildAsteroid(AsteroidSize size, Point center) {
-		return new SmallAsteroid(center);
+		if (size == AsteroidSize.SMALL) {
+			return new SmallAsteroid(center);
+		} else if (size == AsteroidSize.MEDIUM) {
+			return new MediumAsteroid(center);
+		} else {
+			return new LargeAsteroid(center);
+		}
 	}
 	
 	public Asteroid(Point center) {
