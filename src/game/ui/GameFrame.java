@@ -21,8 +21,6 @@ public class GameFrame extends JFrame {
 	private GamePanel gamePanel;
 	
 	public GameFrame() {
-		this.setPreferredSize(new Dimension(GameCanvas.WIDTH, GameCanvas.HEIGHT));
-		
 		initPanels();
 		
 		this.pack();
