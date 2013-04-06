@@ -1,5 +1,14 @@
 package game;
 
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.geom.Area;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import events.BulletFiredEvent;
 import events.BulletFiredListener;
 import game.entities.Asteroid;
@@ -8,14 +17,6 @@ import game.entities.Bullet;
 import game.entities.Entity;
 import game.entities.Ship;
 import game.ui.GameCanvas;
-
-import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.geom.Area;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class Game implements BulletFiredListener, KeyListener {
 	// Time constants
@@ -203,9 +204,12 @@ public class Game implements BulletFiredListener, KeyListener {
 	}
 	
 	private void collisionCheck() {
-		// Loop through bullets on outer, it's faster when there are no bullets!
+		List<Asteroid> newAsteroids = new LinkedList<Asteroid>();
+		
+		// Check for entity-bullet collision
 		Iterator<Bullet> bulletIterator = bullets.iterator();
 		
+		// Loop through bullets on outer, it's faster when there are no bullets!
 		while(bulletIterator.hasNext()) {
 			Bullet b = bulletIterator.next();
 			
@@ -228,6 +232,16 @@ public class Game implements BulletFiredListener, KeyListener {
 							entityIterator.remove();
 							SoundEffect.ASTEROID_BREAK.play();
 							
+							if (e instanceof Asteroid) {
+								Asteroid a = (Asteroid) e;
+								AsteroidSize aSize = a.getSize();
+								
+								if (aSize != AsteroidSize.SMALL) {
+									newAsteroids.add(Asteroid.buildAsteroid(aSize.getSmaller(), new Point(a.getCenter())));
+									newAsteroids.add(Asteroid.buildAsteroid(aSize.getSmaller(), new Point(a.getCenter())));
+								}
+							}
+							
 							if (b.getSource() == ship) {
 								points += multiplier * POINTS_ASTEROID;
 							}
@@ -236,16 +250,10 @@ public class Game implements BulletFiredListener, KeyListener {
 						continue;
 					}
 				}
-				
-				if (entities.size() == 0) {
-					level++;
-					points += multiplier * POINTS_CLEAR_LEVEL;
-					multiplier += 0.5;
-					levelEnded = true;
-				}
 			}
 		}
 		
+		// Check for ship-asteroid collision
 		Iterator<Entity> entityIterator = entities.iterator();
 		
 		while(entityIterator.hasNext()) {
@@ -262,6 +270,18 @@ public class Game implements BulletFiredListener, KeyListener {
 					SoundEffect.EXPLOSION.play();
 				}
 			}
+		}
+		
+		// Add new asteroid fragments
+		for (Asteroid a : newAsteroids) {
+			entities.add(a);
+		}
+		
+		if (entities.size() == 0) {
+			level++;
+			points += multiplier * POINTS_CLEAR_LEVEL;
+			multiplier += 0.5;
+			levelEnded = true;
 		}
 	}
 	
