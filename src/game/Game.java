@@ -155,10 +155,6 @@ public class Game implements BulletFiredListener, KeyListener {
 					canvas.renderGame(this);
 				}
 				
-				if (!SoundEffect.BACKGROUND.isPlaying()) {
-					SoundEffect.BACKGROUND.play();
-				}
-				
 				// Reset timer
 				timeSinceLastRender = 0;
 			}
