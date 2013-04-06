@@ -43,6 +43,12 @@ public class Asteroid extends Entity {
 		this.vertices[7] = new Point(x - 13, y - 8);
 		this.vertices[8] = new Point(x - 6, y - 10);
 		
+		double rotation = Math.PI * Math.random();
+		
+		for (Point vertex : vertices) {
+			vertex.rotate(getCenter(), rotation);
+		}
+		
 		updateBounds();
 	}
 	
@@ -75,5 +81,4 @@ public class Asteroid extends Entity {
 		
 		setBounds(new Polygon(x, y, x.length));
 	}
-
 }
