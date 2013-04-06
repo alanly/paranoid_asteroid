@@ -222,14 +222,18 @@ public class Game implements BulletFiredListener, KeyListener {
 				while (entityIterator.hasNext()) {
 					Entity e = entityIterator.next();
 					
-					if (e.getBounds().intersects((Rectangle)b.getBounds())) {
-						bulletIterator.remove();
-						entityIterator.remove();
-						SoundEffect.ASTEROID_BREAK.play();
-						
-						if (b.getSource() == ship) {
-							points += multiplier * POINTS_ASTEROID;
+					try {
+						if (e.getBounds().intersects((Rectangle)b.getBounds())) {
+							bulletIterator.remove();
+							entityIterator.remove();
+							SoundEffect.ASTEROID_BREAK.play();
+							
+							if (b.getSource() == ship) {
+								points += multiplier * POINTS_ASTEROID;
+							}
 						}
+					} catch (IllegalStateException ex) {
+						continue;
 					}
 				}
 				
