@@ -34,7 +34,6 @@ public class Game implements BulletFiredListener, KeyListener {
 	// Game state
 	private int level = 1;
 	private long points = 0;
-	private long pointsFluid = points;
 	private double multiplier = 1;
 	private boolean paused = false;
 	private boolean levelEnded = false;
@@ -86,10 +85,6 @@ public class Game implements BulletFiredListener, KeyListener {
 	
 	public long getPoints() {
 		return points;
-	}
-	
-	public long getPointsFluid() {
-		return this.pointsFluid;
 	}
 	
 	public int getLevel() {
@@ -156,6 +151,10 @@ public class Game implements BulletFiredListener, KeyListener {
 					canvas.renderGame(this);
 				}
 				
+				if (!SoundEffect.BACKGROUND.isPlaying()) {
+					SoundEffect.BACKGROUND.play();
+				}
+				
 				// Reset timer
 				timeSinceLastRender = 0;
 			}
@@ -176,11 +175,6 @@ public class Game implements BulletFiredListener, KeyListener {
 		
 		updateBullets(delta);
 		updateEntities(delta);
-		
-		if (pointsFluid < points) {
-			pointsFluid += 2 * multiplier;
-			Math.min(points, pointsFluid);
-		}
 	}
 	
 	private void updateBullets(long delta) {

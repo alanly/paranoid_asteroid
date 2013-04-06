@@ -62,6 +62,10 @@ public enum SoundEffect {
 		clip.start();
 	}
 	
+	public boolean isPlaying() {
+		return clip.isRunning();
+	}
+	
 	static void init() {
 		// Load all sound files
 		values();

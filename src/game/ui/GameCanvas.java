@@ -20,20 +20,23 @@ public class GameCanvas extends Canvas {
 	
 	private static final long serialVersionUID = 1L;
 	
-	public GameCanvas(Game game) {
-		game.setGameCanvas(this);
-		this.addKeyListener(game);
+	public GameCanvas() {
 		this.setBackground(new Color(0x292b36));
 		this.addKeyListener(InputHandler.getInstance());
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.requestFocusInWindow();
 	}
 	
+	public void setGame(Game game) {
+		game.setGameCanvas(this);
+		this.addKeyListener(game);
+	}
+	
 	public void renderGame(Game game) {
 		Ship ship = game.getShip();
 		List<Bullet> bullets = game.getBullets();
 		List<Entity> entities = game.getEntities();
-		long pointsFluid = game.getPointsFluid();
+		long points = game.getPoints();
 		int level = game.getLevel();
 		// Prepare buffer strategy and graphics
 		BufferStrategy bufferStrategy = getBufferStrategy();
@@ -60,7 +63,7 @@ public class GameCanvas extends Canvas {
 		}
 		
 		// Render HUD
-		Renderer.renderHUD(pointsFluid, level, g);
+		Renderer.renderHUD(points, level, g);
 		
 		// Clean up and show
 		g.dispose();
