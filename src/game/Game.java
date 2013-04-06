@@ -276,7 +276,7 @@ public class Game implements BulletFiredListener, KeyListener {
 	private AsteroidSize getAsteroidSize() {
 		if (this.level < 3) {
 			return AsteroidSize.SMALL;
-		} else if (this.level < 3) {
+		} else if (this.level < 7) {
 			return AsteroidSize.MEDIUM;
 		} else {
 			return AsteroidSize.LARGE;
