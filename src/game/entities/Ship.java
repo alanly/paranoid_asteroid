@@ -13,7 +13,7 @@ import java.util.List;
 public class Ship extends Entity {
 	private static final double BULLET_FIRE_DELAY = 5e8;
 	private static final double MAX_LINEAR_SPEED = 2.8e-7;
-	private static final double MIN_ANGULAR_SPEED = 5e-9;
+	private static final double MIN_ANGULAR_SPEED = 4.5e-9;
 	private static final double ACCELERATION = 1.0e-15;
 
 	private Point[] vertices;
@@ -101,8 +101,7 @@ public class Ship extends Entity {
 	 */
 	private void updateAngle(long delta) {
 		double deltaAngle = 0;
-		double angularSpeed = MIN_ANGULAR_SPEED
-				* (1 - linearSpeed / (2 * MAX_LINEAR_SPEED));
+		double angularSpeed = MIN_ANGULAR_SPEED * (1 - linearSpeed / (1.5 * MAX_LINEAR_SPEED));
 
 		if (InputHandler.getInstance().getLeftKey().isPressed()) {
 			// Turn CCW
