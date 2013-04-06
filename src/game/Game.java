@@ -3,6 +3,7 @@ package game;
 import events.BulletFiredEvent;
 import events.BulletFiredListener;
 import game.entities.Asteroid;
+import game.entities.Asteroid.AsteroidSize;
 import game.entities.Bullet;
 import game.entities.Entity;
 import game.entities.Ship;
@@ -109,9 +110,12 @@ public class Game implements BulletFiredListener, KeyListener {
 	
 	private void populateField() {
 		int asteroidCount = getNumAsteroids();
+		AsteroidSize asteroidSize = getAsteroidSize();
+		Point center;
 		
 		for (int i = 0; i < asteroidCount; i++) {
-			entities.add(new Asteroid(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, ship.getCenter(), SAFE_RADIUS)));
+			center = Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, ship.getCenter(), SAFE_RADIUS);
+			entities.add(Asteroid.buildAsteroid(asteroidSize, center));
 		}
 	}
 	
@@ -262,6 +266,16 @@ public class Game implements BulletFiredListener, KeyListener {
 			populateField();
 			
 			levelEnded = false;
+		}
+	}
+	
+	private AsteroidSize getAsteroidSize() {
+		if (this.level < 3) {
+			return AsteroidSize.SMALL;
+		} else if (this.level < 3) {
+			return AsteroidSize.MEDIUM;
+		} else {
+			return AsteroidSize.LARGE;
 		}
 	}
 	
