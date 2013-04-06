@@ -2,7 +2,6 @@ package game.ui;
 
 import game.GameController;
 import game.GameController.GameType;
-import game.SoundEffect;
 import game.ui.menu.ButtonPanel;
 import game.ui.menu.GamePanel;
 
@@ -33,8 +32,11 @@ public class GameFrame extends JFrame {
 	}
 	
 	public void playSinglePlayer() {
+		controller = null;
+		
 		new Thread(new Runnable() {
 			public void run() {
+				controller = new GameController(gamePanel);
 				controller.playGame(GameType.SINGLE_PLAYER);
 			}
 		}).start();
@@ -56,7 +58,6 @@ public class GameFrame extends JFrame {
 		
 		buttonPanel = new ButtonPanel(this);
 		gamePanel = new GamePanel();
-		controller = new GameController(gamePanel);
 		
 		cardPanel.add(buttonPanel, "button");
 		cardPanel.add(gamePanel, "game");
