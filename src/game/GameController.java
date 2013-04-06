@@ -1,19 +1,19 @@
 package game;
 
 import game.ui.GameCanvas;
+import game.ui.menu.GamePanel;
 
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 public class GameController {
-	enum GameType {
+	public enum GameType {
 		SINGLE_PLAYER,
 		TWO_PLAYER
 	}
 	
-	private JPanel gamePanel;
+	private GamePanel gamePanel;
 	
-	public GameController(JPanel gamePanel) {
+	public GameController(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 	}
 	
@@ -31,9 +31,10 @@ public class GameController {
 	
 	private long playSinglePlayer() {
 		Game game = new Game();
-		GameCanvas canvas = new GameCanvas(game);
+		GameCanvas canvas = gamePanel.getGameCanvas();
 		
-		gamePanel.add(canvas);
+		canvas.setGame(game);
+		
 		gamePanel.revalidate();
 		gamePanel.repaint();
 		
