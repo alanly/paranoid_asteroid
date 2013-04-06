@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Ship extends Entity {
 	private static final double BULLET_FIRE_DELAY = 5e8;
-	private static final double MAX_LINEAR_SPEED = 3.4e-7;
+	private static final double MAX_LINEAR_SPEED = 2.8e-7;
 	private static final double MIN_ANGULAR_SPEED = 5e-9;
 	private static final double ACCELERATION = 1.0e-15;
 

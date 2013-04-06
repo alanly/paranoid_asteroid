@@ -6,7 +6,7 @@ import game.ui.GameCanvas;
 import java.awt.Rectangle;
 
 public class Bullet extends Entity {
-	private static final double MAX_TIME_TO_LIVE = 2.0e9;
+	private static final double MAX_TIME_TO_LIVE = 0.8e9;
 	private static final double LINEAR_SPEED = 4.0e-7;
 
 	private boolean expired;
