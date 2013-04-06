@@ -32,9 +32,10 @@ public class ButtonPanel extends BasePanel implements ActionListener {
 	
 	public void actionPerformed(ActionEvent event) {
 		Object source = event.getSource();
+		Thread thread = null;
 		
 		if (source == singlePlayerButton) {
-			frame.playSinglePlayer();
+			thread = frame.playSinglePlayer();
 		} else if (source == twoPlayerButton) {
 			System.out.println(twoPlayerButton.getName());
 		} else if (source == highScoresButton) {
