@@ -6,7 +6,6 @@ import game.ui.menu.ButtonPanel;
 import game.ui.menu.GamePanel;
 
 import java.awt.CardLayout;
-import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -36,6 +35,7 @@ public class GameFrame extends JFrame {
 			public void run() {
 				controller = new GameController(gamePanel);
 				controller.playGame(GameType.SINGLE_PLAYER);
+				showButtonPanel();
 			}
 		}).start();
 		
