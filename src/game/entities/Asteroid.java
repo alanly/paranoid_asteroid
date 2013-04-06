@@ -20,6 +20,7 @@ public abstract class Asteroid extends Entity {
 	private static double MIN_LINEAR_SPEED = 3e-8;
 
 	protected Point[] vertices;
+	protected AsteroidSize size = AsteroidSize.SMALL;
 	
 	private double angle;
 	private double speed = MIN_LINEAR_SPEED;
@@ -58,6 +59,10 @@ public abstract class Asteroid extends Entity {
 	public void update(long delta) {
 		updateVertices(delta);
 		updateBounds();
+	}
+	
+	public AsteroidSize getSize() {
+		return this.size;
 	}
 	
 	protected abstract void initializeVertices();
