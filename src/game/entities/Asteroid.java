@@ -21,7 +21,7 @@ public class Asteroid extends Entity {
 	
 		// Vary speed between 1 and (1 + LINEAR_SPEED_VARIANCE) times
 		speed *= 1 + Math.random() * LINEAR_SPEED_VARIANCE;
-		vertices = new Point[4];
+		vertices = new Point[9];
 		
 		initializeVertices();
 	}
@@ -32,10 +32,16 @@ public class Asteroid extends Entity {
 	}
 	
 	private void initializeVertices() {
-		this.vertices[0] = new Point(this.getX() - 10, this.getY() - 10);
-		this.vertices[1] = new Point(this.getX() + 10, this.getY() - 10);
-		this.vertices[2] = new Point(this.getX() + 10, this.getY() + 10);
-		this.vertices[3] = new Point(this.getX() - 10, this.getY() + 10);
+		double x = this.getX(), y = this.getY();
+		this.vertices[0] = new Point(x - 4, y - 12);
+		this.vertices[1] = new Point(x + 7, y - 6);
+		this.vertices[2] = new Point(x + 15, y - 2);
+		this.vertices[3] = new Point(x + 10, y + 10);
+		this.vertices[4] = new Point(x - 2, y + 11);
+		this.vertices[5] = new Point(x - 8, y + 4);
+		this.vertices[6] = new Point(x - 15, y);
+		this.vertices[7] = new Point(x - 13, y - 8);
+		this.vertices[8] = new Point(x - 6, y - 10);
 		
 		updateBounds();
 	}
