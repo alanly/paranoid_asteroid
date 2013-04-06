@@ -14,6 +14,15 @@ public class Launcher implements Runnable {
 	}
 	
 	public static void main(String[] args) {
+		playBackgroundMusic();
 		SwingUtilities.invokeLater(new Launcher());
+	}
+	
+	private static void playBackgroundMusic() {
+		new Thread(new Runnable() {
+			public void run() {
+				SoundEffect.BACKGROUND.play();
+			}
+		}).start();
 	}
 }
