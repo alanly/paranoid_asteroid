@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Area;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,8 +46,8 @@ public class Game implements BulletFiredListener, KeyListener {
 	private GameCanvas canvas;
 		
 	public Game() {
-		this.bullets = new ArrayList<Bullet>();
-		this.entities = new ArrayList<Entity>();
+		this.bullets = new LinkedList<Bullet>();
+		this.entities = new LinkedList<Entity>();
 		this.canvas = null;
 	}
 	
