@@ -113,8 +113,8 @@ public class Ship extends Entity {
 		}
 
 		// Rotate each point by the change in the angle
-		for (Point vertice : vertices) {
-			vertice.rotate(getCenter(), deltaAngle);
+		for (Point vertex : vertices) {
+			vertex.rotate(getCenter(), deltaAngle);
 		}
 
 		// Update the angle
