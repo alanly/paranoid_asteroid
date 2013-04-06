@@ -72,7 +72,6 @@ public class Renderer {
 		Color oldColor = g.getColor();
 		g.setColor(ENTITY_COLOR);
 		g.fill((Rectangle)e.getBounds());
-		g.draw((Rectangle)e.getBounds());
 		g.setColor(oldColor);
 	}
 	
@@ -84,7 +83,6 @@ public class Renderer {
 	private static void renderAsteroid(Asteroid e, Graphics2D g) {
 		Color oldColor = g.getColor();
 		g.setColor(ENTITY_COLOR);
-		g.fill((Polygon)e.getBounds());
 		g.drawPolygon((Polygon)e.getBounds());
 		g.setColor(oldColor);
 	}
