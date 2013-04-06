@@ -108,7 +108,7 @@ public class Game implements BulletFiredListener, KeyListener {
 	}
 	
 	private void populateField() {
-		int asteroidCount = level * 2;
+		int asteroidCount = getNumAsteroids();
 		
 		for (int i = 0; i < asteroidCount; i++) {
 			entities.add(new Asteroid(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, ship.getCenter(), SAFE_RADIUS)));
@@ -263,6 +263,10 @@ public class Game implements BulletFiredListener, KeyListener {
 			
 			levelEnded = false;
 		}
+	}
+	
+	private int getNumAsteroids() {
+		return this.level / 2 + this.level % 2 + 1;
 	}
 	
 	public void keyReleased(KeyEvent e) {
