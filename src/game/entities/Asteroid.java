@@ -9,7 +9,11 @@ public abstract class Asteroid extends Entity {
 	public enum AsteroidSize {
 		SMALL,
 		MEDIUM,
-		LARGE
+		LARGE;
+		
+		public AsteroidSize getSmaller() {
+			return (this == SMALL || this == MEDIUM) ? SMALL : LARGE;
+		}
 	}
 	
 	private static double LINEAR_SPEED_VARIANCE = 0.3;
