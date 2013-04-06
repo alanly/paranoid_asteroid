@@ -47,7 +47,7 @@ public abstract class Asteroid extends Entity {
 		
 		initializeVertices();
 		
-		double rotation = Math.PI * Math.random();
+		double rotation = FULL_CIRCLE_RAD * Math.random();
 		
 		for (Point vertex : vertices) {
 			vertex.rotate(getCenter(), rotation);
