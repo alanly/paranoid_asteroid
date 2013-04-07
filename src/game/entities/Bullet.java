@@ -6,13 +6,12 @@ import game.ui.GameCanvas;
 import java.awt.Rectangle;
 
 public class Bullet extends Entity {
-	private static final double MAX_TIME_TO_LIVE = 0.8e9;
-	private static final double LINEAR_SPEED = 4.0e-7;
-
 	private boolean expired;
 	private Entity source;
 	private double angle;
-	private double timeToLive = MAX_TIME_TO_LIVE;
+	private double linearSpeed = 4.0e-7;
+	private double maxTimeToLive = 0.8e9;
+	private double timeToLive = maxTimeToLive;
 
 	public Bullet(Entity source, Point center, double angle) {
 		setCenter(center);
@@ -20,6 +19,11 @@ public class Bullet extends Entity {
 		this.expired = false;
 		this.source = source;
 		this.angle = angle;
+		
+		if (source instanceof Alien) {
+			linearSpeed *= 0.7;
+			timeToLive *= 1.7;
+		}
 		
 		setBounds(new Rectangle((int)center.x, (int)center.y, 2, 2));
 	}
@@ -48,7 +52,7 @@ public class Bullet extends Entity {
 	}
 
 	private void updateCenter(long delta) {
-		double distance = LINEAR_SPEED * delta;
+		double distance = linearSpeed * delta;
 		double dx = distance * Math.cos(angle);
 		double dy = -distance * Math.sin(angle);
 
