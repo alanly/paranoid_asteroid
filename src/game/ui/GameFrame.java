@@ -2,8 +2,8 @@ package game.ui;
 
 import game.GameController;
 import game.GameController.GameType;
-import game.ui.menu.ButtonPanel;
 import game.ui.menu.GamePanel;
+import game.ui.menu.MainPanel;
 
 import java.awt.CardLayout;
 
@@ -16,7 +16,7 @@ public class GameFrame extends JFrame {
 	private CardLayout layout;
 	private GameController controller;
 	private JPanel cardPanel;
-	private ButtonPanel buttonPanel;
+	private JPanel mainPanel;
 	private GamePanel gamePanel;
 	
 	public GameFrame() {
@@ -54,10 +54,10 @@ public class GameFrame extends JFrame {
 		layout = new CardLayout();
 		cardPanel = new JPanel(layout);
 		
-		buttonPanel = new ButtonPanel(this);
+		mainPanel = new MainPanel(this);
 		gamePanel = new GamePanel();
 		
-		cardPanel.add(buttonPanel, "button");
+		cardPanel.add(mainPanel, "button");
 		cardPanel.add(gamePanel, "game");
 		
 		this.add(cardPanel);
