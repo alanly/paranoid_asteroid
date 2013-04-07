@@ -120,6 +120,8 @@ public class Game implements BulletFiredListener, KeyListener {
 	}
 	
 	private void loop() {
+		SoundEffect.GAME_START.play();
+		
 		long currentTime = System.nanoTime();
 		long lastTime = currentTime;
 		
