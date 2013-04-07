@@ -1,5 +1,6 @@
 package game.ui;
 
+import game.entities.Alien;
 import game.entities.Asteroid;
 import game.entities.Bullet;
 import game.entities.Entity;
@@ -16,7 +17,13 @@ import java.awt.Rectangle;
  *
  */
 public class Renderer {
-	private static Color ENTITY_COLOR = new Color(0xF0F0F0);
+	private static Color WHITE = new Color(0xF0F0F0);
+	private static Color STEEL = new Color(0xB0C4DE);
+	
+	private static Color ALIEN_COLOR = STEEL;
+	private static Color ASTEROID_COLOR = WHITE;
+	private static Color HUD_COLOR = WHITE;
+	private static Color SHIP_COLOR = WHITE;
 	private static Font POINTS_FONT = new Font("Consolas", Font.PLAIN, 14);
 	
 	/**
@@ -25,12 +32,14 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	public static void render(Entity e, Graphics2D g) {
-		if (e instanceof Ship) {
+		if (e instanceof Asteroid) {
+			renderAsteroid((Asteroid) e, g);
+		} else if (e instanceof Ship) {
 			renderShip((Ship) e, g);
 		} else if (e instanceof Bullet) {
 			renderBullet((Bullet) e, g);
-		} else if (e instanceof Asteroid) {
-			renderAsteroid((Asteroid) e, g);
+		} else if (e instanceof Alien) {
+			renderAlien((Alien) e, g);
 		}
 	}
 	
@@ -44,7 +53,7 @@ public class Renderer {
 		Font oldFont = g.getFont();
 		Color oldColor = g.getColor();
 		g.setFont(POINTS_FONT);
-		g.setColor(ENTITY_COLOR);
+		g.setColor(HUD_COLOR);
 		g.drawString("Points: " + points, 4, 16);
 		g.drawString(" Level: " + level, 4, 32);
 		g.setFont(oldFont);
@@ -58,7 +67,7 @@ public class Renderer {
 	 */
 	private static void renderShip(Ship e, Graphics2D g) {
 		Color oldColor = g.getColor();
-		g.setColor(ENTITY_COLOR);
+		g.setColor(SHIP_COLOR);
 		g.drawPolygon((Polygon)e.getBounds());
 		g.setColor(oldColor);
 	}
@@ -70,7 +79,7 @@ public class Renderer {
 	 */
 	private static void renderBullet(Bullet e, Graphics2D g) {
 		Color oldColor = g.getColor();
-		g.setColor(ENTITY_COLOR);
+		g.setColor(ASTEROID_COLOR);
 		g.fill((Rectangle)e.getBounds());
 		g.setColor(oldColor);
 	}
@@ -82,7 +91,19 @@ public class Renderer {
 	 */
 	private static void renderAsteroid(Asteroid e, Graphics2D g) {
 		Color oldColor = g.getColor();
-		g.setColor(ENTITY_COLOR);
+		g.setColor(ASTEROID_COLOR);
+		g.drawPolygon((Polygon)e.getBounds());
+		g.setColor(oldColor);
+	}
+	
+	/**
+	 * Renders an alien entity.
+	 * @param e the alien
+	 * @param g the graphics object
+	 */
+	private static void renderAlien(Alien e, Graphics2D g) {
+		Color oldColor = g.getColor();
+		g.setColor(ALIEN_COLOR);
 		g.drawPolygon((Polygon)e.getBounds());
 		g.setColor(oldColor);
 	}
