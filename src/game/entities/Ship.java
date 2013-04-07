@@ -14,7 +14,8 @@ public class Ship extends Entity {
 	private static final double BULLET_FIRE_DELAY = 5e8;
 	private static final double MAX_LINEAR_SPEED = 2.8e-7;
 	private static final double MIN_ANGULAR_SPEED = 4.5e-9;
-	private static final double ACCELERATION = 1.0e-15;
+	private static final double ACCELERATION = 6.0e-16;
+	private static final double DECELERATION = -0.3e-15;
 
 	private Point[] vertices;
 	private List<BulletFiredListener> bulletFiredListeners;
@@ -67,7 +68,7 @@ public class Ship extends Entity {
 			linearSpeed = Math.min(MAX_LINEAR_SPEED, linearSpeed);
 		} else {
 			// Decelerate
-			linearSpeed -= ACCELERATION * delta;
+			linearSpeed += DECELERATION * delta;
 			linearSpeed = Math.max(0, linearSpeed);
 		}
 	}
