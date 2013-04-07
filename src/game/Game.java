@@ -301,6 +301,7 @@ public class Game implements BulletFiredListener, KeyListener {
 	
 	private void nextLevel() {
 		if (levelEnded) {
+			bullets.clear();
 			populateField();
 			
 			levelEnded = false;
