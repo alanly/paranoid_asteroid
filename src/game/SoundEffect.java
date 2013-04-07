@@ -11,10 +11,11 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public enum SoundEffect {
 	ASTEROID_BREAK("asteroid_break.wav"),
-	EXPLOSION("explosion2.wav"),
+	EXPLOSION("explosion.wav"),
 	FIRE_BULLET("fire_bullet.wav"),
+	GAME_START("game_start.wav"),
 	POWER_UP("power_up.wav"),
-	BACKGROUND("background3.wav", true);
+	BACKGROUND("background.wav", true);
 	
 	private static final String resourcePath = "resources/sounds/";
 	
