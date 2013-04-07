@@ -10,6 +10,7 @@ import java.util.List;
 
 import events.BulletFiredEvent;
 import events.BulletFiredListener;
+import game.entities.Alien;
 import game.entities.Asteroid;
 import game.entities.Asteroid.AsteroidSize;
 import game.entities.Bullet;
@@ -25,6 +26,8 @@ public class Game implements BulletFiredListener, KeyListener {
 	private static final double NANOS_PER_SECOND = 1e9;
 	private static final double NANOS_PER_RENDER = NANOS_PER_SECOND / FPS;
 	private static final double NANOS_PER_UPDATE = NANOS_PER_SECOND / UPS;
+	
+	private static final double NANOS_BETWEEN_ALIEN = NANOS_PER_SECOND * 10;
 	
 	private static final int SAFE_RADIUS = 100;
 	
@@ -128,6 +131,7 @@ public class Game implements BulletFiredListener, KeyListener {
 		long delta;
 		long timeSinceLastRender = 0;
 		long timeSinceLastUpdate = 0;
+		long timeSinceLastAlien = 0;
 		
 		while(ship.isAlive()) {
 			// Calculate delta
@@ -150,6 +154,7 @@ public class Game implements BulletFiredListener, KeyListener {
 			// Update times since
 			timeSinceLastRender += delta;
 			timeSinceLastUpdate += delta;
+			timeSinceLastAlien += delta;
 			
 			// Try to render and check collision
 			if (timeSinceLastRender > NANOS_PER_RENDER) {
@@ -168,6 +173,11 @@ public class Game implements BulletFiredListener, KeyListener {
 				
 				// Reset timer
 				timeSinceLastUpdate = 0;
+			}
+			
+			if (timeSinceLastAlien > NANOS_BETWEEN_ALIEN) {
+				generateAlien();
+				timeSinceLastAlien = 0;
 			}
 		}
 	}
@@ -227,9 +237,10 @@ public class Game implements BulletFiredListener, KeyListener {
 						if (e.getBounds().intersects((Rectangle)b.getBounds())) {
 							bulletIterator.remove();
 							entityIterator.remove();
-							SoundEffect.ASTEROID_BREAK.play();
 							
 							if (e instanceof Asteroid) {
+								SoundEffect.ASTEROID_BREAK.play();
+								
 								Asteroid a = (Asteroid) e;
 								AsteroidSize aSize = a.getSize();
 								
@@ -237,6 +248,8 @@ public class Game implements BulletFiredListener, KeyListener {
 									newAsteroids.add(Asteroid.buildAsteroid(aSize.getSmaller(), new Point(a.getCenter())));
 									newAsteroids.add(Asteroid.buildAsteroid(aSize.getSmaller(), new Point(a.getCenter())));
 								}
+							} else if (e instanceof Alien) {
+								SoundEffect.ALIEN_DIE.play();
 							}
 							
 							if (b.getSource() == ship) {
@@ -302,6 +315,14 @@ public class Game implements BulletFiredListener, KeyListener {
 	
 	private int getNumAsteroids() {
 		return this.level / 2 + this.level % 2 + 1;
+	}
+	
+	private void generateAlien() {
+		// 50-50 chance of an alien appearing
+		if (Math.random() < 0.5) {
+			SoundEffect.ALIEN_APPEAR.play();
+			this.entities.add(new Alien(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, ship.getCenter(), SAFE_RADIUS)));
+		}
 	}
 	
 	public void keyReleased(KeyEvent e) {
