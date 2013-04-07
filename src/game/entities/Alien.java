@@ -35,7 +35,7 @@ public class Alien extends Entity {
 	}
 	
 	private void initializeVertices() {
-		this.vertices = new Point[12];
+		this.vertices = new Point[13];
 		
 		double x = this.getX(), y = this.getY();
 		this.vertices[0] = new Point(x - 4, y - 10);
@@ -44,12 +44,13 @@ public class Alien extends Entity {
 		this.vertices[3] = new Point(x + 1, y - 10);
 		this.vertices[4] = new Point(x + 4, y - 10);
 		this.vertices[5] = new Point(x + 8, y - 5);
-		this.vertices[6] = new Point(x + 8, y - 5);
-		this.vertices[7] = new Point(x + 20, y);
-		this.vertices[8] = new Point(x + 6, y + 8);
-		this.vertices[9] = new Point(x - 6, y + 8);
-		this.vertices[10] = new Point(x - 20, y);
-		this.vertices[11] = new Point(x - 8, y - 6);
+		this.vertices[6] = new Point(x - 8, y - 5);
+		this.vertices[7] = new Point(x + 8, y - 5);
+		this.vertices[8] = new Point(x + 20, y);
+		this.vertices[9] = new Point(x + 6, y + 8);
+		this.vertices[10] = new Point(x - 6, y + 8);
+		this.vertices[11] = new Point(x - 20, y);
+		this.vertices[12] = new Point(x - 8, y - 6);
 	}
 	
 	private void updateVertices(long delta) {
