@@ -10,6 +10,8 @@ public class LargeAsteroid extends Asteroid {
 	}
 
 	protected void initializeVertices() {
+		this.vertices = new Point[9];
+		
 		double x = this.getX(), y = this.getY();
 		this.vertices[0] = new Point(x - 8, y - 24);
 		this.vertices[1] = new Point(x + 14, y - 12);

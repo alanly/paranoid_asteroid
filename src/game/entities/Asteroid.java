@@ -18,7 +18,7 @@ public abstract class Asteroid extends Entity {
 	
 	private static double LINEAR_SPEED_VARIANCE = 0.3;
 	private static double MIN_LINEAR_SPEED = 3e-8;
-
+	
 	protected Point[] vertices;
 	protected AsteroidSize size = AsteroidSize.SMALL;
 	
@@ -43,7 +43,6 @@ public abstract class Asteroid extends Entity {
 	
 		// Vary speed between 1 and (1 + LINEAR_SPEED_VARIANCE) times
 		speed *= 1 + Math.random() * LINEAR_SPEED_VARIANCE;
-		vertices = new Point[9];
 		
 		initializeVertices();
 		
