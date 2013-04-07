@@ -36,11 +36,9 @@ public class BackgroundPlayer extends PlaybackListener {
     }
 	
 	public void playbackStarted(PlaybackEvent playbackEvent) {
-		System.out.println("Playback started");
 	}
 	
 	public void playbackFinished(PlaybackEvent playbackEvent) {
-		System.out.println("Playback finished");
 		this.play();
 	}
 }
