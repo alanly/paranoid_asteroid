@@ -106,7 +106,11 @@ public class Alien extends Entity {
 			bulletTimer = 0;
 			
 			for (BulletFiredListener listener : bulletFiredListeners) {
-				listener.bulletFired(new BulletFiredEvent(this, new Point(getX(), getY()+9), angle));
+				double shipAngle = 3.0 / 2.0 * Math.PI - Math.atan2(getX() - target.getX(), target.getY() - getY());
+				double aimVariance = ((Math.random() > 0.5) ? -1 : 1) * FULL_CIRCLE_RAD * Math.random() / 18;
+				shipAngle += aimVariance;
+				
+				listener.bulletFired(new BulletFiredEvent(this, new Point(getX(), getY()+9), shipAngle));
 			}
 		}
 	}
