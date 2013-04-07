@@ -26,7 +26,7 @@ public class GameController {
 			points = playTwoPlayer();
 		}
 		
-		JOptionPane.showMessageDialog(null, "You got " + points + " points!");
+		JOptionPane.showMessageDialog(gamePanel, "You got " + points + " points!");
 	}
 	
 	private long playSinglePlayer() {
