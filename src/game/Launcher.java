@@ -18,7 +18,7 @@ public class Launcher implements Runnable {
 	private static void playBackgroundMusic() {
 		new Thread(new Runnable() {
 			public void run() {
-				SoundEffect.BACKGROUND.play();
+				new BackgroundPlayer().play();
 			}
 		}).start();
 	}
