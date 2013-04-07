@@ -14,21 +14,13 @@ public enum SoundEffect {
 	EXPLOSION("explosion.wav"),
 	FIRE_BULLET("fire_bullet.wav"),
 	GAME_START("game_start.wav"),
-	POWER_UP("power_up.wav"),
-	BACKGROUND("background.wav", true);
+	POWER_UP("power_up.wav");
 	
 	private static final String resourcePath = "resources/sounds/";
 	
 	private Clip clip;
-	private boolean repeat;
 	
 	SoundEffect(String filename) {
-		this(filename, false);
-	}
-	
-	SoundEffect(String filename, boolean repeat) {
-		this.repeat = repeat;
-		
 		try {
 			// Get URL to resource
 			URL url = this.getClass().getClassLoader().getResource(resourcePath + filename);
@@ -52,10 +44,6 @@ public enum SoundEffect {
 		// Stop clip if it is playing already
 		if (clip.isRunning()) {
 			clip.stop();
-		}
-		
-		if (this.repeat) {
-			clip.loop(Clip.LOOP_CONTINUOUSLY);
 		}
 		
 		// Play from beginning
