@@ -10,6 +10,8 @@ public class SmallAsteroid extends Asteroid {
 	}
 
 	protected void initializeVertices() {
+		this.vertices = new Point[9];
+		
 		double x = this.getX(), y = this.getY();
 		this.vertices[0] = new Point(x - 4, y - 12);
 		this.vertices[1] = new Point(x + 7, y - 6);

@@ -8,6 +8,8 @@ public class MediumAsteroid extends Asteroid {
 		this.size = AsteroidSize.MEDIUM;
 	}
 	protected void initializeVertices() {
+		this.vertices = new Point[9];
+		
 		double x = this.getX(), y = this.getY();
 		this.vertices[0] = new Point(x - 6, y - 18);
 		this.vertices[1] = new Point(x + 10, y - 9);
