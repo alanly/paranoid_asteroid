@@ -12,7 +12,7 @@ public abstract class Asteroid extends Entity {
 		LARGE;
 		
 		public AsteroidSize getSmaller() {
-			return (this == SMALL || this == MEDIUM) ? SMALL : LARGE;
+			return (this == SMALL || this == MEDIUM) ? SMALL : MEDIUM;
 		}
 	}
 	
