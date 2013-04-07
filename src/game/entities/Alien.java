@@ -1,6 +1,11 @@
 package game.entities;
 
 import java.awt.Polygon;
+import java.util.LinkedList;
+import java.util.List;
+
+import events.BulletFiredEvent;
+import events.BulletFiredListener;
 
 import game.Point;
 import game.entities.Asteroid.AsteroidSize;
@@ -9,15 +14,21 @@ import game.ui.GameCanvas;
 public class Alien extends Entity {
 	private static double LINEAR_SPEED_VARIANCE = 0.5;
 	private static double MIN_LINEAR_SPEED = 3e-8;
+	private static double NANOS_BEFORE_BULLET_FIRED = 3e9;
 	
 	protected Point[] vertices;
 	protected AsteroidSize size = AsteroidSize.SMALL;
 	
 	private double angle;
 	private double speed = MIN_LINEAR_SPEED;
+	private double bulletTimer = 0;
+	private List<BulletFiredListener> bulletFiredListeners;
+	private Entity target;
 	
-	public Alien(Point center) {
+	public Alien(Point center, Entity target) {
 		this.setCenter(center);
+		this.target = target;
+		this.bulletFiredListeners = new LinkedList<BulletFiredListener>();
 		
 		// Give random angle
 		angle = Math.random() * FULL_CIRCLE_RAD;
@@ -30,8 +41,15 @@ public class Alien extends Entity {
 	}
 	
 	public void update(long delta) {
+		bulletTimer += delta;
+		
 		updateVertices(delta);
 		updateBounds();
+		fireBullet();
+	}
+	
+	public void addBulletFiredListener(BulletFiredListener listener) {
+		this.bulletFiredListeners.add(listener);
 	}
 	
 	private void initializeVertices() {
@@ -81,5 +99,16 @@ public class Alien extends Entity {
 		}
 		
 		setBounds(new Polygon(x, y, x.length));
+	}
+	
+	private void fireBullet() {
+		if (bulletTimer > NANOS_BEFORE_BULLET_FIRED) {
+			bulletTimer = 0;
+			
+			for (BulletFiredListener listener : bulletFiredListeners) {
+				listener.bulletFired(new BulletFiredEvent(this, new Point(getX(), getY()+9), angle));
+				System.out.println(this);
+			}
+		}
 	}
 }

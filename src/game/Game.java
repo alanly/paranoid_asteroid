@@ -73,7 +73,12 @@ public class Game implements BulletFiredListener, KeyListener {
 	
 	public void bulletFired(BulletFiredEvent e) {
 		bullets.add(new Bullet(e.getSource(), e.getOrigin(), e.getAngle()));
-		SoundEffect.FIRE_BULLET.play();
+		
+		if (e.getSource() instanceof Alien) {
+			SoundEffect.FIRE_BULLET_ALIEN.play();
+		} else {
+			SoundEffect.FIRE_BULLET.play();
+		}
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -225,7 +230,7 @@ public class Game implements BulletFiredListener, KeyListener {
 				// Check collision with player
 				bulletIterator.remove();
 				ship.die();
-				SoundEffect.EXPLOSION.play();
+				SoundEffect.SHIP_CRASH.play();
 			} else {
 				// No player collision, check other entities
 				Iterator<Entity> entityIterator = entities.iterator();
@@ -234,7 +239,7 @@ public class Game implements BulletFiredListener, KeyListener {
 					Entity e = entityIterator.next();
 					
 					try {
-						if (e.getBounds().intersects((Rectangle)b.getBounds())) {
+						if (e != b.getSource() && e.getBounds().intersects((Rectangle)b.getBounds())) {
 							bulletIterator.remove();
 							entityIterator.remove();
 							
@@ -269,15 +274,14 @@ public class Game implements BulletFiredListener, KeyListener {
 		while(entityIterator.hasNext()) {
 			Entity e = entityIterator.next();
 			
-			if (e instanceof Asteroid) {
-				Area area = new Area(ship.getBounds());
-				area.intersect(
-					new Area(e.getBounds())
-				);
-				
-				if (!area.isEmpty()) {
+			Area area = new Area(ship.getBounds());
+			Area entityArea = new Area(e.getBounds());
+			area.intersect(entityArea);
+			
+			if (!area.isEmpty()) {
+				if (e instanceof Asteroid || e instanceof Alien) {
 					ship.die();
-					SoundEffect.EXPLOSION.play();
+					SoundEffect.SHIP_CRASH.play();
 				}
 			}
 		}
@@ -321,7 +325,9 @@ public class Game implements BulletFiredListener, KeyListener {
 		// Chance of an alien appearing
 		if (Math.random() > (1 - Math.pow(this.level, -2))) {
 			SoundEffect.ALIEN_APPEAR.play();
-			this.entities.add(new Alien(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, ship.getCenter(), SAFE_RADIUS)));
+			Alien alien = new Alien(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, ship.getCenter(), SAFE_RADIUS), ship);
+			alien.addBulletFiredListener(this);
+			this.entities.add(alien);
 		}
 	}
 	
