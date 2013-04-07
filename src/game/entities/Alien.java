@@ -107,7 +107,6 @@ public class Alien extends Entity {
 			
 			for (BulletFiredListener listener : bulletFiredListeners) {
 				listener.bulletFired(new BulletFiredEvent(this, new Point(getX(), getY()+9), angle));
-				System.out.println(this);
 			}
 		}
 	}

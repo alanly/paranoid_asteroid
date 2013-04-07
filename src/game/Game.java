@@ -323,7 +323,7 @@ public class Game implements BulletFiredListener, KeyListener {
 	
 	private void generateAlien() {
 		// Chance of an alien appearing
-		if (Math.random() > (1 - Math.pow(this.level, -2))) {
+		if (Math.random() < this.level / 10.0) {
 			SoundEffect.ALIEN_APPEAR.play();
 			Alien alien = new Alien(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, ship.getCenter(), SAFE_RADIUS), ship);
 			alien.addBulletFiredListener(this);
