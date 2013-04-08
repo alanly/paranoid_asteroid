@@ -35,6 +35,9 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	public static void render(Entity e, Graphics2D g) {
+		Color oldColor = g.getColor();
+		Font oldFont = g.getFont();
+		
 		if (e instanceof Asteroid) {
 			renderAsteroid((Asteroid) e, g);
 		} else if (e instanceof Ship) {
@@ -46,6 +49,9 @@ public class Renderer {
 		} else if (e instanceof Powerup) {
 			renderPowerup((Powerup) e, g);
 		}
+		
+		g.setFont(oldFont);
+		g.setColor(oldColor);
 	}
 	
 	/**
@@ -55,14 +61,10 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	public static void renderHUD(long points, int level, Graphics2D g) {
-		Font oldFont = g.getFont();
-		Color oldColor = g.getColor();
 		g.setFont(POINTS_FONT);
 		g.setColor(HUD_COLOR);
 		g.drawString("Points: " + points, 4, 16);
 		g.drawString(" Level: " + level, 4, 32);
-		g.setFont(oldFont);
-		g.setColor(oldColor);
 	}
 	
 	/**
@@ -71,10 +73,8 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	private static void renderShip(Ship e, Graphics2D g) {
-		Color oldColor = g.getColor();
 		g.setColor(getShipColor(e));
 		g.drawPolygon((Polygon)e.getBounds());
-		g.setColor(oldColor);
 	}
 	
 	/**
@@ -83,10 +83,8 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	private static void renderBullet(Bullet e, Graphics2D g) {
-		Color oldColor = g.getColor();
 		g.setColor(ASTEROID_COLOR);
 		g.fill((Rectangle)e.getBounds());
-		g.setColor(oldColor);
 	}
 	
 	/**
@@ -95,10 +93,8 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	private static void renderAsteroid(Asteroid e, Graphics2D g) {
-		Color oldColor = g.getColor();
 		g.setColor(ASTEROID_COLOR);
 		g.drawPolygon((Polygon)e.getBounds());
-		g.setColor(oldColor);
 	}
 	
 	/**
@@ -107,10 +103,8 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	private static void renderAlien(Alien e, Graphics2D g) {
-		Color oldColor = g.getColor();
 		g.setColor(ALIEN_COLOR);
 		g.drawPolygon((Polygon)e.getBounds());
-		g.setColor(oldColor);
 	}
 	
 	/**
@@ -119,10 +113,8 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	private static void renderPowerup(Powerup e, Graphics2D g) {
-		Color oldColor = g.getColor();
 		g.setColor(getPowerupColor(e));
 		g.draw(e.getBounds());
-		g.setColor(oldColor);
 	}
 	
 	/**
