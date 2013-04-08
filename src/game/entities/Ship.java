@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Ship extends Entity {
-	private static final double BULLET_FIRE_DELAY = 5e8;
+	private static final double MAX_BULLET_FIRED_WAIT = 0.5e9;
 	private static final double MAX_LINEAR_SPEED = 2.8e-7;
 	private static final double MIN_ANGULAR_SPEED = 4.5e-9;
 	private static final long MAX_BOOST_TTL = (long) 10e9;
@@ -23,10 +23,10 @@ public class Ship extends Entity {
 
 	private double linearSpeed = 0;
 	private double angle = Math.PI / 2;
-	private long lastFired = 0;
 	private boolean alive = true;
 	private double speedBoost = 1;
 	private long boostTTL = 0;
+	private long timeSinceLastFired = 0;
 
 	/**
 	 * Constructs a new ship.
@@ -49,16 +49,23 @@ public class Ship extends Entity {
 		updateVertices(delta);
 		updateBounds();
 		
-		long now = System.nanoTime();
+		timeSinceLastFired += delta;
 		
-		if (InputHandler.getInstance().getSpaceKey().isPressed() && (now - lastFired) > BULLET_FIRE_DELAY) {
-			lastFired = now;
-			
+		if (InputHandler.getInstance().getSpaceKey().isPressed() && canFire()) {
 			for (BulletFiredListener listener : bulletFiredListeners) {
 				// Origin is the tip of the ship, the first vertex
 				listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle));
+				timeSinceLastFired = 0;
 			}
 		}
+	}
+	
+	/**
+	 * Returns true if the player can fire.
+	 * @return true if the player can fire
+	 */
+	public boolean canFire() {
+		return timeSinceLastFired > getMaxBulletFiredWait();
 	}
 
 	/**
@@ -106,6 +113,10 @@ public class Ship extends Entity {
 	 */
 	public double getMaxLinearSpeed() {
 		return MAX_LINEAR_SPEED * speedBoost;
+	}
+	
+	public double getMaxBulletFiredWait() {
+		return MAX_BULLET_FIRED_WAIT / speedBoost;
 	}
 	
 	/**
