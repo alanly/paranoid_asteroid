@@ -2,7 +2,8 @@ package game.ui.menu;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashSet;
 
 import javax.swing.Box;
@@ -11,16 +12,14 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 //import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 public class Options extends JPanel{
 	private static final long serialVersionUID = 1L;
 	
 	private JButton okButton;
-	private OptionHandler optionHandler;
 	private JComboBox[] keysA = new JComboBox[6]; // Order: shootB, leftB, rightB, forwardB, hyperB, pauseB
 	private JComboBox[] keysB = new JComboBox[6]; 
 	private JComboBox difficulty;
@@ -39,9 +38,7 @@ public class Options extends JPanel{
 	 * @param parentPanel
 	 * @param optionH
 	 */
-	public Options(final CardLayout cl, final JPanel parentPanel, OptionHandler optionH) {
-
-		optionHandler = optionH;
+	public Options(final CardLayout cl, final JPanel parentPanel) {
 		//get data
 		//instatiate JComboBoxes at default values
 		//TODO: figure out of to set the ComboBoxes to desired initial index.

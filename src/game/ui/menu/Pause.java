@@ -12,7 +12,7 @@ public class Pause extends JPanel{
 	
 	private JButton saveAndExit, resumeGame, exit;
 
-	public Pause(final CardLayout cl, final JPanel parentPanel, Game game) {
+	public Pause(final CardLayout cl, final JPanel parentPanel) {
 		
 		saveAndExit = new JButton("Save And Exit");
 		resumeGame = new JButton("Resume");
