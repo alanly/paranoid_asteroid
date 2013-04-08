@@ -14,6 +14,7 @@ public class Ship extends Entity {
 	private static final double BULLET_FIRE_DELAY = 5e8;
 	private static final double MAX_LINEAR_SPEED = 2.8e-7;
 	private static final double MIN_ANGULAR_SPEED = 4.5e-9;
+	private static final long MAX_BOOST_TTL = (long) 10e9;
 	private static final double ACCELERATION = 6.0e-16;
 	private static final double DECELERATION = -0.3e-15;
 
@@ -24,6 +25,8 @@ public class Ship extends Entity {
 	private double angle = Math.PI / 2;
 	private long lastFired = 0;
 	private boolean alive = true;
+	private double speedBoost = 1;
+	private long boostTTL = 0;
 
 	/**
 	 * Constructs a new ship.
@@ -41,6 +44,7 @@ public class Ship extends Entity {
 	 */
 	public void update(long delta) {
 		updateSpeed(delta);
+		updateBoost(delta);
 		updateAngle(delta);
 		updateVertices(delta);
 		updateBounds();
@@ -57,22 +61,6 @@ public class Ship extends Entity {
 		}
 	}
 
-	/**
-	 * Updates the speed of the ship.
-	 * @param delta the time since the last update
-	 */
-	public void updateSpeed(long delta) {
-		if (InputHandler.getInstance().getUpKey().isPressed()) {
-			// Accelerate
-			linearSpeed += ACCELERATION * delta;
-			linearSpeed = Math.min(MAX_LINEAR_SPEED, linearSpeed);
-		} else {
-			// Decelerate
-			linearSpeed += DECELERATION * delta;
-			linearSpeed = Math.max(0, linearSpeed);
-		}
-	}
-	
 	/**
 	 * Adds a bullet fired listener to the list of listeners to notify when a bullet is fired.
 	 * @param l bullet fired listener to notify when the bullet is fired
@@ -95,6 +83,66 @@ public class Ship extends Entity {
 	public void die() {
 		this.alive = false;
 	}
+	
+	/**
+	 * Gives the ship a speed boost.
+	 */
+	public void boost() {
+		speedBoost = 1.4;
+		boostTTL = MAX_BOOST_TTL;
+	}
+	
+	/**
+	 * Removes the ship's a speed boost.
+	 */
+	public void unboost() {
+		speedBoost = 1;
+		boostTTL = 0;
+	}
+	
+	/**
+	 * Returns the max linear speed of the ship.
+	 * @return the max linear speed of the ship
+	 */
+	public double getMaxLinearSpeed() {
+		return MAX_LINEAR_SPEED * speedBoost;
+	}
+	
+	/**
+	 * Returns true if the boost expired.
+	 * @return true if the boost expired
+	 */
+	public boolean hasBoost() {
+		return boostTTL > 0;
+	}
+	
+	/**
+	 * Updates the speed of the ship.
+	 * @param delta the time since the last update
+	 */
+	private void updateSpeed(long delta) {
+		if (InputHandler.getInstance().getUpKey().isPressed()) {
+			// Accelerate
+			linearSpeed += ACCELERATION * delta;
+			linearSpeed = Math.min(getMaxLinearSpeed(), linearSpeed);
+		} else {
+			// Decelerate
+			linearSpeed += DECELERATION * delta;
+			linearSpeed = Math.max(0, linearSpeed);
+		}
+	}
+	
+	/**
+	 * Updates the boost of the ship.
+	 * @param delta the time since the last update
+	 */
+	private void updateBoost(long delta) {
+		if (hasBoost()) {
+			boostTTL -= delta;
+		} else {
+			unboost();
+		}
+	}
 
 	/**
 	 * Updates the angle of the ship.
@@ -102,7 +150,7 @@ public class Ship extends Entity {
 	 */
 	private void updateAngle(long delta) {
 		double deltaAngle = 0;
-		double angularSpeed = MIN_ANGULAR_SPEED * (1 - linearSpeed / (1.5 * MAX_LINEAR_SPEED));
+		double angularSpeed = MIN_ANGULAR_SPEED * (1 - linearSpeed / (1.5 * getMaxLinearSpeed()));
 
 		if (InputHandler.getInstance().getLeftKey().isPressed()) {
 			// Turn CCW
