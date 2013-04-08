@@ -4,6 +4,7 @@ import game.entities.Alien;
 import game.entities.Asteroid;
 import game.entities.Bullet;
 import game.entities.Entity;
+import game.entities.Powerup;
 import game.entities.Ship;
 
 import java.awt.Color;
@@ -25,7 +26,7 @@ public class Renderer {
 	private static Color ASTEROID_COLOR = WHITE;
 	private static Color HUD_COLOR = WHITE;
 	private static Color SHIP_COLOR = WHITE;
-	private static Color SHIP_BOOST_COLOR = YELLOW;
+	private static Color BOOST_COLOR = YELLOW;
 	private static Font POINTS_FONT = new Font("Consolas", Font.PLAIN, 14);
 	
 	/**
@@ -42,6 +43,8 @@ public class Renderer {
 			renderBullet((Bullet) e, g);
 		} else if (e instanceof Alien) {
 			renderAlien((Alien) e, g);
+		} else if (e instanceof Powerup) {
+			renderPowerup((Powerup) e, g);
 		}
 	}
 	
@@ -110,11 +113,37 @@ public class Renderer {
 		g.setColor(oldColor);
 	}
 	
+	/**
+	 * Renders a powerup entity.
+	 * @param e the powerup
+	 * @param g the graphics object
+	 */
+	private static void renderPowerup(Powerup e, Graphics2D g) {
+		Color oldColor = g.getColor();
+		g.setColor(getPowerupColor(e));
+		g.drawPolygon((Polygon)e.getBounds());
+		g.setColor(oldColor);
+	}
+	
+	/**
+	 * Returns the correct ship color.
+	 * @param ship the ship
+	 * @return the correct ship color
+	 */
 	private static Color getShipColor(Ship ship) {
 		if (ship.hasBoost()) {
-			return SHIP_BOOST_COLOR;
+			return BOOST_COLOR;
 		} else {
 			return SHIP_COLOR;
 		}
+	}
+	
+	/**
+	 * Returns the correct powerup color.
+	 * @param powerup the powerup
+	 * @return the correct powerup color.
+	 */
+	private static Color getPowerupColor(Powerup powerup) {
+		return BOOST_COLOR;
 	}
 }
