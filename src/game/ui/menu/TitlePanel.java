@@ -13,7 +13,6 @@ public class TitlePanel extends JPanel {
 	public TitlePanel() {
 		titleLabel = new JLabel("<html>Paranoid<br>Asteroid</html>");
 		titleLabel.setFont(new Font("Helvetica", Font.BOLD, 72));
-		titleLabel.setAlignmentY(LEFT_ALIGNMENT);
 		
 		this.add(titleLabel);
 	}

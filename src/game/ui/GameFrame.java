@@ -2,6 +2,7 @@ package game.ui;
 
 import game.GameController;
 import game.GameController.GameType;
+import game.ui.menu.CreditsPanel;
 import game.ui.menu.GamePanel;
 import game.ui.menu.MainPanel;
 
@@ -17,6 +18,7 @@ public class GameFrame extends JFrame {
 	private GameController controller;
 	private JPanel cardPanel;
 	private JPanel mainPanel;
+	private CreditsPanel creditsPanel;
 	private HighScoresPanel highScoresPanel;
 	private GamePanel gamePanel;
 	
@@ -56,9 +58,14 @@ public class GameFrame extends JFrame {
 		layout.show(cardPanel, "game");
 	}
 	
+	public void showCreditsPanel() {
+		layout.show(cardPanel, "credits");
+	}
+	
 	private void initPanels() {
 		layout = new CardLayout();
 		cardPanel = new JPanel(layout);
+		creditsPanel = new CreditsPanel(this);
 		highScoresPanel = new HighScoresPanel(this);
 		
 		mainPanel = new MainPanel(this);
@@ -66,6 +73,7 @@ public class GameFrame extends JFrame {
 		
 		cardPanel.add(mainPanel, "main");
 		cardPanel.add(gamePanel, "game");
+		cardPanel.add(creditsPanel, "credits");
 		cardPanel.add(highScoresPanel, "highScores");
 		
 		this.add(cardPanel);

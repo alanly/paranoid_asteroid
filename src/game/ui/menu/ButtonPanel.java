@@ -14,16 +14,13 @@ public class ButtonPanel extends JPanel implements ActionListener {
 	private JButton singlePlayerButton;
 	private JButton twoPlayerButton;
 	private JButton highScoresButton;
+	private JButton creditsButton;
 	private GameFrame frame;
 	
 	public ButtonPanel(GameFrame frame) {
 		this.frame = frame;
 		
 		initButtons();
-		
-		this.add(singlePlayerButton);
-		this.add(twoPlayerButton);
-		this.add(highScoresButton);
 	}
 	
 	public void add(JButton button) {
@@ -40,17 +37,26 @@ public class ButtonPanel extends JPanel implements ActionListener {
 			System.out.println(twoPlayerButton.getName());
 		} else if (source == highScoresButton) {
 			frame.showHighScores();
+		} else if (source == creditsButton) {
+			frame.showCreditsPanel();
 		}
 	}
 	
 	private void initButtons() {
 		singlePlayerButton = new JButton("Single Player");
 		singlePlayerButton.setName("singlePlayer");
+		this.add(singlePlayerButton);
 		
 		twoPlayerButton = new JButton("Two Player");
 		twoPlayerButton.setName("twoPlayer");
+		this.add(twoPlayerButton);
 		
 		highScoresButton = new JButton("High Scores");
 		highScoresButton.setName("highScores");
+		this.add(highScoresButton);
+		
+		creditsButton = new JButton("credits");
+		creditsButton.setName("credits");
+		this.add(creditsButton);
 	}
 }
