@@ -29,11 +29,13 @@ public class GameController {
 		HighScores highScores = HighScores.getInstance();
 		
 		if (highScores.isHighScore(points)) {
-			String name = JOptionPane.showInputDialog("Enter your name to save your high score!");
+			String name = JOptionPane.showInputDialog(gamePanel, "Enter your name to save your high score!");
 			
 			if (!name.equals("")) {
 				highScores.submit(points, name);
 			}
+		} else {
+			JOptionPane.showMessageDialog(gamePanel, "Sorry, you didn't get a high score!");
 		}
 	}
 	
