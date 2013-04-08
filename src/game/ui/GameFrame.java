@@ -9,6 +9,7 @@ import java.awt.CardLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -17,6 +18,7 @@ public class GameFrame extends JFrame {
 	private GameController controller;
 	private JPanel cardPanel;
 	private JPanel mainPanel;
+	private HighScoresPanel highScoresPanel;
 	private GamePanel gamePanel;
 	
 	public GameFrame() {
@@ -24,7 +26,6 @@ public class GameFrame extends JFrame {
 		
 		this.pack();
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setVisible(true);
 	}
@@ -36,30 +37,37 @@ public class GameFrame extends JFrame {
 			public void run() {
 				controller = new GameController(gamePanel);
 				controller.playGame(GameType.SINGLE_PLAYER);
-				showButtonPanel();
+				showMainMenu();
 			}
 		}).start();
 		
 		showGamePanel();
 	}
 	
-	private void showGamePanel() {
-		layout.show(cardPanel, "game");
+	public void showHighScores() {
+		highScoresPanel.reload();
+		layout.show(cardPanel, "highScores");
 	}
 	
-	private void showButtonPanel() {
-		layout.show(cardPanel, "button");
+	public void showMainMenu() {
+		layout.show(cardPanel, "main");
+	}
+	
+	public void showGamePanel() {
+		layout.show(cardPanel, "game");
 	}
 	
 	private void initPanels() {
 		layout = new CardLayout();
 		cardPanel = new JPanel(layout);
+		highScoresPanel = new HighScoresPanel(this);
 		
 		mainPanel = new MainPanel(this);
 		gamePanel = new GamePanel();
 		
-		cardPanel.add(mainPanel, "button");
+		cardPanel.add(mainPanel, "main");
 		cardPanel.add(gamePanel, "game");
+		cardPanel.add(highScoresPanel, "highScores");
 		
 		this.add(cardPanel);
 	}
