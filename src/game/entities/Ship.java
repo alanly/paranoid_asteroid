@@ -62,22 +62,6 @@ public class Ship extends Entity {
 	}
 
 	/**
-	 * Updates the speed of the ship.
-	 * @param delta the time since the last update
-	 */
-	private void updateSpeed(long delta) {
-		if (InputHandler.getInstance().getUpKey().isPressed()) {
-			// Accelerate
-			linearSpeed += ACCELERATION * delta;
-			linearSpeed = Math.min(getMaxLinearSpeed(), linearSpeed);
-		} else {
-			// Decelerate
-			linearSpeed += DECELERATION * delta;
-			linearSpeed = Math.max(0, linearSpeed);
-		}
-	}
-	
-	/**
 	 * Adds a bullet fired listener to the list of listeners to notify when a bullet is fired.
 	 * @param l bullet fired listener to notify when the bullet is fired
 	 */
@@ -130,6 +114,22 @@ public class Ship extends Entity {
 	 */
 	public boolean hasBoost() {
 		return boostTTL > 0;
+	}
+	
+	/**
+	 * Updates the speed of the ship.
+	 * @param delta the time since the last update
+	 */
+	private void updateSpeed(long delta) {
+		if (InputHandler.getInstance().getUpKey().isPressed()) {
+			// Accelerate
+			linearSpeed += ACCELERATION * delta;
+			linearSpeed = Math.min(getMaxLinearSpeed(), linearSpeed);
+		} else {
+			// Decelerate
+			linearSpeed += DECELERATION * delta;
+			linearSpeed = Math.max(0, linearSpeed);
+		}
 	}
 	
 	/**
