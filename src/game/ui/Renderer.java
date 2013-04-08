@@ -19,11 +19,13 @@ import java.awt.Rectangle;
 public class Renderer {
 	private static Color WHITE = new Color(0xF0F0F0);
 	private static Color STEEL = new Color(0xB0C4DE);
+	private static Color YELLOW = new Color(0xEDD808);
 	
 	private static Color ALIEN_COLOR = STEEL;
 	private static Color ASTEROID_COLOR = WHITE;
 	private static Color HUD_COLOR = WHITE;
 	private static Color SHIP_COLOR = WHITE;
+	private static Color SHIP_BOOST_COLOR = YELLOW;
 	private static Font POINTS_FONT = new Font("Consolas", Font.PLAIN, 14);
 	
 	/**
@@ -67,7 +69,7 @@ public class Renderer {
 	 */
 	private static void renderShip(Ship e, Graphics2D g) {
 		Color oldColor = g.getColor();
-		g.setColor(SHIP_COLOR);
+		g.setColor(getShipColor(e));
 		g.drawPolygon((Polygon)e.getBounds());
 		g.setColor(oldColor);
 	}
@@ -106,5 +108,13 @@ public class Renderer {
 		g.setColor(ALIEN_COLOR);
 		g.drawPolygon((Polygon)e.getBounds());
 		g.setColor(oldColor);
+	}
+	
+	private static Color getShipColor(Ship ship) {
+		if (ship.hasBoost()) {
+			return SHIP_BOOST_COLOR;
+		} else {
+			return SHIP_COLOR;
+		}
 	}
 }
