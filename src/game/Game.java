@@ -200,6 +200,7 @@ public class Game implements BulletFiredListener, KeyListener {
 		ship.update(delta);
 		
 		updateBullets(delta);
+		updatePowerups(delta);
 		updateEntities(delta);
 	}
 	
@@ -214,6 +215,21 @@ public class Game implements BulletFiredListener, KeyListener {
 				i.remove();
 			} else {
 				b.update(delta);
+			}
+		}
+	}
+	
+	private void updatePowerups(long delta) {
+		Iterator<Powerup> i = powerups.iterator();
+		Powerup p;
+		
+		while(i.hasNext()) {
+			p = i.next();
+			
+			if (p.isExpired()) {
+				i.remove();
+			} else {
+				p.update(delta);
 			}
 		}
 	}
