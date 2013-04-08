@@ -241,6 +241,11 @@ public class Game implements BulletFiredListener, KeyListener {
 					
 					try {
 						if (e != b.getSource() && e.getBounds().intersects((Rectangle)b.getBounds())) {
+							// Don't let aliens destroy asteroids
+							if (e instanceof Asteroid && b.getSource() instanceof Alien) {
+								continue;
+							}
+							
 							bulletIterator.remove();
 							entityIterator.remove();
 							
