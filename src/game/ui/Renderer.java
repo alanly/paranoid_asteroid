@@ -2,10 +2,12 @@ package game.ui;
 
 import game.entities.Alien;
 import game.entities.Asteroid;
+import game.entities.BoostPowerup;
 import game.entities.Bullet;
 import game.entities.Entity;
 import game.entities.Powerup;
 import game.entities.Ship;
+import game.entities.TripleShotPowerup;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -21,12 +23,14 @@ public class Renderer {
 	private static Color WHITE = new Color(0xF0F0F0);
 	private static Color STEEL = new Color(0xB0C4DE);
 	private static Color YELLOW = new Color(0xEDD808);
+	private static Color PURPLE = new Color(0x693D99);
 	
 	private static Color ALIEN_COLOR = STEEL;
 	private static Color ASTEROID_COLOR = WHITE;
 	private static Color HUD_COLOR = WHITE;
 	private static Color SHIP_COLOR = WHITE;
 	private static Color BOOST_COLOR = YELLOW;
+	private static Color TRIPLE_SHOT_COLOR = PURPLE;
 	private static Font POINTS_FONT = new Font("Consolas", Font.PLAIN, 14);
 	
 	/**
@@ -125,6 +129,8 @@ public class Renderer {
 	private static Color getShipColor(Ship ship) {
 		if (ship.hasBoost()) {
 			return BOOST_COLOR;
+		} else if (ship.hasTripleShot()) {
+			return TRIPLE_SHOT_COLOR;
 		} else {
 			return SHIP_COLOR;
 		}
@@ -136,6 +142,12 @@ public class Renderer {
 	 * @return the correct powerup color.
 	 */
 	private static Color getPowerupColor(Powerup powerup) {
-		return BOOST_COLOR;
+		if (powerup instanceof BoostPowerup) {
+			return BOOST_COLOR;
+		} else if (powerup instanceof TripleShotPowerup) {
+			return TRIPLE_SHOT_COLOR;
+		} else {
+			return SHIP_COLOR;
+		}
 	}
 }

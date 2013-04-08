@@ -33,6 +33,7 @@ public abstract class Powerup extends Entity {
 		List<Class<? extends Powerup>> powerups = new ArrayList<Class<? extends Powerup>>();
 		
 		powerups.add(BoostPowerup.class);
+		powerups.add(TripleShotPowerup.class);
 		
 		// Metaprogramming voodoo to choose a random class from the collection, get its constructor, and construct a new instance
 		return powerups.get((int) (Math.random() * powerups.size())).getConstructor(Point.class).newInstance(p);

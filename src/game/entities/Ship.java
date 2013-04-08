@@ -14,7 +14,7 @@ public class Ship extends Entity {
 	private static final double MAX_BULLET_FIRED_WAIT = 0.5e9;
 	private static final double MAX_LINEAR_SPEED = 2.8e-7;
 	private static final double MIN_ANGULAR_SPEED = 4.5e-9;
-	private static final long MAX_BOOST_TTL = (long) 10e9;
+	private static final long MAX_POWERUP_TTL = (long) 10e9;
 	private static final double ACCELERATION = 6.0e-16;
 	private static final double DECELERATION = -0.3e-15;
 
@@ -26,6 +26,7 @@ public class Ship extends Entity {
 	private boolean alive = true;
 	private double speedBoost = 1;
 	private long boostTTL = 0;
+	private long tripleShotTTL = 0;
 	private long timeSinceLastFired = 0;
 
 	/**
@@ -45,6 +46,7 @@ public class Ship extends Entity {
 	public void update(long delta) {
 		updateSpeed(delta);
 		updateBoost(delta);
+		updateTripleShot(delta);
 		updateAngle(delta);
 		updateVertices(delta);
 		updateBounds();
@@ -96,7 +98,7 @@ public class Ship extends Entity {
 	 */
 	public void boost() {
 		speedBoost = 1.4;
-		boostTTL = MAX_BOOST_TTL;
+		boostTTL = MAX_POWERUP_TTL;
 	}
 	
 	/**
@@ -105,6 +107,20 @@ public class Ship extends Entity {
 	public void unboost() {
 		speedBoost = 1;
 		boostTTL = 0;
+	}
+	
+	/**
+	 * Gives the ship a triple shot.
+	 */
+	public void arm() {
+		tripleShotTTL = MAX_POWERUP_TTL;
+	}
+	
+	/**
+	 * Disabled the ship's triple shot.
+	 */
+	public void disarm() {
+		tripleShotTTL = 0;
 	}
 	
 	/**
@@ -120,11 +136,19 @@ public class Ship extends Entity {
 	}
 	
 	/**
-	 * Returns true if the boost expired.
-	 * @return true if the boost expired
+	 * Returns true if the ship has boost.
+	 * @return true if the ship has boost
 	 */
 	public boolean hasBoost() {
 		return boostTTL > 0;
+	}
+	
+	/**
+	 * Returns true if the ship has triple shot. 
+	 * @return true if the ship has triple shot
+	 */
+	public boolean hasTripleShot() {
+		return tripleShotTTL > 0;
 	}
 	
 	/**
@@ -152,6 +176,18 @@ public class Ship extends Entity {
 			boostTTL -= delta;
 		} else {
 			unboost();
+		}
+	}
+	
+	/**
+	 * Updates the tripple shot of the ship.
+	 * @param delta the time since the last update
+	 */
+	private void updateTripleShot(long delta) {
+		if (hasTripleShot()) {
+			tripleShotTTL -= delta;
+		} else {
+			disarm();
 		}
 	}
 

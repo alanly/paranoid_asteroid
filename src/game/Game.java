@@ -18,6 +18,7 @@ import game.entities.Bullet;
 import game.entities.Entity;
 import game.entities.Powerup;
 import game.entities.Ship;
+import game.entities.TripleShotPowerup;
 import game.ui.GameCanvas;
 
 public class Game implements BulletFiredListener, KeyListener {
@@ -384,6 +385,8 @@ public class Game implements BulletFiredListener, KeyListener {
 	private void applyPowerup(Powerup p) {
 		if (p instanceof BoostPowerup) {
 			ship.boost();
+		} else if (p instanceof TripleShotPowerup) {
+			ship.arm();
 		}
 	}
 	
