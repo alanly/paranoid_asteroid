@@ -217,6 +217,42 @@ public class Game implements BulletFiredListener, KeyListener {
 	}
 	
 	private void collisionCheck() {
+		checkShipEntityCollisions();
+		checkBulletEntityCollisions();
+		
+		if (entities.size() == 0) {
+			level++;
+			levelEnded = true;
+			
+			allocatePoints(null);
+		}
+	}
+	
+	private void checkShipEntityCollisions() {
+		// Check for ship-entity collision
+		Iterator<Entity> entityIterator = entities.iterator();
+		
+		// Loop through all entities
+		while(entityIterator.hasNext()) {
+			Entity e = entityIterator.next();
+			
+			// Construct areas and intersect them
+			Area area = new Area(ship.getBounds());
+			Area entityArea = new Area(e.getBounds());
+			area.intersect(entityArea);
+			
+			// If the intersection area isn't empty, then the two shapes have overlapped
+			if (!area.isEmpty()) {
+				// Kill player if collision was with asteroid or alien
+				if (e instanceof Asteroid || e instanceof Alien) {
+					ship.die();
+					SoundEffect.SHIP_CRASH.play();
+				}
+			}
+		}
+	}
+	
+	private void checkBulletEntityCollisions() {
 		List<Asteroid> newAsteroids = new LinkedList<Asteroid>();
 		
 		// Check for entity-bullet collision
@@ -236,58 +272,51 @@ public class Game implements BulletFiredListener, KeyListener {
 				// No player collision, check other entities
 				Iterator<Entity> entityIterator = entities.iterator();
 				
+				// Iterate over all entities
 				while (entityIterator.hasNext()) {
 					Entity e = entityIterator.next();
 					
+					// In try in case bullet intersects two entities at once (cannot be removed twice)
 					try {
+						// If the current entity is not the source and the bullet intersects the current entity
 						if (e != b.getSource() && e.getBounds().intersects((Rectangle)b.getBounds())) {
 							// Don't let aliens destroy asteroids
 							if ((e instanceof Asteroid || e instanceof Alien) && b.getSource() instanceof Alien) {
 								continue;
 							}
 							
+							// Remove entities that have collided
 							bulletIterator.remove();
 							entityIterator.remove();
 							
 							if (e instanceof Asteroid) {
+								// Entity was an asteroid
 								SoundEffect.ASTEROID_BREAK.play();
 								
+								// Try to break up the asteroid
 								Asteroid a = (Asteroid) e;
 								AsteroidSize aSize = a.getSize();
 								
+								// Only if it's not already the smallest
 								if (aSize != AsteroidSize.SMALL) {
 									newAsteroids.add(Asteroid.buildAsteroid(aSize.getSmaller(), new Point(a.getCenter())));
 									newAsteroids.add(Asteroid.buildAsteroid(aSize.getSmaller(), new Point(a.getCenter())));
 								}
 							} else if (e instanceof Alien) {
+								// Entity was an alien
+								// Nothing extra to do
 								SoundEffect.ALIEN_DIE.play();
 							}
 							
+							// If the bullet came from the player, allocate the player points based on the entity they hit
 							if (b.getSource() == ship) {
 								allocatePoints(e);
 							}
 						}
 					} catch (IllegalStateException ex) {
+						// Carry on
 						continue;
 					}
-				}
-			}
-		}
-		
-		// Check for ship-asteroid collision
-		Iterator<Entity> entityIterator = entities.iterator();
-		
-		while(entityIterator.hasNext()) {
-			Entity e = entityIterator.next();
-			
-			Area area = new Area(ship.getBounds());
-			Area entityArea = new Area(e.getBounds());
-			area.intersect(entityArea);
-			
-			if (!area.isEmpty()) {
-				if (e instanceof Asteroid || e instanceof Alien) {
-					ship.die();
-					SoundEffect.SHIP_CRASH.play();
 				}
 			}
 		}
@@ -295,13 +324,6 @@ public class Game implements BulletFiredListener, KeyListener {
 		// Add new asteroid fragments
 		for (Asteroid a : newAsteroids) {
 			entities.add(a);
-		}
-		
-		if (entities.size() == 0) {
-			level++;
-			levelEnded = true;
-			
-			allocatePoints(null);
 		}
 	}
 	
