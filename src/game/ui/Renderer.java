@@ -4,6 +4,7 @@ import game.entities.Alien;
 import game.entities.Asteroid;
 import game.entities.Bullet;
 import game.entities.Entity;
+import game.entities.Powerup;
 import game.entities.Ship;
 
 import java.awt.Color;
@@ -19,11 +20,13 @@ import java.awt.Rectangle;
 public class Renderer {
 	private static Color WHITE = new Color(0xF0F0F0);
 	private static Color STEEL = new Color(0xB0C4DE);
+	private static Color YELLOW = new Color(0xEDD808);
 	
 	private static Color ALIEN_COLOR = STEEL;
 	private static Color ASTEROID_COLOR = WHITE;
 	private static Color HUD_COLOR = WHITE;
 	private static Color SHIP_COLOR = WHITE;
+	private static Color BOOST_COLOR = YELLOW;
 	private static Font POINTS_FONT = new Font("Consolas", Font.PLAIN, 14);
 	
 	/**
@@ -32,6 +35,9 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	public static void render(Entity e, Graphics2D g) {
+		Color oldColor = g.getColor();
+		Font oldFont = g.getFont();
+		
 		if (e instanceof Asteroid) {
 			renderAsteroid((Asteroid) e, g);
 		} else if (e instanceof Ship) {
@@ -40,7 +46,12 @@ public class Renderer {
 			renderBullet((Bullet) e, g);
 		} else if (e instanceof Alien) {
 			renderAlien((Alien) e, g);
+		} else if (e instanceof Powerup) {
+			renderPowerup((Powerup) e, g);
 		}
+		
+		g.setFont(oldFont);
+		g.setColor(oldColor);
 	}
 	
 	/**
@@ -50,14 +61,10 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	public static void renderHUD(long points, int level, Graphics2D g) {
-		Font oldFont = g.getFont();
-		Color oldColor = g.getColor();
 		g.setFont(POINTS_FONT);
 		g.setColor(HUD_COLOR);
 		g.drawString("Points: " + points, 4, 16);
 		g.drawString(" Level: " + level, 4, 32);
-		g.setFont(oldFont);
-		g.setColor(oldColor);
 	}
 	
 	/**
@@ -66,10 +73,8 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	private static void renderShip(Ship e, Graphics2D g) {
-		Color oldColor = g.getColor();
-		g.setColor(SHIP_COLOR);
+		g.setColor(getShipColor(e));
 		g.drawPolygon((Polygon)e.getBounds());
-		g.setColor(oldColor);
 	}
 	
 	/**
@@ -78,10 +83,8 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	private static void renderBullet(Bullet e, Graphics2D g) {
-		Color oldColor = g.getColor();
 		g.setColor(ASTEROID_COLOR);
 		g.fill((Rectangle)e.getBounds());
-		g.setColor(oldColor);
 	}
 	
 	/**
@@ -90,10 +93,8 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	private static void renderAsteroid(Asteroid e, Graphics2D g) {
-		Color oldColor = g.getColor();
 		g.setColor(ASTEROID_COLOR);
 		g.drawPolygon((Polygon)e.getBounds());
-		g.setColor(oldColor);
 	}
 	
 	/**
@@ -102,9 +103,39 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	private static void renderAlien(Alien e, Graphics2D g) {
-		Color oldColor = g.getColor();
 		g.setColor(ALIEN_COLOR);
 		g.drawPolygon((Polygon)e.getBounds());
-		g.setColor(oldColor);
+	}
+	
+	/**
+	 * Renders a powerup entity.
+	 * @param e the powerup
+	 * @param g the graphics object
+	 */
+	private static void renderPowerup(Powerup e, Graphics2D g) {
+		g.setColor(getPowerupColor(e));
+		g.draw(e.getBounds());
+	}
+	
+	/**
+	 * Returns the correct ship color.
+	 * @param ship the ship
+	 * @return the correct ship color
+	 */
+	private static Color getShipColor(Ship ship) {
+		if (ship.hasBoost()) {
+			return BOOST_COLOR;
+		} else {
+			return SHIP_COLOR;
+		}
+	}
+	
+	/**
+	 * Returns the correct powerup color.
+	 * @param powerup the powerup
+	 * @return the correct powerup color.
+	 */
+	private static Color getPowerupColor(Powerup powerup) {
+		return BOOST_COLOR;
 	}
 }
