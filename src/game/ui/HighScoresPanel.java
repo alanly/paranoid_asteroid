@@ -3,6 +3,9 @@ package game.ui;
 import game.HighScores;
 import game.ui.menu.BasePanel;
 
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
@@ -10,26 +13,38 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class HighScoresPanel extends BasePanel {
 	private static final long serialVersionUID = 1L;
 	
 	private HighScores highScores;
-	private List<JLabel> scoreLabels;
+	private JPanel scoresPanel;
+	private List<JLabel> labels;
 	private JButton backButton;
 	
 	public HighScoresPanel(final GameFrame frame) {
-		highScores = HighScores.getInstance();
-		scoreLabels = new LinkedList<JLabel>();
-		backButton = new JButton("Back");
+		this.setLayout(new BorderLayout());
 		
+		highScores = HighScores.getInstance();
+		scoresPanel = new JPanel(new GridLayout(HighScores.MAX_SCORES, 2));
+		labels = new LinkedList<JLabel>();
+		
+		backButton = new JButton("Back");
 		backButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.showMainMenu();
 			}
 		});
 		
-		this.add(backButton);
+		JLabel titleLabel = new JLabel("High Scores");
+		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		titleLabel.setFont(new Font("Helvetica", Font.BOLD, 36));
+		
+		this.add(titleLabel, BorderLayout.NORTH);
+		this.add(scoresPanel, BorderLayout.CENTER);
+		this.add(backButton, BorderLayout.SOUTH);
 		
 		generateLabels();
 	}
@@ -40,17 +55,28 @@ public class HighScoresPanel extends BasePanel {
 	}
 	
 	private void generateLabels() {
-		for (JLabel l : scoreLabels) {
-			this.remove(l);
+		Font f = new Font("Helvetica", Font.PLAIN, 16);
+		
+		for (JLabel l : labels) {
+			scoresPanel.remove(l);
 		}
 		
-		scoreLabels.clear();
+		labels.clear();
 		
 		for (HighScores.Score s : highScores) {
-			JLabel scoreLabel = new JLabel(s.getName() + ": " + s.getScore());
-			scoreLabels.add(scoreLabel);
-			this.add(scoreLabel);
+			JLabel nameLabel = new JLabel(s.getName() + "  ");
+			nameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+			nameLabel.setFont(f);
 			
+			JLabel scoreLabel = new JLabel("  " + s.getScore());
+			scoreLabel.setHorizontalAlignment(SwingConstants.LEFT);
+			scoreLabel.setFont(f);
+			
+			labels.add(nameLabel);
+			labels.add(scoreLabel);
+			
+			scoresPanel.add(nameLabel);
+			scoresPanel.add(scoreLabel);
 		}
 	}
 }
