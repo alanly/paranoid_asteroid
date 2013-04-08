@@ -26,7 +26,15 @@ public class GameController {
 			points = playTwoPlayer();
 		}
 		
-		JOptionPane.showMessageDialog(gamePanel, "You got " + points + " points!");
+		HighScores highScores = HighScores.getInstance();
+		
+		if (highScores.isHighScore(points)) {
+			String name = JOptionPane.showInputDialog("Enter your name to save your high score!");
+			
+			if (!name.equals("")) {
+				highScores.submit(points, name);
+			}
+		}
 	}
 	
 	private long playSinglePlayer() {
