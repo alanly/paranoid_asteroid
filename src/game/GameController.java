@@ -31,7 +31,7 @@ public class GameController {
 		if (highScores.isHighScore(points)) {
 			String name = JOptionPane.showInputDialog(gamePanel, "Enter your name to save your high score!");
 			
-			if (!name.equals("")) {
+			if (name != null && !name.equals("")) {
 				highScores.submit(points, name);
 			}
 		} else {
