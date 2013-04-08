@@ -4,46 +4,66 @@ import game.io.Loader;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class HighScores implements Serializable {
+public class HighScores implements Serializable, Iterable<HighScores.Score> {
 	private static final long serialVersionUID = 1L;
+	
 	private static final String LOAD_PATH = System.getProperty("user.home") + System.getProperty("file.separator") + ".pascores";
 	private static final int MAX_SCORES = 5;
+	private static HighScores instance;
 	
-	private List<Long> highScores;
+	private List<Score> highScores;
 	
-	public HighScores() {
-		highScores = new ArrayList<Long>(MAX_SCORES + 1);
+	public synchronized static HighScores getInstance() {
+		if (instance == null) {
+			instance = HighScores.load();
+		}
+		
+		return instance;
 	}
 	
 	public boolean isHighScore(long score) {
-		return highScores.isEmpty() || (score > highScores.get(0));
+		return highScores.isEmpty() || (score > highScores.get(0).getScore());
 	}
 	
-	public void submit(long score) {
+	public void submit(long score, String name) {
 		int i = 0;
 		
-		while(i < highScores.size() && score < highScores.get(i)) {
+		while(i < highScores.size() && score < highScores.get(i).getScore()) {
 			i++;
 		}
 		
-		highScores.add(i, score);
-		
-		while (highScores.size() > MAX_SCORES) {
-			highScores.remove(highScores.size() - 1);
-		}
+		highScores.add(i, new Score(score, name));
+		trim();
+		save();
 	}
 	
 	public boolean save() {
 		return Loader.unload(this, LOAD_PATH);
 	}
 	
+	public void reload() {
+		HighScores newScores = load();
+		this.highScores = newScores.highScores;
+	}
+	
+	public Iterator<HighScores.Score> iterator() {
+		return highScores.iterator();
+	}
+	
 	public String toString() {
 		return highScores.toString();
 	}
 	
-	public static HighScores load() {
+	private void trim() {
+		while (highScores.size() > MAX_SCORES) {
+			highScores.remove(highScores.size() - 1);
+		}
+	}
+	
+	private static HighScores load() {
 		HighScores h = Loader.load(HighScores.class, LOAD_PATH);
 		
 		if (h == null) {
@@ -51,5 +71,28 @@ public class HighScores implements Serializable {
 		}
 		
 		return h;
+	}
+	
+	private HighScores() {
+		highScores = new ArrayList<Score>(MAX_SCORES + 1);
+	}
+	
+	public class Score implements Serializable {
+		private static final long serialVersionUID = 1L;
+		private long score;
+		private String name;
+		
+		Score(long score, String name) {
+			this.score = score;
+			this.name = name;
+		}
+		
+		public long getScore(){
+			return score;
+		}
+
+		public String getName(){
+			return name;
+		}
 	}
 }
