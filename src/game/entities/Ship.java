@@ -17,6 +17,7 @@ public class Ship extends Entity {
 	private static final long MAX_POWERUP_TTL = (long) 10e9;
 	private static final double ACCELERATION = 6.0e-16;
 	private static final double DECELERATION = -0.3e-15;
+	private static final double TRIPLE_SHOT_OFFSET_ANGLE = FULL_CIRCLE_RAD / 72;
 
 	private Point[] vertices;
 	private List<BulletFiredListener> bulletFiredListeners;
@@ -54,11 +55,8 @@ public class Ship extends Entity {
 		timeSinceLastFired += delta;
 		
 		if (InputHandler.getInstance().getSpaceKey().isPressed() && canFire()) {
-			for (BulletFiredListener listener : bulletFiredListeners) {
-				// Origin is the tip of the ship, the first vertex
-				listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle));
-				timeSinceLastFired = 0;
-			}
+			fireBullet();
+			timeSinceLastFired = 0;
 		}
 	}
 	
@@ -261,5 +259,20 @@ public class Ship extends Entity {
 		}
 		
 		setBounds(new Polygon(x, y, x.length));
+	}
+	
+	/**
+	 * Fires bullets.
+	 */
+	private void fireBullet() {
+		for (BulletFiredListener listener : bulletFiredListeners) {
+			// Origin is the tip of the ship, the first vertex
+			listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle));
+			
+			if (hasTripleShot()) {
+				listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle + TRIPLE_SHOT_OFFSET_ANGLE));
+				listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle - TRIPLE_SHOT_OFFSET_ANGLE));
+			}
+		}
 	}
 }
