@@ -95,6 +95,14 @@ public class Ship extends Entity {
 	public void die() {
 		this.alive = false;
 	}
+	
+	/**
+	 * Returns the max linear speed of the ship.
+	 * @return the max linear speed of the ship
+	 */
+	public double getMaxLinearSpeed() {
+		return MAX_LINEAR_SPEED;
+	}
 
 	/**
 	 * Updates the angle of the ship.
