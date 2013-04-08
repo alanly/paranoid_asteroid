@@ -26,7 +26,7 @@ public class HighScores implements Serializable, Iterable<HighScores.Score> {
 	}
 	
 	public boolean isHighScore(long score) {
-		return score > 0 && (highScores.isEmpty() || (score > highScores.get(highScores.size() - 1).getScore()));
+		return score > 0 && (highScores.size() < MAX_SCORES || (score > highScores.get(highScores.size() - 1).getScore()));
 	}
 	
 	public void submit(long score, String name) {
