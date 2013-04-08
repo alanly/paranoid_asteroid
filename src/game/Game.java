@@ -13,8 +13,10 @@ import events.BulletFiredListener;
 import game.entities.Alien;
 import game.entities.Asteroid;
 import game.entities.Asteroid.AsteroidSize;
+import game.entities.BoostPowerup;
 import game.entities.Bullet;
 import game.entities.Entity;
+import game.entities.Powerup;
 import game.entities.Ship;
 import game.ui.GameCanvas;
 
@@ -46,12 +48,14 @@ public class Game implements BulletFiredListener, KeyListener {
 	// Game components
 	private List<Bullet> bullets;
 	private List<Entity> entities;
+	private List<Powerup> powerups;
 	private Ship ship;
 	private GameCanvas canvas;
 		
 	public Game() {
 		this.bullets = new LinkedList<Bullet>();
 		this.entities = new LinkedList<Entity>();
+		this.powerups = new LinkedList<Powerup>();
 		this.canvas = null;
 	}
 	
@@ -111,6 +115,10 @@ public class Game implements BulletFiredListener, KeyListener {
 	
 	public List<Entity> getEntities() {
 		return this.entities;
+	}
+	
+	public List<Powerup> getPowerups() {
+		return this.powerups;
 	}
 	
 	public void setGameCanvas(GameCanvas canvas) {
@@ -218,6 +226,7 @@ public class Game implements BulletFiredListener, KeyListener {
 	
 	private void collisionCheck() {
 		checkShipEntityCollisions();
+		checkShipPowerupCollisions();
 		checkBulletEntityCollisions();
 		
 		if (entities.size() == 0) {
@@ -252,8 +261,31 @@ public class Game implements BulletFiredListener, KeyListener {
 		}
 	}
 	
+	private void checkShipPowerupCollisions() {
+		// Check for ship-powerup collision
+		Iterator<Powerup> powerupIterator = powerups.iterator();
+		
+		// Loop through all powerups
+		while(powerupIterator.hasNext()) {
+			Powerup p = powerupIterator.next();
+			
+			// Construct areas and intersect them
+			Area area = new Area(ship.getBounds());
+			Area powerupArea = new Area(p.getBounds());
+			area.intersect(powerupArea);
+			
+			// If the intersection area isn't empty, then the two shapes have overlapped
+			if (!area.isEmpty()) {
+				SoundEffect.POWER_UP.play();
+				powerupIterator.remove();
+				applyPowerup(p);
+			}
+		}
+	}
+	
 	private void checkBulletEntityCollisions() {
 		List<Asteroid> newAsteroids = new LinkedList<Asteroid>();
+		List<Powerup> newPowerups = new LinkedList<Powerup>();
 		
 		// Check for entity-bullet collision
 		Iterator<Bullet> bulletIterator = bullets.iterator();
@@ -304,8 +336,9 @@ public class Game implements BulletFiredListener, KeyListener {
 								}
 							} else if (e instanceof Alien) {
 								// Entity was an alien
-								// Nothing extra to do
 								SoundEffect.ALIEN_DIE.play();
+								
+								dropPowerup(e.getCenter(), newPowerups);
 							}
 							
 							// If the bullet came from the player, allocate the player points based on the entity they hit
@@ -324,6 +357,17 @@ public class Game implements BulletFiredListener, KeyListener {
 		// Add new asteroid fragments
 		for (Asteroid a : newAsteroids) {
 			entities.add(a);
+		}
+		
+		// Add powerups
+		for (Powerup p : newPowerups) {
+			powerups.add(p);
+		}
+	}
+	
+	private void applyPowerup(Powerup p) {
+		if (p instanceof BoostPowerup) {
+			ship.boost();
 		}
 	}
 	
@@ -357,6 +401,18 @@ public class Game implements BulletFiredListener, KeyListener {
 			Alien alien = new Alien(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, ship.getCenter(), SAFE_RADIUS), ship);
 			alien.addBulletFiredListener(this);
 			this.entities.add(alien);
+		}
+	}
+	
+	private void dropPowerup(Point p, List<Powerup> newPowerups) {
+		// Chance of powerup dropping when alien is destroyed
+		if (Math.random() < 0.5) {
+			try {
+				newPowerups.add(Powerup.getRandomPowerup(p));
+			} catch (Exception e) {
+				// Something crazy happened
+				e.printStackTrace();
+			}
 		}
 	}
 	
