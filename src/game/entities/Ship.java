@@ -109,6 +109,14 @@ public class Ship extends Entity {
 	}
 	
 	/**
+	 * Removes the ship's a speed boost.
+	 */
+	public void unboost() {
+		speedBoost = 1;
+		boostTTL = 0;
+	}
+	
+	/**
 	 * Returns the max linear speed of the ship.
 	 * @return the max linear speed of the ship
 	 */
