@@ -140,8 +140,7 @@ public class Ship extends Entity {
 		if (hasBoost()) {
 			boostTTL -= delta;
 		} else {
-			boostTTL = 0;
-			speedBoost = 1;
+			unboost();
 		}
 	}
 
