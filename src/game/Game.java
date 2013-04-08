@@ -32,8 +32,9 @@ public class Game implements BulletFiredListener, KeyListener {
 	private static final int SAFE_RADIUS = 100;
 	
 	// Points constants
-	private static final long POINTS_ASTEROID = 1000;
-	private static final long POINTS_CLEAR_LEVEL = 2000;
+	private static final long POINTS_ALIEN = 250;
+	private static final long POINTS_ASTEROID = 100;
+	private static final long POINTS_CLEAR_LEVEL = 200;
 	
 	// Game state
 	private int level = 1;
@@ -258,7 +259,7 @@ public class Game implements BulletFiredListener, KeyListener {
 							}
 							
 							if (b.getSource() == ship) {
-								points += multiplier * POINTS_ASTEROID;
+								allocatePoints(e);
 							}
 						}
 					} catch (IllegalStateException ex) {
@@ -293,9 +294,9 @@ public class Game implements BulletFiredListener, KeyListener {
 		
 		if (entities.size() == 0) {
 			level++;
-			points += multiplier * POINTS_CLEAR_LEVEL;
-			multiplier += 0.5;
 			levelEnded = true;
+			
+			allocatePoints(null);
 		}
 	}
 	
@@ -329,6 +330,21 @@ public class Game implements BulletFiredListener, KeyListener {
 			Alien alien = new Alien(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, ship.getCenter(), SAFE_RADIUS), ship);
 			alien.addBulletFiredListener(this);
 			this.entities.add(alien);
+		}
+	}
+	
+	private void allocatePoints(Entity destroyed) {
+		if (destroyed == null) {
+			// Not an interaction with an entity, level end
+			points += multiplier * POINTS_CLEAR_LEVEL;
+			multiplier += 0.5;
+		} else {
+			// Allocate points based on what entity was destroyed
+			if (destroyed instanceof Asteroid) {
+				points += multiplier * POINTS_ASTEROID;
+			} else if (destroyed instanceof Alien) {
+				points += multiplier * POINTS_ALIEN;
+			}
 		}
 	}
 	
