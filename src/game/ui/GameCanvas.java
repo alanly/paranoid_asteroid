@@ -4,6 +4,7 @@ import game.Game;
 import game.InputHandler;
 import game.entities.Bullet;
 import game.entities.Entity;
+import game.entities.Powerup;
 import game.entities.Ship;
 
 import java.awt.Canvas;
@@ -36,6 +37,7 @@ public class GameCanvas extends Canvas {
 		Ship ship = game.getShip();
 		List<Bullet> bullets = game.getBullets();
 		List<Entity> entities = game.getEntities();
+		List<Powerup> powerups = game.getPowerups();
 		long points = game.getPoints();
 		int level = game.getLevel();
 		// Prepare buffer strategy and graphics
@@ -60,6 +62,10 @@ public class GameCanvas extends Canvas {
 		
 		for (Entity e : entities) {
 			Renderer.render(e, g);
+		}
+		
+		for (Powerup p : powerups) {
+			Renderer.render(p, g);
 		}
 		
 		// Render HUD

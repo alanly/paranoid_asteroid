@@ -121,7 +121,7 @@ public class Renderer {
 	private static void renderPowerup(Powerup e, Graphics2D g) {
 		Color oldColor = g.getColor();
 		g.setColor(getPowerupColor(e));
-		g.drawPolygon((Polygon)e.getBounds());
+		g.draw(e.getBounds());
 		g.setColor(oldColor);
 	}
 	
