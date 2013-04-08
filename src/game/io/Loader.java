@@ -48,7 +48,6 @@ public class Loader {
 			
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
 			// Something went wrong
 		}
 		
