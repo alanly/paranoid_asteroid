@@ -7,6 +7,10 @@ public class BasicGameState implements Serializable {
 	private int level;
 	private long points;
 	
+	public BasicGameState() {
+		this(1, 0);
+	}
+	
 	public BasicGameState(int level, long points) {
 		this.level = level;
 		this.points = points;
