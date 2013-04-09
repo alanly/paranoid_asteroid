@@ -11,7 +11,7 @@ import java.util.List;
 public class HighScores implements Serializable, Iterable<HighScores.Score> {
 	private static final long serialVersionUID = 1L;
 	
-	public static final int MAX_SCORES = 10;
+	public static final int MAX_SCORES = 15;
 	
 	private static final String LOAD_PATH = System.getProperty("user.home") + System.getProperty("file.separator") + ".pascores";
 	private static HighScores instance;
