@@ -31,7 +31,6 @@ public class GameController {
 		long points = 0;
 		
 		canvas.setGame(game);
-		canvas.requestFocus();
 		
 		gamePanel.revalidate();
 		gamePanel.repaint();

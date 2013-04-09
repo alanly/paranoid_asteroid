@@ -7,6 +7,8 @@ import game.ui.menu.GamePanel;
 import game.ui.menu.HighScoresPanel;
 import game.ui.menu.MainPanel;
 
+import io.InputHandler;
+
 import java.awt.CardLayout;
 
 import javax.swing.JFrame;
@@ -24,6 +26,8 @@ public class GameFrame extends JFrame {
 	private GamePanel gamePanel;
 	
 	public GameFrame() {
+		this.addKeyListener(InputHandler.getInstance());
+		
 		initPanels();
 		
 		this.pack();
