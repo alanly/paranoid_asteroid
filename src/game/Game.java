@@ -45,6 +45,7 @@ public class Game implements BulletFiredListener, KeyListener {
 	// Game state
 	private int level;
 	private long points;
+	private long lastLevelPoints;
 	private double multiplier = 1;
 	private boolean paused = false;
 	private boolean levelEnded = false;
@@ -64,6 +65,7 @@ public class Game implements BulletFiredListener, KeyListener {
 	public Game(int level, long points) {
 		this.level = level;
 		this.points = points;
+		this.lastLevelPoints = points; 
 		this.bullets = new LinkedList<Bullet>();
 		this.entities = new LinkedList<Entity>();
 		this.powerups = new LinkedList<Powerup>();
@@ -136,6 +138,10 @@ public class Game implements BulletFiredListener, KeyListener {
 		this.canvas = canvas;
 	}
 	
+	public BasicGameState extractState() {
+		return new BasicGameState(this.level, this.lastLevelPoints);
+	}
+	
 	private void populateField() {
 		int asteroidCount = getNumAsteroids();
 		AsteroidSize asteroidSize = getAsteroidSize();
@@ -182,6 +188,7 @@ public class Game implements BulletFiredListener, KeyListener {
 			// Go to next level, skip update and render
 			if (levelEnded) {
 				nextLevel();
+				lastLevelPoints = this.points;
 				levelEnded = false;
 				continue;
 			}
@@ -458,7 +465,7 @@ public class Game implements BulletFiredListener, KeyListener {
 	
 	private void allocatePoints(Entity destroyed) {
 		if (destroyed == null) {
-			// Not an interaction with an entity, level end
+			// Not an interaction with an entity
 			points += multiplier * POINTS_CLEAR_LEVEL;
 			multiplier += 0.5;
 		} else {
