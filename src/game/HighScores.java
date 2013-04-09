@@ -1,6 +1,7 @@
 package game;
 
-import game.io.Loader;
+
+import io.Loader;
 
 import java.io.Serializable;
 import java.util.ArrayList;

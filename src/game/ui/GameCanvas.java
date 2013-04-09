@@ -1,11 +1,12 @@
 package game.ui;
 
 import game.Game;
-import game.InputHandler;
 import game.entities.Bullet;
 import game.entities.Entity;
 import game.entities.Powerup;
 import game.entities.Ship;
+
+import io.InputHandler;
 
 import java.awt.Canvas;
 import java.awt.Color;

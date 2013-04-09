@@ -2,9 +2,10 @@ package game.entities;
 
 import events.BulletFiredEvent;
 import events.BulletFiredListener;
-import game.InputHandler;
 import game.Point;
 import game.ui.GameCanvas;
+
+import io.InputHandler;
 
 import java.awt.Polygon;
 import java.util.LinkedList;
