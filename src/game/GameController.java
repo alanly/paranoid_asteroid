@@ -47,7 +47,7 @@ public class GameController {
 		
 		gamePanel.revalidate();
 		gamePanel.repaint();
-		
+		canvas.requestFocus();
 		game.start();
 		
 		return game.getPoints();
