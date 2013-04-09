@@ -1,4 +1,4 @@
-package game.io;
+package io;
 
 import java.io.File;
 import java.io.FileInputStream;
