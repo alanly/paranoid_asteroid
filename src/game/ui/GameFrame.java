@@ -37,15 +37,17 @@ public class GameFrame extends JFrame {
 		this.setVisible(true);
 	}
 	
-	public void playSinglePlayer() {
+	public void playSinglePlayer(final boolean loadGame) {
 		controller = null;
 		
 		new Thread(new Runnable() {
 			public void run() {
 				controller = new GameController(gamePanel);
 				InputHandler.getInstance().addPauseHandler(controller);
-				controller.playGame(GameType.SINGLE_PLAYER);
+				InputHandler.getInstance().addSaveHandler(controller);
+				controller.playGame(GameType.SINGLE_PLAYER, loadGame);
 				InputHandler.getInstance().removePauseHandler(controller);
+				InputHandler.getInstance().removeSaveHandler(controller);
 				showMainMenu();
 			}
 		}).start();

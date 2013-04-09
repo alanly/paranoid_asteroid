@@ -13,6 +13,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
 	
 	private JButton singlePlayerButton;
 	private JButton twoPlayerButton;
+	private JButton loadGameButton;
 	private JButton highScoresButton;
 	private JButton creditsButton;
 	private GameFrame frame;
@@ -34,9 +35,11 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		Object source = event.getSource();
 		
 		if (source == singlePlayerButton) {
-			frame.playSinglePlayer();
+			frame.playSinglePlayer(false);
 		} else if (source == twoPlayerButton) {
 			frame.playTwoPlayer();
+		} else if (source == loadGameButton) {
+			frame.playSinglePlayer(true);
 		} else if (source == highScoresButton) {
 			frame.showHighScores();
 		} else if (source == creditsButton) {
@@ -50,6 +53,9 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		
 		twoPlayerButton = new JButton("Two Player");
 		this.add(twoPlayerButton);
+		
+		loadGameButton = new JButton("Load Game");
+		this.add(loadGameButton);
 		
 		highScoresButton = new JButton("High Scores");
 		this.add(highScoresButton);

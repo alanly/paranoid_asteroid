@@ -23,7 +23,7 @@ import game.events.BulletFiredEvent;
 import game.events.BulletFiredListener;
 import game.ui.GameCanvas;
 
-public class Game implements BulletFiredListener, KeyListener {
+public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 	// Time constants
 	private static final double FPS = 30;
 	private static final double UPS = FPS * 1.25;
@@ -48,6 +48,7 @@ public class Game implements BulletFiredListener, KeyListener {
 	private long lastLevelPoints;
 	private double multiplier = 1;
 	private boolean paused = false;
+	private boolean saved = false;
 	private boolean levelEnded = false;
 	private long levelStartWait = 0;
 	
@@ -146,6 +147,11 @@ public class Game implements BulletFiredListener, KeyListener {
 		return new BasicGameState(this.level, this.lastLevelPoints);
 	}
 	
+	public void handleSave() {
+		extractState().save();
+		saved = true;
+	}
+	
 	private void populateField() {
 		int asteroidCount = getNumAsteroids();
 		AsteroidSize asteroidSize = getAsteroidSize();
@@ -169,7 +175,7 @@ public class Game implements BulletFiredListener, KeyListener {
 		long timeSinceLastUpdate = 0;
 		long timeSinceLastAlien = 0;
 		
-		while(ship.isAlive()) {
+		while(ship.isAlive() && !saved) {
 			// Calculate delta
 			lastTime = currentTime;
 			currentTime = System.nanoTime();

@@ -1,6 +1,7 @@
 package io;
 
 import game.PauseHandler;
+import game.SaveHandler;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -16,6 +17,7 @@ public class InputHandler implements KeyListener {
 	private Key right = new Key();
 	private Key space = new Key();
 	private List<PauseHandler> pauseHandlers;
+	private List<SaveHandler> saveHandlers;
 
 	public static InputHandler getInstance() {
 		return instance;
@@ -82,6 +84,10 @@ public class InputHandler implements KeyListener {
 			for (PauseHandler h : pauseHandlers) {
 				h.handlePause();
 			}
+		} else if (keyCode == KeyEvent.VK_S) {
+			for (SaveHandler h : saveHandlers) {
+				h.handleSave();
+			}
 		}
 	}
 	
@@ -92,12 +98,21 @@ public class InputHandler implements KeyListener {
 		pauseHandlers.add(h);
 	}
 	
+	public void addSaveHandler(SaveHandler h) {
+		saveHandlers.add(h);
+	}
+	
 	public void removePauseHandler(PauseHandler h) {
 		pauseHandlers.remove(h);
+	}
+	
+	public void removeSaveHandler(SaveHandler h) {
+		saveHandlers.remove(h);
 	}
 
 	private InputHandler() {
 		pauseHandlers = new LinkedList<PauseHandler>();
+		saveHandlers = new LinkedList<SaveHandler>();
 	}
 
 	public class Key {

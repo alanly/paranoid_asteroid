@@ -5,7 +5,7 @@ import game.ui.menu.GamePanel;
 
 import javax.swing.JOptionPane;
 
-public class GameController implements PauseHandler {
+public class GameController implements PauseHandler, SaveHandler {
 	public enum GameType {
 		SINGLE_PLAYER,
 		TWO_PLAYER
@@ -15,16 +15,21 @@ public class GameController implements PauseHandler {
 	
 	private Game game;
 	private GamePanel gamePanel;
+	private boolean saved = false;
 	
 	public GameController(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 	}
 	
 	public void playGame(GameType type) {
+		playGame(type, false);
+	}
+	
+	public void playGame(GameType type, boolean loadSaved) {
 		GameCanvas canvas = gamePanel.getGameCanvas();
 		
 		if (type == GameType.SINGLE_PLAYER) {
-			playSinglePlayer(canvas);
+			playSinglePlayer(canvas, loadSaved);
 		} else if (type == GameType.TWO_PLAYER) {
 			playTwoPlayer(canvas);
 		}
@@ -36,12 +41,36 @@ public class GameController implements PauseHandler {
 		}
 	}
 	
-	private void playSinglePlayer(GameCanvas canvas) {
-		game = new Game();
+	public void handleSave() {
+		if (game != null) {
+			saved = true;
+			game.handleSave();
+		}
+	}
+	
+	private void playSinglePlayer(GameCanvas canvas, boolean loadGame) {
+		BasicGameState state;
+		
+		if (loadGame) {
+			state = BasicGameState.load();
+			
+			if (state == null) {
+				JOptionPane.showMessageDialog(gamePanel, "Could not load game!", "Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		} else {
+			state = new BasicGameState();
+		}
+		
+		game = new Game(state);
 		bindAndStartGame(game, canvas);
 		
-		long points = game.getPoints();
+		// Don't save high score if the game was saved
+		if (saved) {
+			return;
+		}
 		
+		long points = game.getPoints();
 		HighScores highScores = HighScores.getInstance();
 		
 		if (highScores.isHighScore(points)) {
