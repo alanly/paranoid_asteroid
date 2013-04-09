@@ -4,11 +4,11 @@ import java.awt.Polygon;
 import java.util.LinkedList;
 import java.util.List;
 
-import events.BulletFiredEvent;
-import events.BulletFiredListener;
 
 import game.Point;
 import game.entities.Asteroid.AsteroidSize;
+import game.events.BulletFiredEvent;
+import game.events.BulletFiredListener;
 import game.ui.GameCanvas;
 
 public class Alien extends Entity {
