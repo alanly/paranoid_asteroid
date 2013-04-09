@@ -5,8 +5,9 @@ import java.io.InputStream;
 
 public enum Fonts {
 	TITLE_FONT("DroidSans-Bold.ttf", 72),
-	SMALL_FONT("DroidSans.ttf", 14),
-	LARGE_FONT("DroidSans.ttf", 36);
+	BODY_FONT("DroidSans.ttf", 14),
+	PANEL_TITLE_FONT("DroidSans.ttf", 36),
+	HUD_FONT("DroidSans.ttf", 14);
 	
 	private static final String FONTS_PATH = "resources/fonts/";
 	
@@ -25,5 +26,10 @@ public enum Fonts {
 	
 	public java.awt.Font getFont() {
 		return this.font;
+	}
+	
+	public static void init() {
+		// Load the fonts
+		values();
 	}
 }

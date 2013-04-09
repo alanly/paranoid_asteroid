@@ -1,5 +1,6 @@
 package game.ui;
 
+import game.Fonts;
 import game.entities.Alien;
 import game.entities.Asteroid;
 import game.entities.BoostPowerup;
@@ -31,7 +32,6 @@ public class Renderer {
 	private static Color SHIP_COLOR = WHITE;
 	private static Color BOOST_COLOR = YELLOW;
 	private static Color TRIPLE_SHOT_COLOR = PURPLE;
-	private static Font POINTS_FONT = new Font("Consolas", Font.PLAIN, 14);
 	
 	/**
 	 * Delegates rendering the entity to its proper method if it exists.
@@ -65,10 +65,10 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	public static void renderHUD(long points, int level, Graphics2D g) {
-		g.setFont(POINTS_FONT);
+		g.setFont(Fonts.HUD_FONT.getFont());
 		g.setColor(HUD_COLOR);
 		g.drawString("Points: " + points, 4, 16);
-		g.drawString(" Level: " + level, 4, 32);
+		g.drawString("Level: " + level, 11, 32);
 	}
 	
 	/**
