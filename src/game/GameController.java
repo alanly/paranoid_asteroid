@@ -11,6 +11,8 @@ public class GameController {
 		TWO_PLAYER
 	}
 	
+	private static final int MAX_TWO_PLAYER_TURNS = 3;
+	
 	private GamePanel gamePanel;
 	
 	public GameController(GamePanel gamePanel) {
@@ -18,26 +20,21 @@ public class GameController {
 	}
 	
 	public void playGame(GameType type) {
+		GameCanvas canvas = gamePanel.getGameCanvas();
+		
 		if (type == GameType.SINGLE_PLAYER) {
-			playSinglePlayer();
+			playSinglePlayer(canvas);
 		} else if (type == GameType.TWO_PLAYER) {
-			playTwoPlayer();
+			playTwoPlayer(canvas);
 		}
 	}
 	
-	private long playSinglePlayer() {
+	private void playSinglePlayer(GameCanvas canvas) {
 		Game game = new Game();
-		GameCanvas canvas = gamePanel.getGameCanvas();
-		long points = 0;
+		bindAndStartGame(game, canvas);
 		
-		canvas.setGame(game);
+		long points = game.getPoints();
 		
-		gamePanel.revalidate();
-		gamePanel.repaint();
-		
-		game.start();
-		
-		points = game.getPoints();
 		HighScores highScores = HighScores.getInstance();
 		
 		if (highScores.isHighScore(points)) {
@@ -49,23 +46,55 @@ public class GameController {
 		} else {
 			JOptionPane.showMessageDialog(gamePanel, "Sorry, you didn't get a high score!", "Game Over", JOptionPane.PLAIN_MESSAGE);
 		}
-		
-		return points;
 	}
 	
-	private void playTwoPlayer() {
-		JOptionPane.showMessageDialog(gamePanel, "Player One's turn!", "Turn Start", JOptionPane.PLAIN_MESSAGE);
-		long p1Points = playSinglePlayer();
+	private void playTwoPlayer(GameCanvas canvas) {
+		Game game;
+		BasicGameState playerOneState = new BasicGameState();
+		BasicGameState playerTwoState = new BasicGameState();
 		
-		JOptionPane.showMessageDialog(gamePanel, "Player Two's turn!", "Turn Start", JOptionPane.PLAIN_MESSAGE);
-		long p2Points = playSinglePlayer();
-		
-		if (p1Points > p2Points) {
-			JOptionPane.showMessageDialog(gamePanel, "Player One wins!", null, JOptionPane.PLAIN_MESSAGE);
-		} else if (p1Points < p2Points) {
-			JOptionPane.showMessageDialog(gamePanel, "Player Two wins!", null, JOptionPane.PLAIN_MESSAGE);
-		} else {
-			JOptionPane.showMessageDialog(gamePanel, "The game ended in a tie!", "Game Over", JOptionPane.PLAIN_MESSAGE);
+		for (int i = 0; i < MAX_TWO_PLAYER_TURNS; i++) {
+			// Player one turn
+			JOptionPane.showMessageDialog(gamePanel, "Player One's turn!", "Turn Start", JOptionPane.PLAIN_MESSAGE);
+			game = new Game(playerOneState);
+			bindAndStartGame(game, canvas);
+			playerOneState = game.extractState();
+			
+			// Player one turn
+			JOptionPane.showMessageDialog(gamePanel, "Player Two's turn!", "Turn Start", JOptionPane.PLAIN_MESSAGE);
+			game = new Game(playerTwoState);
+			bindAndStartGame(game, canvas);
+			playerTwoState = game.extractState();
 		}
+		
+		long playerOnePoints = playerOneState.getPoints();
+		long playerTwoPoints = playerTwoState.getPoints();
+		
+		announceWinner(playerOnePoints, playerTwoPoints);
+	}
+	
+	private void bindAndStartGame(Game game, GameCanvas canvas) {
+		canvas.setGame(game);
+		
+		gamePanel.revalidate();
+		gamePanel.repaint();
+		
+		game.start();
+	}
+	
+	private void announceWinner(long p1, long p2) {
+		String message = "Player One: " + p1 + " points\nPlayer Two: " + p2 + " points\n";
+		
+		if (p1 == p2) {
+			message += "The game ended in a tie!";
+		} else {
+			if (p1 > p2) {
+				message += "Player One wins!";
+			} else {
+				message += "Player Two wins!";
+			}
+		}
+		
+		JOptionPane.showMessageDialog(gamePanel, message, "Game Over", JOptionPane.PLAIN_MESSAGE);
 	}
 }
