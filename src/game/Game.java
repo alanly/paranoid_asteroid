@@ -59,13 +59,13 @@ public class Game implements BulletFiredListener, KeyListener {
 	private GameCanvas canvas;
 	
 	public Game() {
-		this(1, 0);
+		this(new BasicGameState(1, 0));
 	}
 	
-	public Game(int level, long points) {
-		this.level = level;
-		this.points = points;
-		this.lastLevelPoints = points; 
+	public Game(BasicGameState state) {
+		this.level = state.getLevel();
+		this.points = state.getPoints();
+		this.lastLevelPoints = state.getPoints(); 
 		this.bullets = new LinkedList<Bullet>();
 		this.entities = new LinkedList<Entity>();
 		this.powerups = new LinkedList<Powerup>();
