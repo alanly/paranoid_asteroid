@@ -59,7 +59,7 @@ public class Game implements BulletFiredListener, KeyListener {
 	private GameCanvas canvas;
 	
 	public Game() {
-		this(new BasicGameState(1, 0));
+		this(new BasicGameState());
 	}
 	
 	public Game(BasicGameState state) {
