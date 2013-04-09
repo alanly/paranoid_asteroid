@@ -33,6 +33,7 @@ public class Game implements BulletFiredListener, KeyListener {
 	private static final double NANOS_PER_UPDATE = NANOS_PER_SECOND / UPS;
 	
 	private static final double NANOS_BETWEEN_ALIEN = NANOS_PER_SECOND * 10;
+	private static final long NANOS_PER_LEVEL_START_WAIT = (long) (NANOS_PER_SECOND * 1.5);
 	
 	private static final int SAFE_RADIUS = 100;
 	
@@ -47,6 +48,7 @@ public class Game implements BulletFiredListener, KeyListener {
 	private double multiplier = 1;
 	private boolean paused = false;
 	private boolean levelEnded = false;
+	private long levelStartWait = 0;
 	
 	// Game components
 	private List<Bullet> bullets;
@@ -161,6 +163,15 @@ public class Game implements BulletFiredListener, KeyListener {
 			if (paused) {
 				continue;
 			}
+			
+			// Bail if waiting for level to start
+			if (levelStartWait > 0) {
+				levelStartWait -= delta;
+				canvas.renderGame(this);
+				continue;
+			}
+			
+			levelStartWait = 0;
 			
 			// Go to next level, skip update and render
 			if (levelEnded) {
@@ -398,6 +409,7 @@ public class Game implements BulletFiredListener, KeyListener {
 			bullets.clear();
 			populateField();
 			
+			levelStartWait = NANOS_PER_LEVEL_START_WAIT;
 			levelEnded = false;
 		}
 	}
