@@ -26,7 +26,6 @@ public class GameCanvas extends Canvas {
 		this.setBackground(new Color(0x292b36));
 		this.addKeyListener(InputHandler.getInstance());
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		this.requestFocusInWindow();
 	}
 	
 	public void setGame(Game game) {
