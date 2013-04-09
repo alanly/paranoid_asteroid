@@ -1,6 +1,9 @@
 package game;
 
-public class BasicGameState {
+import java.io.Serializable;
+
+public class BasicGameState implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int level;
 	private long points;
 	
