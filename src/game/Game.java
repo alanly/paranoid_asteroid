@@ -10,8 +10,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import events.BulletFiredEvent;
-import events.BulletFiredListener;
 import game.entities.Alien;
 import game.entities.Asteroid;
 import game.entities.Asteroid.AsteroidSize;
@@ -21,6 +19,8 @@ import game.entities.Entity;
 import game.entities.Powerup;
 import game.entities.Ship;
 import game.entities.TripleShotPowerup;
+import game.events.BulletFiredEvent;
+import game.events.BulletFiredListener;
 import game.ui.GameCanvas;
 
 public class Game implements BulletFiredListener, KeyListener {

@@ -1,8 +1,8 @@
 package game.entities;
 
-import events.BulletFiredEvent;
-import events.BulletFiredListener;
 import game.Point;
+import game.events.BulletFiredEvent;
+import game.events.BulletFiredListener;
 import game.ui.GameCanvas;
 
 import io.InputHandler;
