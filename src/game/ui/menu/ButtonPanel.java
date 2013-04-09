@@ -35,7 +35,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		if (source == singlePlayerButton) {
 			frame.playSinglePlayer();
 		} else if (source == twoPlayerButton) {
-			System.out.println(twoPlayerButton.getName());
+			frame.playTwoPlayer();
 		} else if (source == highScoresButton) {
 			frame.showHighScores();
 		} else if (source == creditsButton) {
