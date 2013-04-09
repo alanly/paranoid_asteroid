@@ -1,6 +1,5 @@
 package game.ui.menu;
 
-import game.Fonts;
 import game.HighScores;
 import game.ui.GameFrame;
 
@@ -11,7 +10,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 public class HighScoresPanel extends BasePanel {
 	private static final long serialVersionUID = 1L;
@@ -25,6 +23,7 @@ public class HighScoresPanel extends BasePanel {
 		
 		highScores = HighScores.getInstance();
 		scores = new JLabel();
+		scores.setForeground(new Color(0xF0F0F0));
 		
 		backButton = new JButton("Back");
 		backButton.addActionListener(new ActionListener() {
@@ -33,13 +32,7 @@ public class HighScoresPanel extends BasePanel {
 			}
 		});
 		
-		JLabel titleLabel = new JLabel("High Scores");
-		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		titleLabel.setFont(Fonts.PANEL_TITLE_FONT.getFont());
-		titleLabel.setForeground(new Color(0xF0F0F0));
-		scores.setForeground(new Color(0xF0F0F0));
-		
-		this.add(titleLabel, BorderLayout.NORTH);
+		this.add(new PageTitleLabel("High Scores"), BorderLayout.NORTH);
 		this.add(scores, BorderLayout.CENTER);
 		this.add(backButton, BorderLayout.SOUTH);
 		
