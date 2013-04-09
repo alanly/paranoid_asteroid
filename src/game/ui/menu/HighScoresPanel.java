@@ -1,5 +1,6 @@
 package game.ui.menu;
 
+import game.Fonts;
 import game.HighScores;
 import game.ui.GameFrame;
 
@@ -7,6 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 public class HighScoresPanel extends BasePanel {
 	private static final long serialVersionUID = 1L;
@@ -19,7 +21,10 @@ public class HighScoresPanel extends BasePanel {
 		
 		highScores = HighScores.getInstance();
 		scores = new JLabel();
+		scores.setFont(Fonts.BODY_FONT.getFont());
 		scores.setForeground(new Color(0xF0F0F0));
+		scores.setHorizontalAlignment(SwingConstants.CENTER);
+		scores.setVerticalAlignment(SwingConstants.CENTER);
 		
 		this.add(new PageTitleLabel("High Scores"), BorderLayout.NORTH);
 		this.add(scores, BorderLayout.CENTER);
@@ -41,10 +46,11 @@ public class HighScoresPanel extends BasePanel {
 		sb.append("<html>");
 		
 		for (HighScores.Score s : highScores) {
+			sb.append("<b>");
 			sb.append(s.getName());
-			sb.append(": ");
+			sb.append("</b> ");
 			sb.append(s.getScore());
-			sb.append("<br><br>");
+			sb.append("<br>");
 		}
 		
 		sb.append("</html>");
