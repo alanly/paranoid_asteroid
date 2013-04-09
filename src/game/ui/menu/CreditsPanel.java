@@ -4,27 +4,15 @@ import game.ui.GameFrame;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 public class CreditsPanel extends BasePanel {
 	private static final long serialVersionUID = 1L;
 	
-	private JButton backButton;
-	
-	public CreditsPanel(final GameFrame frame) {
+	public CreditsPanel(GameFrame frame) {
 		this.setLayout(new BorderLayout());
-		
-		backButton = new JButton("Back");
-		backButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frame.showMainMenu();
-			}
-		});
 		
 		StringBuilder sb = new StringBuilder();
 		
@@ -60,7 +48,7 @@ public class CreditsPanel extends BasePanel {
 		
 		this.add(new PageTitleLabel("Credits"), BorderLayout.NORTH);
 		this.add(creditsLabel, BorderLayout.CENTER);
-		this.add(backButton, BorderLayout.SOUTH);
+		this.add(new BackButtonPanel(frame), BorderLayout.SOUTH);
 	}
 
 }
