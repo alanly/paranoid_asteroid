@@ -19,14 +19,14 @@ public enum SoundEffect {
 	GAME_START("game_start.wav"),
 	POWER_UP("power_up.wav");
 	
-	private static final String resourcePath = "resources/sounds/";
+	private static final String RESOURCE_PATH = "resources/sounds/";
 	
 	private Clip clip;
 	
 	SoundEffect(String filename) {
 		try {
 			// Get URL to resource
-			URL url = this.getClass().getClassLoader().getResource(resourcePath + filename);
+			URL url = this.getClass().getClassLoader().getResource(RESOURCE_PATH + filename);
 			
 			// Set up audio stream for the resource
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
