@@ -5,10 +5,7 @@ import game.ui.GameFrame;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 
 public class HighScoresPanel extends BasePanel {
@@ -16,7 +13,6 @@ public class HighScoresPanel extends BasePanel {
 	
 	private HighScores highScores;
 	private JLabel scores;
-	private JButton backButton;
 	
 	public HighScoresPanel(final GameFrame frame) {
 		this.setLayout(new BorderLayout());
@@ -25,16 +21,9 @@ public class HighScoresPanel extends BasePanel {
 		scores = new JLabel();
 		scores.setForeground(new Color(0xF0F0F0));
 		
-		backButton = new JButton("Back");
-		backButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frame.showMainMenu();
-			}
-		});
-		
 		this.add(new PageTitleLabel("High Scores"), BorderLayout.NORTH);
 		this.add(scores, BorderLayout.CENTER);
-		this.add(backButton, BorderLayout.SOUTH);
+		this.add(new BackButtonPanel(frame), BorderLayout.SOUTH);
 		
 		generateScores();
 	}
