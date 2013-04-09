@@ -138,6 +138,10 @@ public class Game implements BulletFiredListener, KeyListener {
 		this.canvas = canvas;
 	}
 	
+	public boolean isWaitingForLevel() {
+		return levelStartWait > 0;
+	}
+	
 	public BasicGameState extractState() {
 		return new BasicGameState(this.level, this.lastLevelPoints);
 	}
@@ -177,7 +181,7 @@ public class Game implements BulletFiredListener, KeyListener {
 			}
 			
 			// Bail if waiting for level to start
-			if (levelStartWait > 0) {
+			if (isWaitingForLevel()) {
 				levelStartWait -= delta;
 				canvas.renderGame(this);
 				continue;
