@@ -17,6 +17,7 @@ public class BackButtonPanel extends JPanel {
 		this.setOpaque(false);
 		
 		backButton = new JButton("Back");
+		backButton.setFocusable(false);
 		backButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.showMainMenu();

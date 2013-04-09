@@ -26,6 +26,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
 	
 	public void add(JButton button) {
 		button.addActionListener(this);
+		button.setFocusable(false);
 		super.add(button);
 	}
 	
