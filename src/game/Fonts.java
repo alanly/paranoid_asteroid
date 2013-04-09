@@ -5,7 +5,7 @@ import java.io.InputStream;
 
 public enum Fonts {
 	TITLE_FONT("DroidSans-Bold.ttf", 72),
-	BODY_FONT("DroidSans.ttf", 14),
+	BODY_FONT("DroidSans.ttf", 18),
 	PANEL_TITLE_FONT("DroidSans.ttf", 36),
 	HUD_FONT("DroidSans.ttf", 14);
 	
