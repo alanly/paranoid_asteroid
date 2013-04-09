@@ -4,6 +4,7 @@ import game.GameController;
 import game.GameController.GameType;
 import game.ui.menu.CreditsPanel;
 import game.ui.menu.GamePanel;
+import game.ui.menu.HighScoresPanel;
 import game.ui.menu.MainPanel;
 
 import java.awt.CardLayout;
@@ -27,6 +28,7 @@ public class GameFrame extends JFrame {
 		
 		this.pack();
 		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setVisible(true);
 	}
