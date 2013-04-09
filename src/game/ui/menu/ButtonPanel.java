@@ -19,6 +19,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
 	
 	public ButtonPanel(GameFrame frame) {
 		this.frame = frame;
+		this.setOpaque(false);
 		
 		initButtons();
 	}
@@ -55,7 +56,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		highScoresButton.setName("highScores");
 		this.add(highScoresButton);
 		
-		creditsButton = new JButton("credits");
+		creditsButton = new JButton("Credits");
 		creditsButton.setName("credits");
 		this.add(creditsButton);
 	}
