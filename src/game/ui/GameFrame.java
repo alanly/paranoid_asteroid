@@ -43,7 +43,9 @@ public class GameFrame extends JFrame {
 		new Thread(new Runnable() {
 			public void run() {
 				controller = new GameController(gamePanel);
+				InputHandler.getInstance().addPauseHandler(controller);
 				controller.playGame(GameType.SINGLE_PLAYER);
+				InputHandler.getInstance().removePauseHandler(controller);
 				showMainMenu();
 			}
 		}).start();
@@ -57,7 +59,9 @@ public class GameFrame extends JFrame {
 		new Thread(new Runnable() {
 			public void run() {
 				controller = new GameController(gamePanel);
+				InputHandler.getInstance().addPauseHandler(controller);
 				controller.playGame(GameType.TWO_PLAYER);
+				InputHandler.getInstance().removePauseHandler(controller);
 				showMainMenu();
 			}
 		}).start();
