@@ -5,7 +5,7 @@ import game.ui.menu.GamePanel;
 
 import javax.swing.JOptionPane;
 
-public class GameController {
+public class GameController implements PauseHandler {
 	public enum GameType {
 		SINGLE_PLAYER,
 		TWO_PLAYER
@@ -13,6 +13,7 @@ public class GameController {
 	
 	private static final int MAX_TWO_PLAYER_TURNS = 3;
 	
+	private Game game;
 	private GamePanel gamePanel;
 	
 	public GameController(GamePanel gamePanel) {
@@ -29,8 +30,14 @@ public class GameController {
 		}
 	}
 	
+	public void handlePause() {
+		if (game != null) {
+			game.togglePause();
+		}
+	}
+	
 	private void playSinglePlayer(GameCanvas canvas) {
-		Game game = new Game();
+		game = new Game();
 		bindAndStartGame(game, canvas);
 		
 		long points = game.getPoints();
@@ -49,7 +56,6 @@ public class GameController {
 	}
 	
 	private void playTwoPlayer(GameCanvas canvas) {
-		Game game;
 		BasicGameState playerOneState = new BasicGameState();
 		BasicGameState playerTwoState = new BasicGameState();
 		
