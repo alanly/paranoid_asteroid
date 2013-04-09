@@ -11,6 +11,8 @@ public class Launcher implements Runnable {
 	
 	public static void main(String[] args) {
 		SoundEffect.init();
+		Fonts.init();
+		
 		playBackgroundMusic();
 		SwingUtilities.invokeLater(new Launcher());
 	}
