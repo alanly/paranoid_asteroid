@@ -43,8 +43,8 @@ public class Game implements BulletFiredListener, KeyListener {
 	private static final long POINTS_CLEAR_LEVEL = 200;
 	
 	// Game state
-	private int level = 1;
-	private long points = 0;
+	private int level;
+	private long points;
 	private double multiplier = 1;
 	private boolean paused = false;
 	private boolean levelEnded = false;
@@ -56,8 +56,14 @@ public class Game implements BulletFiredListener, KeyListener {
 	private List<Powerup> powerups;
 	private Ship ship;
 	private GameCanvas canvas;
-		
+	
 	public Game() {
+		this(1, 0);
+	}
+	
+	public Game(int level, long points) {
+		this.level = level;
+		this.points = points;
 		this.bullets = new LinkedList<Bullet>();
 		this.entities = new LinkedList<Entity>();
 		this.powerups = new LinkedList<Powerup>();
