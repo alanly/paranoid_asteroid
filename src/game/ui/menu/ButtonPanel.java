@@ -45,19 +45,15 @@ public class ButtonPanel extends JPanel implements ActionListener {
 	
 	private void initButtons() {
 		singlePlayerButton = new JButton("Single Player");
-		singlePlayerButton.setName("singlePlayer");
 		this.add(singlePlayerButton);
 		
 		twoPlayerButton = new JButton("Two Player");
-		twoPlayerButton.setName("twoPlayer");
 		this.add(twoPlayerButton);
 		
 		highScoresButton = new JButton("High Scores");
-		highScoresButton.setName("highScores");
 		this.add(highScoresButton);
 		
 		creditsButton = new JButton("Credits");
-		creditsButton.setName("credits");
 		this.add(creditsButton);
 	}
 }
