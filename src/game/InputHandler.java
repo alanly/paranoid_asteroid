@@ -35,6 +35,14 @@ public class InputHandler implements KeyListener {
 	public Key getSpaceKey() {
 		return space;
 	}
+	
+	public void reset() {
+		up.toggle(false); 
+		down.toggle(false); 
+		left.toggle(false);
+		right.toggle(false);
+		space.toggle(false);
+	}
 
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();

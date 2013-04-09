@@ -138,6 +138,7 @@ public class Game implements BulletFiredListener, KeyListener {
 	}
 	
 	private void loop() {
+		InputHandler.getInstance().reset();
 		SoundEffect.GAME_START.play();
 		
 		long currentTime = System.nanoTime();
