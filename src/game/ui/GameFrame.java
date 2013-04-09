@@ -47,6 +47,20 @@ public class GameFrame extends JFrame {
 		showGamePanel();
 	}
 	
+	public void playTwoPlayer() {
+		controller = null;
+		
+		new Thread(new Runnable() {
+			public void run() {
+				controller = new GameController(gamePanel);
+				controller.playGame(GameType.TWO_PLAYER);
+				showMainMenu();
+			}
+		}).start();
+		
+		showGamePanel();
+	}
+	
 	public void showHighScores() {
 		highScoresPanel.reload();
 		layout.show(cardPanel, "highScores");
