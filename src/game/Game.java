@@ -468,6 +468,8 @@ public class Game implements BulletFiredListener, SaveHandler {
 			ship.boost();
 		} else if (type == Powerup.Power.TRIPLE_SHOT) {
 			ship.arm();
+		} else if (type == Powerup.Power.SHIELD) {
+			ship.shield();
 		}
 	}
 	
