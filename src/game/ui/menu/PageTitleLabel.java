@@ -20,5 +20,6 @@ public class PageTitleLabel extends JLabel {
 		this.setBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING));
 		this.setFont(Fonts.PANEL_TITLE_FONT.getFont());
 		this.setForeground(new Color(0xF0F0F0));
+		this.setFocusable(false);
 	}
 }

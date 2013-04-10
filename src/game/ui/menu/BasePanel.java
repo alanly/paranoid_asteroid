@@ -15,5 +15,6 @@ public abstract class BasePanel extends JPanel {
 	public BasePanel() {
 		this.setPreferredSize(new Dimension(GameCanvas.WIDTH, GameCanvas.HEIGHT));
 		this.setBackground(DEFAULT_BACKGROUND);
+		this.setFocusable(false);
 	}
 }

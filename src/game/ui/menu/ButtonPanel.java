@@ -21,6 +21,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
 	public ButtonPanel(GameFrame frame) {
 		this.frame = frame;
 		this.setOpaque(false);
+		this.setFocusable(false);
 		
 		initButtons();
 	}

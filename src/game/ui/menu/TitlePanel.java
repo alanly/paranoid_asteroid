@@ -17,6 +17,7 @@ public class TitlePanel extends JPanel {
 	public TitlePanel() {
 		this.setLayout(new BorderLayout());
 		this.setOpaque(false);
+		this.setFocusable(false);
 		titleLabel = new JLabel("<html><center>Paranoid<br>Asteroid<br>&nbsp;</center></html>");
 		titleLabel.setFont(Fonts.TITLE_FONT.getFont());
 		titleLabel.setForeground(new Color(0xF0F0F0));
