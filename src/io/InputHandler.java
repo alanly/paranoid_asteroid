@@ -54,13 +54,13 @@ public class InputHandler implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 
-		if (keyCode == KeyEvent.VK_UP) {
+		if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W) {
 			up.toggle(true);
-		} else if (keyCode == KeyEvent.VK_DOWN) {
+		} else if (keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S) {
 			down.toggle(true);
-		} else if (keyCode == KeyEvent.VK_LEFT) {
+		} else if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_A) {
 			left.toggle(true);
-		} else if (keyCode == KeyEvent.VK_RIGHT) {
+		} else if (keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_D) {
 			right.toggle(true);
 		} else if (keyCode == KeyEvent.VK_SPACE) {
 			space.toggle(true);
@@ -70,13 +70,13 @@ public class InputHandler implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 
-		if (keyCode == KeyEvent.VK_UP) {
+		if (keyCode == KeyEvent.VK_UP  || keyCode == KeyEvent.VK_W) {
 			up.toggle(false);
-		} else if (keyCode == KeyEvent.VK_DOWN) {
+		} else if (keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S) {
 			down.toggle(false);
-		} else if (keyCode == KeyEvent.VK_LEFT) {
+		} else if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_A) {
 			left.toggle(false);
-		} else if (keyCode == KeyEvent.VK_RIGHT) {
+		} else if (keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_D) {
 			right.toggle(false);
 		} else if (keyCode == KeyEvent.VK_SPACE) {
 			space.toggle(false);
@@ -84,7 +84,7 @@ public class InputHandler implements KeyListener {
 			for (PauseHandler h : pauseHandlers) {
 				h.handlePause();
 			}
-		} else if (keyCode == KeyEvent.VK_S) {
+		} else if (keyCode == KeyEvent.VK_U) {
 			for (SaveHandler h : saveHandlers) {
 				h.handleSave();
 			}
