@@ -26,7 +26,7 @@ public class InsertCoinLabel extends JLabel implements ActionListener {
 		
 		this.setOpaque(false);
 		this.setHorizontalAlignment(SwingConstants.RIGHT);
-		this.setBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING));
+		this.setBorder(BorderFactory.createEmptyBorder(0, 0, PADDING, PADDING));
 		this.setFont(Fonts.HUD_FONT.getFont());
 		this.setForeground(visibleColor);
 		
