@@ -14,7 +14,7 @@ import game.ui.GameCanvas;
 public class Alien extends Entity {
 	private static double LINEAR_SPEED_VARIANCE = 0.5;
 	private static double MIN_LINEAR_SPEED = 3e-8;
-	private static double NANOS_BEFORE_BULLET_FIRED = 3e9;
+	private static double NANOS_BEFORE_BULLET_FIRED = 2e9;
 	
 	protected Point[] vertices;
 	protected Size size = Size.SMALL;
