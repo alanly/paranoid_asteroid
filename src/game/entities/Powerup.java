@@ -3,18 +3,24 @@ package game.entities;
 import game.Point;
 
 import java.awt.geom.Ellipse2D;
-import java.util.ArrayList;
-import java.util.List;
 
-public abstract class Powerup extends Entity {
+public class Powerup extends Entity {
+	public enum Power {
+		BOOST,
+		TRIPLE_SHOT;
+	}
+	
 	protected static final long MAX_POWERUP_TTL = (long) 3e9;
 	
+	private Power type;
 	private double ttl = MAX_POWERUP_TTL;
 	
 	public Powerup(Point center) {
 		this.setCenter(center);
-		
 		this.setBounds(new Ellipse2D.Double(center.x, center.y, 20, 20));
+		
+		Power[] powers = Power.values();
+		this.type = powers[(int)(Math.random() * powers.length)];
 	}
 	
 	public void update(long delta) {
@@ -29,13 +35,7 @@ public abstract class Powerup extends Entity {
 		return ttl <= 0;
 	}
 	
-	public static Powerup getRandomPowerup(Point p) throws Exception {
-		List<Class<? extends Powerup>> powerups = new ArrayList<Class<? extends Powerup>>();
-		
-		powerups.add(BoostPowerup.class);
-		powerups.add(TripleShotPowerup.class);
-		
-		// Metaprogramming voodoo to choose a random class from the collection, get its constructor, and construct a new instance
-		return powerups.get((int) (Math.random() * powerups.size())).getConstructor(Point.class).newInstance(p);
+	public Power getType() {
+		return this.type;
 	}
 }

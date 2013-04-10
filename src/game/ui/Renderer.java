@@ -3,12 +3,10 @@ package game.ui;
 import game.Fonts;
 import game.entities.Alien;
 import game.entities.Asteroid;
-import game.entities.BoostPowerup;
 import game.entities.Bullet;
 import game.entities.Entity;
 import game.entities.Powerup;
 import game.entities.Ship;
-import game.entities.TripleShotPowerup;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -142,9 +140,11 @@ public class Renderer {
 	 * @return the correct powerup color.
 	 */
 	private static Color getPowerupColor(Powerup powerup) {
-		if (powerup instanceof BoostPowerup) {
+		Powerup.Power type = powerup.getType();
+		
+		if (type == Powerup.Power.BOOST) {
 			return BOOST_COLOR;
-		} else if (powerup instanceof TripleShotPowerup) {
+		} else if (type == Powerup.Power.TRIPLE_SHOT) {
 			return TRIPLE_SHOT_COLOR;
 		} else {
 			return SHIP_COLOR;
