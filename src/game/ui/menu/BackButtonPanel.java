@@ -15,6 +15,7 @@ public class BackButtonPanel extends JPanel {
 	
 	public BackButtonPanel(final GameFrame frame) {
 		this.setOpaque(false);
+		this.setFocusable(false);
 		
 		backButton = new JButton("Back");
 		backButton.setFocusable(false);

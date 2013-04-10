@@ -6,7 +6,6 @@ import game.entities.Asteroid;
 import game.entities.Bullet;
 import game.entities.Powerup;
 import game.entities.Ship;
-import io.InputHandler;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -24,13 +23,12 @@ public class GameCanvas extends Canvas {
 	
 	public GameCanvas() {
 		this.setBackground(new Color(0x292b36));
-		this.addKeyListener(InputHandler.getInstance());
+		this.setFocusable(false);
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 	}
 	
 	public void setGame(Game game) {
 		game.setGameCanvas(this);
-		this.addKeyListener(game);
 	}
 	
 	public void renderGame(Game game) {

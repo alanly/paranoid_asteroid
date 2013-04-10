@@ -13,14 +13,12 @@ import game.ui.GameCanvas;
 import io.InputHandler;
 
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.geom.Area;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Game implements BulletFiredListener, KeyListener, SaveHandler {
+public class Game implements BulletFiredListener, SaveHandler {
 	// Time constants
 	private static final double FPS = 30;
 	private static final double UPS = FPS * 1.25;
@@ -97,13 +95,6 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 			SoundEffect.FIRE_BULLET_ALIEN.play();
 		} else {
 			SoundEffect.FIRE_BULLET.play();
-		}
-	}
-	
-	public void keyPressed(KeyEvent e) {
-		// Check for pause key
-		if (e.getKeyCode() == KeyEvent.VK_P) {
-			this.paused = !this.paused;
 		}
 	}
 	
@@ -532,11 +523,5 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 				points += multiplier * POINTS_ALIEN;
 			}
 		}
-	}
-	
-	public void keyReleased(KeyEvent e) {
-	}
-	
-	public void keyTyped(KeyEvent e) {
 	}
 }
