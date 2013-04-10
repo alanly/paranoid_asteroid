@@ -28,7 +28,7 @@ public class Game implements BulletFiredListener, SaveHandler {
 	private static final double NANOS_PER_UPDATE = NANOS_PER_SECOND / UPS;
 	
 	private static final double NANOS_BETWEEN_ALIEN = NANOS_PER_SECOND * 10;
-	private static final long NANOS_PER_LEVEL_START_WAIT = (long) (NANOS_PER_SECOND * 0.3);
+	private static final long NANOS_PER_LEVEL_START_WAIT = (long) (NANOS_PER_SECOND * 2);
 	
 	private static final int SAFE_RADIUS = 100;
 	
@@ -181,26 +181,34 @@ public class Game implements BulletFiredListener, SaveHandler {
 				continue;
 			}
 			
-			// Bail if waiting for level to start
-			if (isWaitingForLevel()) {
-				levelStartWait -= delta;
-				canvas.renderGame(this);
+			timeSinceLastUpdate += delta;
+			
+			// Go to next level, skip update and render
+			if (levelEnded) {
+				if (isWaitingForLevel()) {
+					levelStartWait -= delta;
+					
+					if (timeSinceLastUpdate > NANOS_PER_UPDATE) {
+						System.out.println("Update between levels");
+						
+						canvas.renderGame(this);
+						update(timeSinceLastUpdate);
+						checkShipPowerupCollisions();
+						
+						// Reset timer
+						timeSinceLastUpdate = 0;
+					}
+				} else {
+					nextLevel();
+				}
+				
 				continue;
 			}
 			
 			levelStartWait = 0;
 			
-			// Go to next level, skip update and render
-			if (levelEnded) {
-				nextLevel();
-				lastLevelPoints = this.points;
-				levelEnded = false;
-				continue;
-			}
-			
 			// Update times since
 			timeSinceLastRender += delta;
-			timeSinceLastUpdate += delta;
 			timeSinceLastAlien += delta;
 			
 			// Try to render and check collision
@@ -285,6 +293,7 @@ public class Game implements BulletFiredListener, SaveHandler {
 		if (asteroids.size() + aliens.size() == 0) {
 			level++;
 			levelEnded = true;
+			levelStartWait = NANOS_PER_LEVEL_START_WAIT;
 			
 			allocatePoints(null);
 		}
@@ -466,11 +475,10 @@ public class Game implements BulletFiredListener, SaveHandler {
 	
 	private void nextLevel() {
 		if (levelEnded) {
+			levelEnded = false;
+			lastLevelPoints = this.points;
 			bullets.clear();
 			populateField();
-			
-			levelStartWait = NANOS_PER_LEVEL_START_WAIT;
-			levelEnded = false;
 		}
 	}
 	
