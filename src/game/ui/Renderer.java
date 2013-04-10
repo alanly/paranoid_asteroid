@@ -13,6 +13,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.geom.Ellipse2D;
 
 /**
  * Responsible for rendering entities.
@@ -23,12 +24,14 @@ public class Renderer {
 	private static Color STEEL = new Color(0xB0C4DE);
 	private static Color YELLOW = new Color(0xEDD808);
 	private static Color PURPLE = new Color(0x693D99);
+	private static Color BLUE = new Color(0x2D8299);
 	
 	private static Color ALIEN_COLOR = STEEL;
 	private static Color ASTEROID_COLOR = WHITE;
 	private static Color HUD_COLOR = WHITE;
 	private static Color SHIP_COLOR = WHITE;
 	private static Color BOOST_COLOR = YELLOW;
+	private static Color SHIELD_COLOR = BLUE;
 	private static Color TRIPLE_SHOT_COLOR = PURPLE;
 	
 	/**
@@ -77,6 +80,10 @@ public class Renderer {
 	private static void renderShip(Ship e, Graphics2D g) {
 		g.setColor(getShipColor(e));
 		g.drawPolygon((Polygon)e.getBounds());
+		
+		if (e.hasShield()) {
+			g.draw(new Ellipse2D.Double(e.getX() - 15, e.getY() - 15, 30, 30));
+		}
 	}
 	
 	/**
@@ -125,7 +132,9 @@ public class Renderer {
 	 * @return the correct ship color
 	 */
 	private static Color getShipColor(Ship ship) {
-		if (ship.hasBoost()) {
+		if (ship.hasShield()) {
+			return SHIELD_COLOR;
+		} else if (ship.hasBoost()) {
 			return BOOST_COLOR;
 		} else if (ship.hasTripleShot()) {
 			return TRIPLE_SHOT_COLOR;
@@ -142,7 +151,9 @@ public class Renderer {
 	private static Color getPowerupColor(Powerup powerup) {
 		Powerup.Power type = powerup.getType();
 		
-		if (type == Powerup.Power.BOOST) {
+		if (type == Powerup.Power.SHIELD) {
+			return SHIELD_COLOR;
+		} if (type == Powerup.Power.BOOST) {
 			return BOOST_COLOR;
 		} else if (type == Powerup.Power.TRIPLE_SHOT) {
 			return TRIPLE_SHOT_COLOR;

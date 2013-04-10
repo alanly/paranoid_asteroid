@@ -7,6 +7,7 @@ import java.awt.geom.Ellipse2D;
 public class Powerup extends Entity {
 	public enum Power {
 		BOOST,
+		SHIELD,
 		TRIPLE_SHOT;
 	}
 	
@@ -17,7 +18,7 @@ public class Powerup extends Entity {
 	
 	public Powerup(Point center) {
 		this.setCenter(center);
-		this.setBounds(new Ellipse2D.Double(center.x, center.y, 20, 20));
+		this.setBounds(new Ellipse2D.Double(center.x - 10, center.y - 10, 20, 20));
 		
 		Power[] powers = Power.values();
 		this.type = powers[(int)(Math.random() * powers.length)];

@@ -28,6 +28,7 @@ public class Ship extends Entity {
 	private boolean alive = true;
 	private double speedBoost = 1;
 	private long boostTTL = 0;
+	private long shieldTTL = 0;
 	private long tripleShotTTL = 0;
 	private long timeSinceLastFired = 0;
 
@@ -47,8 +48,7 @@ public class Ship extends Entity {
 	 */
 	public void update(long delta) {
 		updateSpeed(delta);
-		updateBoost(delta);
-		updateTripleShot(delta);
+		updatePowerups(delta);
 		updateAngle(delta);
 		updateVertices(delta);
 		updateBounds();
@@ -89,7 +89,11 @@ public class Ship extends Entity {
 	 * Kills the ship.
 	 */
 	public void die() {
-		this.alive = false;
+		if (this.hasShield()) {
+			unshield();
+		} else {
+			this.alive = false;
+		}
 	}
 	
 	/**
@@ -123,6 +127,20 @@ public class Ship extends Entity {
 	}
 	
 	/**
+	 * Gives the ship a shield.
+	 */
+	public void shield() {
+		shieldTTL = MAX_POWERUP_TTL;
+	}
+	
+	/**
+	 * Disables the ship's shield.
+	 */
+	public void unshield() {
+		shieldTTL = 0;
+	}
+	
+	/**
 	 * Returns the max linear speed of the ship.
 	 * @return the max linear speed of the ship
 	 */
@@ -151,6 +169,14 @@ public class Ship extends Entity {
 	}
 	
 	/**
+	 * Returns true if the ship has a shield.
+	 * @return true if the ship has a shield
+	 */
+	public boolean hasShield() {
+		return shieldTTL > 0;
+	}
+	
+	/**
 	 * Updates the speed of the ship.
 	 * @param delta the time since the last update
 	 */
@@ -167,6 +193,16 @@ public class Ship extends Entity {
 	}
 	
 	/**
+	 * Updates the powerups the ship has.
+	 * @param delta the time since the last update
+	 */
+	private void updatePowerups(long delta) {
+		updateBoost(delta);
+		updateTripleShot(delta);
+		updateShield(delta);
+	}
+	
+	/**
 	 * Updates the boost of the ship.
 	 * @param delta the time since the last update
 	 */
@@ -179,7 +215,7 @@ public class Ship extends Entity {
 	}
 	
 	/**
-	 * Updates the tripple shot of the ship.
+	 * Updates the triple shot of the ship.
 	 * @param delta the time since the last update
 	 */
 	private void updateTripleShot(long delta) {
@@ -187,6 +223,14 @@ public class Ship extends Entity {
 			tripleShotTTL -= delta;
 		} else {
 			disarm();
+		}
+	}
+	
+	private void updateShield(long delta) {
+		if (hasShield()) {
+			shieldTTL -= delta;
+		} else {
+			unshield();
 		}
 	}
 
