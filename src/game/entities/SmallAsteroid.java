@@ -6,7 +6,7 @@ public class SmallAsteroid extends Asteroid {
 
 	public SmallAsteroid(Point center) {
 		super(center);
-		this.size = AsteroidSize.SMALL;
+		this.size = Size.SMALL;
 	}
 
 	protected void initializeVertices() {

@@ -2,7 +2,7 @@ package game;
 
 import game.entities.Alien;
 import game.entities.Asteroid;
-import game.entities.Asteroid.AsteroidSize;
+import game.entities.Asteroid.Size;
 import game.entities.Bullet;
 import game.entities.Entity;
 import game.entities.Powerup;
@@ -50,8 +50,9 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 	private long levelStartWait = 0;
 	
 	// Game components
+	private List<Alien> aliens;
+	private List<Asteroid> asteroids;
 	private List<Bullet> bullets;
-	private List<Entity> entities;
 	private List<Powerup> powerups;
 	private Ship ship;
 	private GameCanvas canvas;
@@ -65,8 +66,9 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 		this.points = state.getPoints();
 		this.lastLevelPoints = state.getPoints();
 		this.multiplier = state.getMultiplier();
+		this.aliens = new LinkedList<Alien>();
+		this.asteroids = new LinkedList<Asteroid>();
 		this.bullets = new LinkedList<Bullet>();
-		this.entities = new LinkedList<Entity>();
 		this.powerups = new LinkedList<Powerup>();
 		this.canvas = null;
 	}
@@ -125,8 +127,12 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 		return this.bullets;
 	}
 	
-	public List<Entity> getEntities() {
-		return this.entities;
+	public List<Asteroid> getAsteroids() {
+		return this.asteroids;
+	}
+	
+	public List<Alien> getAliens() {
+		return this.aliens;
 	}
 	
 	public List<Powerup> getPowerups() {
@@ -152,12 +158,12 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 	
 	private void populateField() {
 		int asteroidCount = getNumAsteroids();
-		AsteroidSize asteroidSize = getAsteroidSize();
+		Size asteroidSize = getAsteroidSize();
 		Point center;
 		
 		for (int i = 0; i < asteroidCount; i++) {
 			center = Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, ship.getCenter(), SAFE_RADIUS);
-			entities.add(Asteroid.buildAsteroid(asteroidSize, center));
+			asteroids.add(Asteroid.buildAsteroid(asteroidSize, center));
 		}
 	}
 	
@@ -271,8 +277,12 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 	}
 	
 	private void updateEntities(long delta) {
-		for (Entity e : entities) {
-			e.update(delta);
+		for (Asteroid asteroid : asteroids) {
+			asteroid.update(delta);
+		}
+		
+		for (Alien alien : aliens) {
+			alien.update(delta);
 		}
 	}
 	
@@ -281,7 +291,7 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 		checkShipPowerupCollisions();
 		checkBulletEntityCollisions();
 		
-		if (entities.size() == 0) {
+		if (asteroids.size() + aliens.size() == 0) {
 			level++;
 			levelEnded = true;
 			
@@ -290,25 +300,39 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 	}
 	
 	private void checkShipEntityCollisions() {
-		// Check for ship-entity collision
-		Iterator<Entity> entityIterator = entities.iterator();
+		Iterator<Asteroid> asteroidIterator = asteroids.iterator();
 		
-		// Loop through all entities
-		while(entityIterator.hasNext()) {
-			Entity e = entityIterator.next();
+		// Loop through all asteroids
+		while(asteroidIterator.hasNext()) {
+			Asteroid a = asteroidIterator.next();
 			
 			// Construct areas and intersect them
 			Area area = new Area(ship.getBounds());
-			Area entityArea = new Area(e.getBounds());
-			area.intersect(entityArea);
+			area.intersect(new Area(a.getBounds()));
 			
 			// If the intersection area isn't empty, then the two shapes have overlapped
 			if (!area.isEmpty()) {
-				// Kill player if collision was with asteroid or alien
-				if (e instanceof Asteroid || e instanceof Alien) {
-					ship.die();
-					SoundEffect.SHIP_CRASH.play();
-				}
+				// Kill player if collided
+				ship.die();
+				SoundEffect.SHIP_CRASH.play();
+			}
+		}
+		
+		Iterator<Alien> alienIterator = aliens.iterator();
+		
+		// Loop through all asteroids
+		while(alienIterator.hasNext()) {
+			Alien a = alienIterator.next();
+			
+			// Construct areas and intersect them
+			Area area = new Area(ship.getBounds());
+			area.intersect(new Area(a.getBounds()));
+			
+			// If the intersection area isn't empty, then the two shapes have overlapped
+			if (!area.isEmpty()) {
+				// Kill player if collided
+				ship.die();
+				SoundEffect.SHIP_CRASH.play();
 			}
 		}
 	}
@@ -339,7 +363,7 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 		List<Asteroid> newAsteroids = new LinkedList<Asteroid>();
 		List<Powerup> newPowerups = new LinkedList<Powerup>();
 		
-		// Check for entity-bullet collision
+		// Check for bullet-asteroid collision
 		Iterator<Bullet> bulletIterator = bullets.iterator();
 		
 		// Loop through bullets on outer, it's faster when there are no bullets!
@@ -353,52 +377,74 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 				ship.die();
 				SoundEffect.SHIP_CRASH.play();
 			} else {
-				// No player collision, check other entities
-				Iterator<Entity> entityIterator = entities.iterator();
+				Iterator<Asteroid> asteroidIterator = asteroids.iterator();
+				boolean bulletCollided = false;
 				
-				// Iterate over all entities
-				while (entityIterator.hasNext()) {
-					Entity e = entityIterator.next();
+				// Iterate over all asteroids
+				while (asteroidIterator.hasNext()) {
+					Asteroid asteroid = asteroidIterator.next();
 					
-					// In try in case bullet intersects two entities at once (cannot be removed twice)
+					// Try, in case bullet intersects two asteroids at once (concurrent modification
 					try {
-						// If the current entity is not the source and the bullet intersects the current entity
-						if (e != b.getSource() && e.getBounds().intersects((Rectangle)b.getBounds())) {
-							// Don't let aliens kill each other
-							if (e instanceof Alien && b.getSource() instanceof Alien) {
-								continue;
-							}
-							
-							// Remove entities that have collided
+						// If the asteroid intersects the bullet
+						if (asteroid.getBounds().intersects((Rectangle)b.getBounds())) {
+							// Remove the asteroid and bullet
+							asteroidIterator.remove();
 							bulletIterator.remove();
-							entityIterator.remove();
 							
-							if (e instanceof Asteroid) {
-								// Entity was an asteroid
-								SoundEffect.ASTEROID_BREAK.play();
+							bulletCollided = true;
+							
+							SoundEffect.ASTEROID_BREAK.play();
+							
+							// Try to break up the asteroid
+							Asteroid.Size aSize = asteroid.getSize();
 								
-								// Try to break up the asteroid
-								Asteroid a = (Asteroid) e;
-								AsteroidSize aSize = a.getSize();
-								
-								// Only if it's not already the smallest
-								if (aSize != AsteroidSize.SMALL) {
-									newAsteroids.add(Asteroid.buildAsteroid(aSize.getSmaller(), new Point(a.getCenter())));
-									newAsteroids.add(Asteroid.buildAsteroid(aSize.getSmaller(), new Point(a.getCenter())));
-								}
-							} else if (e instanceof Alien) {
-								// Entity was an alien
-								SoundEffect.ALIEN_DIE.play();
-								
-								dropPowerup(e.getCenter(), newPowerups);
+							// Only if it's not already the smallest
+							if (aSize != Asteroid.Size.SMALL) {
+								newAsteroids.add(Asteroid.buildAsteroid(aSize.getSmaller(), new Point(asteroid.getCenter())));
+								newAsteroids.add(Asteroid.buildAsteroid(aSize.getSmaller(), new Point(asteroid.getCenter())));
 							}
 							
 							// If the bullet came from the player, allocate the player points based on the entity they hit
 							if (b.getSource() == ship) {
-								allocatePoints(e);
+								allocatePoints(asteroid);
 							}
 						}
-					} catch (IllegalStateException ex) {
+					} catch (IllegalStateException e) {
+						// Carry on
+						continue;
+					}
+				}
+				
+				// Skip if bullet already collided with something
+				if (bulletCollided) {
+					continue;
+				}
+				
+				Iterator<Alien> alienIterator = aliens.iterator();
+				
+				// Iterate over all aliens
+				while (alienIterator.hasNext()) {
+					Alien alien = alienIterator.next();
+					
+					// Try, in case bullet intersects two asteroids at once (concurrent modification)
+					try {
+						// If the alien intersects the bullet
+						if (b.getSource() != alien && alien.getBounds().intersects((Rectangle)b.getBounds())) {
+							// Remove the alien and bullet
+							alienIterator.remove();
+							bulletIterator.remove();
+							
+							SoundEffect.ALIEN_DIE.play();
+							
+							dropPowerup(alien.getCenter(), newPowerups);
+							
+							// If the bullet came from the player, allocate the player points based on the entity they hit
+							if (b.getSource() == ship) {
+								allocatePoints(alien);
+							}
+						}
+					} catch (IllegalStateException e) {
 						// Carry on
 						continue;
 					}
@@ -408,7 +454,7 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 		
 		// Add new asteroid fragments
 		for (Asteroid a : newAsteroids) {
-			entities.add(a);
+			asteroids.add(a);
 		}
 		
 		// Add powerups
@@ -437,13 +483,13 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 		}
 	}
 	
-	private AsteroidSize getAsteroidSize() {
+	private Size getAsteroidSize() {
 		if (this.level < 3) {
-			return AsteroidSize.SMALL;
+			return Size.SMALL;
 		} else if (this.level < 7) {
-			return AsteroidSize.MEDIUM;
+			return Size.MEDIUM;
 		} else {
-			return AsteroidSize.LARGE;
+			return Size.LARGE;
 		}
 	}
 	
@@ -457,7 +503,7 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 			SoundEffect.ALIEN_APPEAR.play();
 			Alien alien = new Alien(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, ship.getCenter(), SAFE_RADIUS), ship);
 			alien.addBulletFiredListener(this);
-			this.entities.add(alien);
+			this.aliens.add(alien);
 		}
 	}
 	

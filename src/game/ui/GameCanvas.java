@@ -1,11 +1,11 @@
 package game.ui;
 
 import game.Game;
+import game.entities.Alien;
+import game.entities.Asteroid;
 import game.entities.Bullet;
-import game.entities.Entity;
 import game.entities.Powerup;
 import game.entities.Ship;
-
 import io.InputHandler;
 
 import java.awt.Canvas;
@@ -36,7 +36,8 @@ public class GameCanvas extends Canvas {
 	public void renderGame(Game game) {
 		Ship ship = game.getShip();
 		List<Bullet> bullets = game.getBullets();
-		List<Entity> entities = game.getEntities();
+		List<Asteroid> asteroids = game.getAsteroids();
+		List<Alien> aliens = game.getAliens();
 		List<Powerup> powerups = game.getPowerups();
 		long points = game.getPoints();
 		int level = game.getLevel();
@@ -60,8 +61,12 @@ public class GameCanvas extends Canvas {
 			Renderer.render(b, g);
 		}
 		
-		for (Entity e : entities) {
-			Renderer.render(e, g);
+		for (Asteroid asteroid : asteroids) {
+			Renderer.render(asteroid, g);
+		}
+		
+		for (Alien alien : aliens) {
+			Renderer.render(alien, g);
 		}
 		
 		for (Powerup p : powerups) {
