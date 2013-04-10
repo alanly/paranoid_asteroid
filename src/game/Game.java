@@ -364,8 +364,8 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 					try {
 						// If the current entity is not the source and the bullet intersects the current entity
 						if (e != b.getSource() && e.getBounds().intersects((Rectangle)b.getBounds())) {
-							// Don't let aliens destroy asteroids
-							if ((e instanceof Asteroid || e instanceof Alien) && b.getSource() instanceof Alien) {
+							// Don't let aliens kill each other
+							if (e instanceof Alien && b.getSource() instanceof Alien) {
 								continue;
 							}
 							
