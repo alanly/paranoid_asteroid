@@ -6,7 +6,7 @@ import java.util.List;
 
 
 import game.Point;
-import game.entities.Asteroid.AsteroidSize;
+import game.entities.Asteroid.Size;
 import game.events.BulletFiredEvent;
 import game.events.BulletFiredListener;
 import game.ui.GameCanvas;
@@ -17,7 +17,7 @@ public class Alien extends Entity {
 	private static double NANOS_BEFORE_BULLET_FIRED = 3e9;
 	
 	protected Point[] vertices;
-	protected AsteroidSize size = AsteroidSize.SMALL;
+	protected Size size = Size.SMALL;
 	
 	private double angle;
 	private double speed = MIN_LINEAR_SPEED;

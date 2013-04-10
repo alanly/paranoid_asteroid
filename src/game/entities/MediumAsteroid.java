@@ -5,7 +5,7 @@ import game.Point;
 public class MediumAsteroid extends Asteroid {
 	public MediumAsteroid(Point center) {
 		super(center);
-		this.size = AsteroidSize.MEDIUM;
+		this.size = Size.MEDIUM;
 	}
 	protected void initializeVertices() {
 		this.vertices = new Point[9];

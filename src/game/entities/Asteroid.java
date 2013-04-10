@@ -6,12 +6,12 @@ import game.ui.GameCanvas;
 import java.awt.Polygon;
 
 public abstract class Asteroid extends Entity {
-	public enum AsteroidSize {
+	public enum Size {
 		SMALL,
 		MEDIUM,
 		LARGE;
 		
-		public AsteroidSize getSmaller() {
+		public Size getSmaller() {
 			return (this == SMALL || this == MEDIUM) ? SMALL : MEDIUM;
 		}
 	}
@@ -20,15 +20,15 @@ public abstract class Asteroid extends Entity {
 	private static double MIN_LINEAR_SPEED = 3e-8;
 	
 	protected Point[] vertices;
-	protected AsteroidSize size = AsteroidSize.SMALL;
+	protected Size size = Size.SMALL;
 	
 	private double angle;
 	private double speed = MIN_LINEAR_SPEED;
 
-	public static Asteroid buildAsteroid(AsteroidSize size, Point center) {
-		if (size == AsteroidSize.SMALL) {
+	public static Asteroid buildAsteroid(Size size, Point center) {
+		if (size == Size.SMALL) {
 			return new SmallAsteroid(center);
-		} else if (size == AsteroidSize.MEDIUM) {
+		} else if (size == Size.MEDIUM) {
 			return new MediumAsteroid(center);
 		} else {
 			return new LargeAsteroid(center);
@@ -60,7 +60,7 @@ public abstract class Asteroid extends Entity {
 		updateBounds();
 	}
 	
-	public AsteroidSize getSize() {
+	public Size getSize() {
 		return this.size;
 	}
 	
