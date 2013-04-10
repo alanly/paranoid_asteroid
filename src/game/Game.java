@@ -1,5 +1,15 @@
 package game;
 
+import game.entities.Alien;
+import game.entities.Asteroid;
+import game.entities.Asteroid.AsteroidSize;
+import game.entities.Bullet;
+import game.entities.Entity;
+import game.entities.Powerup;
+import game.entities.Ship;
+import game.events.BulletFiredEvent;
+import game.events.BulletFiredListener;
+import game.ui.GameCanvas;
 import io.InputHandler;
 
 import java.awt.Rectangle;
@@ -9,19 +19,6 @@ import java.awt.geom.Area;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import game.entities.Alien;
-import game.entities.Asteroid;
-import game.entities.Asteroid.AsteroidSize;
-import game.entities.BoostPowerup;
-import game.entities.Bullet;
-import game.entities.Entity;
-import game.entities.Powerup;
-import game.entities.Ship;
-import game.entities.TripleShotPowerup;
-import game.events.BulletFiredEvent;
-import game.events.BulletFiredListener;
-import game.ui.GameCanvas;
 
 public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 	// Time constants
@@ -420,9 +417,11 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 	}
 	
 	private void applyPowerup(Powerup p) {
-		if (p instanceof BoostPowerup) {
+		Powerup.Power type = p.getType();
+		
+		if (type == Powerup.Power.BOOST) {
 			ship.boost();
-		} else if (p instanceof TripleShotPowerup) {
+		} else if (type == Powerup.Power.TRIPLE_SHOT) {
 			ship.arm();
 		}
 	}
@@ -465,7 +464,7 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 		// Chance of powerup dropping when alien is destroyed
 		if (Math.random() < 0.5) {
 			try {
-				newPowerups.add(Powerup.getRandomPowerup(p));
+				newPowerups.add(new Powerup(p));
 			} catch (Exception e) {
 				// Something crazy happened
 				e.printStackTrace();
