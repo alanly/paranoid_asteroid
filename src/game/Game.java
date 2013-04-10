@@ -189,8 +189,6 @@ public class Game implements BulletFiredListener, SaveHandler {
 					levelStartWait -= delta;
 					
 					if (timeSinceLastUpdate > NANOS_PER_UPDATE) {
-						System.out.println("Update between levels");
-						
 						canvas.renderGame(this);
 						update(timeSinceLastUpdate);
 						checkShipPowerupCollisions();
