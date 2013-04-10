@@ -28,7 +28,7 @@ public class Game implements BulletFiredListener, SaveHandler {
 	private static final double NANOS_PER_UPDATE = NANOS_PER_SECOND / UPS;
 	
 	private static final double NANOS_BETWEEN_ALIEN = NANOS_PER_SECOND * 10;
-	private static final long NANOS_PER_LEVEL_START_WAIT = (long) (NANOS_PER_SECOND * 2);
+	private static final long NANOS_PER_LEVEL_START_WAIT = (long) (NANOS_PER_SECOND);
 	
 	private static final int SAFE_RADIUS = 100;
 	
