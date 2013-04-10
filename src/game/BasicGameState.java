@@ -5,20 +5,22 @@ import io.Loader;
 import java.io.Serializable;
 
 public class BasicGameState implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	
 	private static final String LOAD_PATH = System.getProperty("user.home") + System.getProperty("file.separator") + ".pastate";
 	
 	private int level;
 	private long points;
+	private double multiplier;
 	
 	public BasicGameState() {
-		this(1, 0);
+		this(1, 0, 1);
 	}
 	
-	public BasicGameState(int level, long points) {
+	public BasicGameState(int level, long points, double multiplier) {
 		this.level = level;
 		this.points = points;
+		this.multiplier = multiplier;
 	}
 	
 	public int getLevel() {
@@ -27,6 +29,10 @@ public class BasicGameState implements Serializable {
 	
 	public long getPoints() {
 		return this.points;
+	}
+	
+	public double getMultiplier() {
+		return this.multiplier;
 	}
 	
 	public void save() {

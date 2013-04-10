@@ -43,7 +43,7 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 	private int level;
 	private long points;
 	private long lastLevelPoints;
-	private double multiplier = 1;
+	private double multiplier;
 	private boolean paused = false;
 	private boolean saved = false;
 	private boolean levelEnded = false;
@@ -63,7 +63,8 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 	public Game(BasicGameState state) {
 		this.level = state.getLevel();
 		this.points = state.getPoints();
-		this.lastLevelPoints = state.getPoints(); 
+		this.lastLevelPoints = state.getPoints();
+		this.multiplier = state.getMultiplier();
 		this.bullets = new LinkedList<Bullet>();
 		this.entities = new LinkedList<Entity>();
 		this.powerups = new LinkedList<Powerup>();
@@ -141,7 +142,7 @@ public class Game implements BulletFiredListener, KeyListener, SaveHandler {
 	}
 	
 	public BasicGameState extractState() {
-		return new BasicGameState(this.level, this.lastLevelPoints);
+		return new BasicGameState(this.level, this.lastLevelPoints, this.multiplier);
 	}
 	
 	public void handleSave() {
