@@ -19,6 +19,8 @@ public class Ship extends Entity {
 	private static final double ACCELERATION = 6.0e-16;
 	private static final double DECELERATION = -0.3e-15;
 	private static final double TRIPLE_SHOT_OFFSET_ANGLE = FULL_CIRCLE_RAD / 72;
+	private static final double NUM_PULSE_SHOTS = 5;
+	private static final double PULSE_SHOTS_ANGLE = FULL_CIRCLE_RAD / NUM_PULSE_SHOTS;
 
 	private Point[] vertices;
 	private List<BulletFiredListener> bulletFiredListeners;
@@ -28,6 +30,7 @@ public class Ship extends Entity {
 	private boolean alive = true;
 	private double speedBoost = 1;
 	private long boostTTL = 0;
+	private long pulseTTL = 0;
 	private long shieldTTL = 0;
 	private long tripleShotTTL = 0;
 	private long timeSinceLastFired = 0;
@@ -141,6 +144,20 @@ public class Ship extends Entity {
 	}
 	
 	/**
+	 * Gives the ship pulse.
+	 */
+	public void pulseOn() {
+		pulseTTL = MAX_POWERUP_TTL;
+	}
+	
+	/**
+	 * Disabled the ship's pulse.
+	 */
+	public void pulseOff() {
+		pulseTTL = 0;
+	}
+	
+	/**
 	 * Returns the max linear speed of the ship.
 	 * @return the max linear speed of the ship
 	 */
@@ -177,6 +194,14 @@ public class Ship extends Entity {
 	}
 	
 	/**
+	 * Returns true if the ship has pulse.
+	 * @return true if the ship has pulse
+	 */
+	public boolean hasPulse() {
+		return pulseTTL > 0;
+	}
+	
+	/**
 	 * Updates the speed of the ship.
 	 * @param delta the time since the last update
 	 */
@@ -200,6 +225,7 @@ public class Ship extends Entity {
 		updateBoost(delta);
 		updateTripleShot(delta);
 		updateShield(delta);
+		updatePulse(delta);
 	}
 	
 	/**
@@ -226,11 +252,27 @@ public class Ship extends Entity {
 		}
 	}
 	
+	/**
+	 * Updates the shield of the ship.
+	 * @param delta the time since the last update
+	 */
 	private void updateShield(long delta) {
 		if (hasShield()) {
 			shieldTTL -= delta;
 		} else {
 			unshield();
+		}
+	}
+	
+	/**
+	 * Updates the pulse of the ship.
+	 * @param delta the time since the last update
+	 */
+	private void updatePulse(long delta) {
+		if (hasPulse()) {
+			pulseTTL -= delta;
+		} else {
+			pulseOff();
 		}
 	}
 
@@ -314,7 +356,11 @@ public class Ship extends Entity {
 			// Origin is the tip of the ship, the first vertex
 			listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle));
 			
-			if (hasTripleShot()) {
+			if (hasPulse()) {
+				for (int i = 0; i < NUM_PULSE_SHOTS; i++) {
+					listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle + i*PULSE_SHOTS_ANGLE));
+				}
+			} else if (hasTripleShot()) {
 				listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle + TRIPLE_SHOT_OFFSET_ANGLE));
 				listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle - TRIPLE_SHOT_OFFSET_ANGLE));
 			}

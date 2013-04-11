@@ -7,6 +7,7 @@ import java.awt.geom.Ellipse2D;
 public class Powerup extends Entity {
 	public enum Power {
 		BOOST,
+		PULSE,
 		SHIELD,
 		TRIPLE_SHOT;
 	}

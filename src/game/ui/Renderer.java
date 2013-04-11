@@ -26,6 +26,7 @@ public class Renderer {
 	private static Color HUD_COLOR = Colors.WHITE.getColor();
 	private static Color SHIP_COLOR = Colors.WHITE.getColor();
 	private static Color BOOST_COLOR = Colors.YELLOW.getColor();
+	private static Color PULSE_COLOR = Colors.ORANGE.getColor();
 	private static Color SHIELD_COLOR = Colors.BLUE.getColor();
 	private static Color TRIPLE_SHOT_COLOR = Colors.PURPLE.getColor();
 	
@@ -127,12 +128,14 @@ public class Renderer {
 	 * @return the correct ship color
 	 */
 	private static Color getShipColor(Ship ship) {
-		if (ship.hasShield()) {
-			return SHIELD_COLOR;
-		} else if (ship.hasBoost()) {
-			return BOOST_COLOR;
+		if (ship.hasPulse()) {
+			return PULSE_COLOR;
 		} else if (ship.hasTripleShot()) {
 			return TRIPLE_SHOT_COLOR;
+		} else if (ship.hasBoost()) {
+			return BOOST_COLOR;
+		} else if (ship.hasShield()) {
+			return SHIELD_COLOR;
 		} else {
 			return SHIP_COLOR;
 		}
@@ -148,10 +151,12 @@ public class Renderer {
 		
 		if (type == Powerup.Power.SHIELD) {
 			return SHIELD_COLOR;
-		} if (type == Powerup.Power.BOOST) {
-			return BOOST_COLOR;
+		} else if (type == Powerup.Power.PULSE) {
+			return PULSE_COLOR;
 		} else if (type == Powerup.Power.TRIPLE_SHOT) {
 			return TRIPLE_SHOT_COLOR;
+		} if (type == Powerup.Power.BOOST) {
+			return BOOST_COLOR;
 		} else {
 			return SHIP_COLOR;
 		}
