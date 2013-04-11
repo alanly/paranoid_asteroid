@@ -1,5 +1,6 @@
 package game.ui;
 
+import game.Colors;
 import game.Fonts;
 import game.entities.Alien;
 import game.entities.Asteroid;
@@ -20,19 +21,13 @@ import java.awt.geom.Ellipse2D;
  *
  */
 public class Renderer {
-	private static Color WHITE = new Color(0xF0F0F0);
-	private static Color STEEL = new Color(0xB0C4DE);
-	private static Color YELLOW = new Color(0xEDD808);
-	private static Color PURPLE = new Color(0x693D99);
-	private static Color BLUE = new Color(0x2D8299);
-	
-	private static Color ALIEN_COLOR = STEEL;
-	private static Color ASTEROID_COLOR = WHITE;
-	private static Color HUD_COLOR = WHITE;
-	private static Color SHIP_COLOR = WHITE;
-	private static Color BOOST_COLOR = YELLOW;
-	private static Color SHIELD_COLOR = BLUE;
-	private static Color TRIPLE_SHOT_COLOR = PURPLE;
+	private static Color ALIEN_COLOR = Colors.STEEL.getColor();
+	private static Color ASTEROID_COLOR = Colors.WHITE.getColor();
+	private static Color HUD_COLOR = Colors.WHITE.getColor();
+	private static Color SHIP_COLOR = Colors.WHITE.getColor();
+	private static Color BOOST_COLOR = Colors.YELLOW.getColor();
+	private static Color SHIELD_COLOR = Colors.BLUE.getColor();
+	private static Color TRIPLE_SHOT_COLOR = Colors.PURPLE.getColor();
 	
 	/**
 	 * Delegates rendering the entity to its proper method if it exists.

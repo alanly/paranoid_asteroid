@@ -1,8 +1,7 @@
 package game.ui.menu;
 
+import game.Colors;
 import game.Fonts;
-
-import java.awt.Color;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -19,7 +18,7 @@ public class PageTitleLabel extends JLabel {
 		this.setHorizontalAlignment(SwingConstants.CENTER);
 		this.setBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING));
 		this.setFont(Fonts.PANEL_TITLE_FONT.getFont());
-		this.setForeground(new Color(0xF0F0F0));
+		this.setForeground(Colors.WHITE.getColor());
 		this.setFocusable(false);
 	}
 }

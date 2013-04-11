@@ -1,9 +1,9 @@
 package game.ui.menu;
 
+import game.Colors;
 import game.Fonts;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,7 +20,7 @@ public class TitlePanel extends JPanel {
 		this.setFocusable(false);
 		titleLabel = new JLabel("<html><center>Paranoid<br>Asteroid<br>&nbsp;</center></html>");
 		titleLabel.setFont(Fonts.TITLE_FONT.getFont());
-		titleLabel.setForeground(new Color(0xF0F0F0));
+		titleLabel.setForeground(Colors.WHITE.getColor());
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		titleLabel.setVerticalAlignment(SwingConstants.CENTER);
 		

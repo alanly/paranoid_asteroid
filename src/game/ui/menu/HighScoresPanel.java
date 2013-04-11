@@ -1,11 +1,11 @@
 package game.ui.menu;
 
+import game.Colors;
 import game.Fonts;
 import game.HighScores;
 import game.ui.GameFrame;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -22,7 +22,7 @@ public class HighScoresPanel extends BasePanel {
 		highScores = HighScores.getInstance();
 		scores = new JLabel();
 		scores.setFont(Fonts.BODY_FONT.getFont());
-		scores.setForeground(new Color(0xF0F0F0));
+		scores.setForeground(Colors.WHITE.getColor());
 		scores.setHorizontalAlignment(SwingConstants.CENTER);
 		scores.setVerticalAlignment(SwingConstants.CENTER);
 		
