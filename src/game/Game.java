@@ -434,6 +434,8 @@ public class Game implements BulletFiredListener, SaveHandler {
 							if (b.getSource() == ship) {
 								allocatePoints(asteroid);
 							}
+							
+							break;
 						}
 					} catch (IllegalStateException e) {
 						// Carry on
@@ -469,6 +471,8 @@ public class Game implements BulletFiredListener, SaveHandler {
 							if (b.getSource() == ship) {
 								allocatePoints(alien);
 							}
+							
+							break;
 						}
 					} catch (IllegalStateException e) {
 						// Carry on
