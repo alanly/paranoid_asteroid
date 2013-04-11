@@ -1,9 +1,9 @@
 package game.ui.menu;
+import game.Colors;
 import game.Fonts;
 import game.ui.GameFrame;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -42,7 +42,7 @@ public class CreditsPanel extends BasePanel {
 		
 		JLabel creditsLabel = new JLabel(sb.toString());
 		creditsLabel.setFont(Fonts.BODY_FONT.getFont());
-		creditsLabel.setForeground(new Color(0xF0F0F0));
+		creditsLabel.setForeground(Colors.WHITE.getColor());
 		creditsLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		creditsLabel.setVerticalAlignment(SwingConstants.CENTER);
 		

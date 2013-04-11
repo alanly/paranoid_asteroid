@@ -1,5 +1,6 @@
 package game.ui;
 
+import game.Colors;
 import game.Game;
 import game.entities.Alien;
 import game.entities.Asteroid;
@@ -8,7 +9,6 @@ import game.entities.Powerup;
 import game.entities.Ship;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -22,7 +22,7 @@ public class GameCanvas extends Canvas {
 	private static final long serialVersionUID = 1L;
 	
 	public GameCanvas() {
-		this.setBackground(new Color(0x292b36));
+		this.setBackground(Colors.DARK_BLUE.getColor());
 		this.setFocusable(false);
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 	}

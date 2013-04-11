@@ -1,5 +1,6 @@
 package game.ui.menu;
 
+import game.Colors;
 import game.Fonts;
 
 import java.awt.Color;
@@ -17,8 +18,8 @@ public class InsertCoinLabel extends JLabel implements ActionListener {
 	private static final String COIN_TEXT = "Insert coin to start";
 	private static final int PADDING = 5;
 	
-	private Color visibleColor = new Color(0xF0F0F0);
-	private Color invisibleColor = new Color(0x292b36);
+	private Color visibleColor = Colors.WHITE.getColor();
+	private Color invisibleColor = Colors.DARK_BLUE.getColor();
 	private boolean visible = true;
 	
 	public InsertCoinLabel() {
