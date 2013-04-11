@@ -287,6 +287,7 @@ public class Game implements BulletFiredListener, SaveHandler {
 		checkShipEntityCollisions();
 		checkShipPowerupCollisions();
 		checkBulletEntityCollisions();
+		checkAlienAsteroidCollisions();
 		
 		if (asteroids.size() + aliens.size() == 0) {
 			level++;
@@ -458,6 +459,39 @@ public class Game implements BulletFiredListener, SaveHandler {
 		// Add powerups
 		for (Powerup p : newPowerups) {
 			powerups.add(p);
+		}
+	}
+	
+	private void checkAlienAsteroidCollisions() {
+		Iterator<Alien> alienIterator = aliens.iterator();
+		
+		// Iterate over all aliens
+		while (alienIterator.hasNext()) {
+			Alien alien = alienIterator.next();
+			
+			Iterator<Asteroid> asteroidIterator = asteroids.iterator();
+			
+			// Iterate over all asteroids
+			while (asteroidIterator.hasNext()) {
+				Asteroid asteroid = asteroidIterator.next();
+				
+				try {
+					// Construct areas and intersect them
+					Area area = new Area(alien.getBounds());
+					area.intersect(new Area(asteroid.getBounds()));
+					
+					// If the intersection area isn't empty, then the two shapes have overlapped
+					if (!area.isEmpty()) {
+						SoundEffect.ALIEN_DIE.play();
+						SoundEffect.ASTEROID_BREAK.play();
+						
+						alienIterator.remove();
+						asteroidIterator.remove();
+					}
+				} catch (IllegalStateException e) {
+					continue;
+				}
+			}
 		}
 	}
 	
