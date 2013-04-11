@@ -10,7 +10,7 @@ public enum Colors {
 	BLUE(0x2D8299),
 	DARK_BLUE(0x292b36),
 	ORANGE(0x994B1B),
-	GREY(0x999999);
+	GREY(0x666666);
 	
 	private Color color;
 	
