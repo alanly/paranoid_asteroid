@@ -8,7 +8,8 @@ public enum Colors {
 	YELLOW(0xEDD808),
 	PURPLE(0x693D99),
 	BLUE(0x2D8299),
-	DARK_BLUE(0x292b36);
+	DARK_BLUE(0x292b36),
+	ORANGE(0x994B1B);
 	
 	private Color color;
 	
