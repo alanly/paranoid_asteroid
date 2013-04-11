@@ -13,6 +13,7 @@ public enum SoundEffect {
 	ALIEN_APPEAR("alien_appear.wav"),
 	ALIEN_DIE("alien_die.wav"),
 	ASTEROID_BREAK("asteroid_break.wav"),
+	HYPERSPACE("hyperspace.wav"),
 	SHIP_CRASH("explosion.wav"),
 	FIRE_BULLET("fire_bullet.wav"),
 	FIRE_BULLET_ALIEN("fire_bullet_alien.wav"),

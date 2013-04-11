@@ -10,6 +10,7 @@ import game.entities.Powerup;
 import game.entities.Ship;
 import game.events.BulletFiredEvent;
 import game.events.BulletFiredListener;
+import game.events.HyperspaceListener;
 import game.ui.GameCanvas;
 import io.InputHandler;
 
@@ -19,7 +20,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Game implements BulletFiredListener, SaveHandler {
+public class Game implements BulletFiredListener, SaveHandler, HyperspaceListener {
 	// Time constants
 	private static final double FPS = 30;
 	private static final double UPS = FPS * 1.25;
@@ -79,6 +80,7 @@ public class Game implements BulletFiredListener, SaveHandler {
 		// Create player and listen to its bullet fired events
 		ship = new Ship(new Point(GameCanvas.WIDTH / 2, GameCanvas.HEIGHT / 2));
 		ship.addBulletFiredListener(this);
+		ship.addHyperspaceListener(this);
 		
 		populateField();
 		loop();
@@ -153,6 +155,10 @@ public class Game implements BulletFiredListener, SaveHandler {
 	public void handleSave() {
 		extractState().save();
 		saved = true;
+	}
+	
+	public void hyperspaceEntered() {
+		SoundEffect.HYPERSPACE.play();
 	}
 	
 	private void populateField() {
