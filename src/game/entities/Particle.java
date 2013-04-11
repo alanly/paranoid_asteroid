@@ -6,11 +6,11 @@ import game.Point;
 import game.ui.GameCanvas;
 
 public class Particle extends Entity {
-	private double maxTimeToLive = 1e9;
-	private double linearSpeed = 6.0e-7;
+	private double maxTimeToLive = 1.3e9;
+	private double linearSpeed = 3.0e-7;
 	private double angle;
 	private double ttl = maxTimeToLive;
-	private double decelleration = 5e-16;
+	private double decelleration = 2e-16;
 	
 	public Particle(Point center) {
 		setCenter((Point) center.clone());
