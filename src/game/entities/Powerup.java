@@ -12,7 +12,7 @@ public class Powerup extends Entity {
 		TRIPLE_SHOT;
 	}
 	
-	protected static final long MAX_POWERUP_TTL = (long) 3e9;
+	protected static final long MAX_POWERUP_TTL = (long) 6e9;
 	
 	private Power type;
 	private double ttl = MAX_POWERUP_TTL;
