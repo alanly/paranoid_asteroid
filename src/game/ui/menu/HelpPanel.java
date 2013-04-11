@@ -31,6 +31,7 @@ public class HelpPanel extends BasePanel {
 		sb.append("Escape is futile, nobody can help you. ");
 		sb.append("Your only choice fight to the death ");
 		sb.append("and take as many down with you as you can.<br>");
+		sb.append("<br>");
 		sb.append("<b>You must destroy them.<br>The earth is counting on you. Good Luck!</b><br>");
 		sb.append("<br>");
 		
@@ -39,19 +40,19 @@ public class HelpPanel extends BasePanel {
 		sb.append("Shoot down as many alien spaces ships and asteroids within your lifetime<br>");
 		sb.append("Get hit by an asteroid, or an alien's bullet and you die<br>");
 		sb.append("To help you, aliens may drop power up when they die. Grab them quickly<br>");
-		//sb.append("You may jump to hyperspace at any time, but beware you may re-appear anywhere<br>");
+		sb.append("You may jump to hyperspace at any time, but beware you may re-appear anywhere<br>");
 		sb.append("<br>");
 		
 		sb.append("<b>Controls</b><br>");
 		sb.append("<br>");
-		sb.append("forward - up arrow key (alt - w)<br>");
-		sb.append("left turn - left arrow key (alt - a)<br>");
-		sb.append("right turn - right arrow key (alt - d)<br>");
+		sb.append("forward - up arrow key (or W)<br>");
+		sb.append("left turn - left arrow key (or A)<br>");
+		sb.append("right turn - right arrow key (or D)<br>");
 		sb.append("shoot - spacebar<br>");
-		//sb.append("hyperspace - down arrow key (alt - s)<br>");
+		sb.append("hyperspace - down arrow key (or S)<br>");
 		sb.append("<br>");
-		sb.append("Pause Game - p key<br>");
-		sb.append("Save Game - u key<br>");
+		sb.append("Pause Game - P key<br>");
+		sb.append("Save Game - U key<br>");
 		sb.append("<br>");
 		
 		sb.append("<b>Game Play</b><br>");
