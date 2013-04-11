@@ -3,6 +3,7 @@ package game.entities;
 import game.Point;
 import game.events.BulletFiredEvent;
 import game.events.BulletFiredListener;
+import game.events.HyperspaceListener;
 import game.ui.GameCanvas;
 import io.InputHandler;
 
@@ -24,6 +25,7 @@ public class Ship extends Entity {
 
 	private Point[] vertices;
 	private List<BulletFiredListener> bulletFiredListeners;
+	private List<HyperspaceListener> hyperspaceListeners;
 
 	private double linearSpeed = 0;
 	private double angle = Math.PI / 2;
@@ -43,6 +45,7 @@ public class Ship extends Entity {
 	public Ship(Point center) {
 		this.setCenter(center);
 		bulletFiredListeners = new LinkedList<BulletFiredListener>();
+		hyperspaceListeners = new LinkedList<HyperspaceListener>();
 		initializeVertices();
 	}
 
@@ -65,8 +68,8 @@ public class Ship extends Entity {
 			timeSinceLastFired = 0;
 		}
 		
-		if (InputHandler.getInstance().getDownKey().isPressed() && canEnterHyperSpace()) {
-			enterHyperSpace();
+		if (InputHandler.getInstance().getDownKey().isPressed() && canEnterHyperspace()) {
+			enterHyperspace();
 			timeSinceLastHyper = 0;
 		}
 	}
@@ -79,7 +82,7 @@ public class Ship extends Entity {
 		return timeSinceLastFired > getMaxBulletFiredWait();
 	}
 	
-	public boolean canEnterHyperSpace() {
+	public boolean canEnterHyperspace() {
 		return timeSinceLastHyper > MAX_HYPER_WAIT;
 	}
 
@@ -89,6 +92,14 @@ public class Ship extends Entity {
 	 */
 	public void addBulletFiredListener(BulletFiredListener l) {
 		this.bulletFiredListeners.add(l);
+	}
+	
+	/**
+	 * Adds a hyperspace listener to the list of listeners to notify when a bullet is fired.
+	 * @param l hyperspace listener to notify when the bullet is fired
+	 */
+	public void addHyperspaceListener(HyperspaceListener l) {
+		this.hyperspaceListeners.add(l);
 	}
 	
 	/**
@@ -386,12 +397,19 @@ public class Ship extends Entity {
 		}
 	}
 	
-	private void enterHyperSpace() {
+	/**
+	 * The ship enters hyperspace and teleports to a random location.
+	 */
+	private void enterHyperspace() {
 		setCenter(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, getCenter(), 0));
 		initializeVertices();
 		
 		for (Point vertex : vertices) {
 			vertex.rotate(getCenter(), Math.PI/2 - angle);
+		}
+		
+		for (HyperspaceListener l : hyperspaceListeners) {
+			l.hyperspaceEntered();
 		}
 	}
 }
