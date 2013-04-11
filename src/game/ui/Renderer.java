@@ -78,6 +78,7 @@ public class Renderer {
 		g.drawPolygon((Polygon)e.getBounds());
 		
 		if (e.hasShield()) {
+			g.setColor(SHIELD_COLOR);
 			g.draw(new Ellipse2D.Double(e.getX() - 15, e.getY() - 15, 30, 30));
 		}
 	}
