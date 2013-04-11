@@ -18,17 +18,9 @@ import javax.swing.plaf.ScrollBarUI;
 public class HelpPanel extends BasePanel {
 	private static final long serialVersionUID = 1L;
 	
-	public HelpPanel(GameFrame frame) {
-		this.setLayout(new BorderLayout());
-		
-		StringBuilder sb = new StringBuilder();
-		
-		JTextPane helpLabel = new JTextPane(); 
-		helpLabel.setOpaque(false);
-		helpLabel.setContentType("text/html");
-		helpLabel.setCaretPosition(0);
-		helpLabel.setPreferredSize(new Dimension(GameCanvas.WIDTH, GameCanvas.HEIGHT));
-		
+	private static StringBuilder sb = new StringBuilder();
+	
+	static {
 		sb.append("<html><body style=\"font-family: ");
 		sb.append(Fonts.BODY_FONT.getFont().getFamily());
 		sb.append("; color: #F0F0F0; padding-left: 5px;\">");
@@ -78,22 +70,32 @@ public class HelpPanel extends BasePanel {
 		sb.append("<u>Triple Shot</u><br>3 bullets fired at a time at angles, purple circle<br>");
 
 		sb.append("</body></html>");
+	}
+	
+	public HelpPanel(GameFrame frame) {
+		this.setLayout(new BorderLayout());
 		
-		helpLabel.setText(sb.toString());
+		JTextPane helpPane = new JTextPane();
+		helpPane.setContentType("text/html");
+		helpPane.setOpaque(false);
+		helpPane.setCaretPosition(0);
+		helpPane.setPreferredSize(new Dimension(GameCanvas.WIDTH, GameCanvas.HEIGHT));
+		helpPane.setText(sb.toString());
+		helpPane.setCaretPosition(0);
 		
-		JScrollPane scroller = new JScrollPane(helpLabel,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+		JScrollPane scroller = new JScrollPane(helpPane,
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
+		scroller.setBorder(null);
+		scroller.setOpaque(false);
+		scroller.getViewport().setOpaque(false);
 		scroller.getVerticalScrollBar().setUI(new ScrollBarUI() {
 			public void paint(Graphics g, JComponent c) {
 				// Breaking paint because scrollbars are ugly
 				c.setBackground(Colors.DARK_BLUE.getColor());
 			}
 		});
-		scroller.setBorder(null);
-		scroller.setOpaque(false);
-		scroller.getViewport().setOpaque(false);
-		scroller.getVerticalScrollBar().setValue(0); // TODO Why doesn't this work?
 		
 		this.add(new PageTitleLabel("Help"), BorderLayout.NORTH);
 		this.add(scroller, BorderLayout.CENTER);
