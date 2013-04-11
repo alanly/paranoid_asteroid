@@ -1,7 +1,6 @@
 package game.entities;
 
 import game.Point;
-import game.SoundEffect;
 import game.events.BulletFiredEvent;
 import game.events.BulletFiredListener;
 import game.ui.GameCanvas;
