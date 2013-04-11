@@ -6,6 +6,7 @@ import game.entities.Alien;
 import game.entities.Asteroid;
 import game.entities.Bullet;
 import game.entities.Entity;
+import game.entities.Particle;
 import game.entities.Powerup;
 import game.entities.Ship;
 
@@ -29,6 +30,7 @@ public class Renderer {
 	private static Color PULSE_COLOR = Colors.ORANGE.getColor();
 	private static Color SHIELD_COLOR = Colors.BLUE.getColor();
 	private static Color TRIPLE_SHOT_COLOR = Colors.PURPLE.getColor();
+	private static Color PARTICLE_COLOR = Colors.GREY.getColor();
 	
 	/**
 	 * Delegates rendering the entity to its proper method if it exists.
@@ -49,6 +51,8 @@ public class Renderer {
 			renderAlien((Alien) e, g);
 		} else if (e instanceof Powerup) {
 			renderPowerup((Powerup) e, g);
+		} else if (e instanceof Particle) {
+			renderParticle((Particle) e, g);
 		}
 		
 		g.setFont(oldFont);
@@ -120,6 +124,16 @@ public class Renderer {
 	 */
 	private static void renderPowerup(Powerup e, Graphics2D g) {
 		g.setColor(getPowerupColor(e));
+		g.draw(e.getBounds());
+	}
+	
+	/**
+	 * Renders a particle entity.
+	 * @param e the particle
+	 * @param g the graphics object
+	 */
+	private static void renderParticle(Particle e, Graphics2D g) {
+		g.setColor(PARTICLE_COLOR);
 		g.draw(e.getBounds());
 	}
 	

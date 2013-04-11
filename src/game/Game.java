@@ -5,6 +5,7 @@ import game.entities.Asteroid;
 import game.entities.Asteroid.Size;
 import game.entities.Bullet;
 import game.entities.Entity;
+import game.entities.Particle;
 import game.entities.Powerup;
 import game.entities.Ship;
 import game.events.BulletFiredEvent;
@@ -31,6 +32,7 @@ public class Game implements BulletFiredListener, SaveHandler {
 	private static final long NANOS_PER_LEVEL_START_WAIT = (long) (NANOS_PER_SECOND);
 	
 	private static final int SAFE_RADIUS = 100;
+	private static final int NUM_PARTICLES = 5;
 	
 	// Points constants
 	private static final long POINTS_ALIEN = 250;
@@ -52,6 +54,7 @@ public class Game implements BulletFiredListener, SaveHandler {
 	private List<Asteroid> asteroids;
 	private List<Bullet> bullets;
 	private List<Powerup> powerups;
+	private List<Particle> particles;
 	private Ship ship;
 	private GameCanvas canvas;
 	
@@ -68,6 +71,7 @@ public class Game implements BulletFiredListener, SaveHandler {
 		this.asteroids = new LinkedList<Asteroid>();
 		this.bullets = new LinkedList<Bullet>();
 		this.powerups = new LinkedList<Powerup>();
+		this.particles = new LinkedList<Particle>();
 		this.canvas = null;
 	}
 	
@@ -128,6 +132,10 @@ public class Game implements BulletFiredListener, SaveHandler {
 	
 	public List<Powerup> getPowerups() {
 		return this.powerups;
+	}
+	
+	public List<Particle> getParticles() {
+		return this.particles;
 	}
 	
 	public void setGameCanvas(GameCanvas canvas) {
@@ -240,6 +248,7 @@ public class Game implements BulletFiredListener, SaveHandler {
 		
 		updateBullets(delta);
 		updatePowerups(delta);
+		updateParticles(delta);
 		updateEntities(delta);
 	}
 	
@@ -280,6 +289,21 @@ public class Game implements BulletFiredListener, SaveHandler {
 		
 		for (Alien alien : aliens) {
 			alien.update(delta);
+		}
+	}
+	
+	private void updateParticles(long delta) {
+		Iterator<Particle> i = particles.iterator();
+		Particle p;
+		
+		while(i.hasNext()) {
+			p = i.next();
+			
+			if (p.isExpired()) {
+				i.remove();
+			} else {
+				p.update(delta);
+			}
 		}
 	}
 	
@@ -374,6 +398,7 @@ public class Game implements BulletFiredListener, SaveHandler {
 				// Check collision with player
 				bulletIterator.remove();
 				ship.die();
+				generateParticles(ship.getCenter());
 				SoundEffect.SHIP_CRASH.play();
 			} else {
 				Iterator<Asteroid> asteroidIterator = asteroids.iterator();
@@ -390,6 +415,7 @@ public class Game implements BulletFiredListener, SaveHandler {
 							// Remove the asteroid and bullet
 							asteroidIterator.remove();
 							bulletIterator.remove();
+							generateParticles(asteroid.getCenter());
 							
 							bulletCollided = true;
 							
@@ -433,6 +459,7 @@ public class Game implements BulletFiredListener, SaveHandler {
 							// Remove the alien and bullet
 							alienIterator.remove();
 							bulletIterator.remove();
+							generateParticles(alien.getCenter());
 							
 							SoundEffect.ALIEN_DIE.play();
 							
@@ -487,6 +514,7 @@ public class Game implements BulletFiredListener, SaveHandler {
 						
 						alienIterator.remove();
 						asteroidIterator.remove();
+						generateParticles(alien.getCenter());
 					}
 				} catch (IllegalStateException e) {
 					continue;
@@ -566,6 +594,12 @@ public class Game implements BulletFiredListener, SaveHandler {
 			} else if (destroyed instanceof Alien) {
 				points += multiplier * POINTS_ALIEN;
 			}
+		}
+	}
+	
+	private void generateParticles(Point p) {
+		for (int i = 0; i < NUM_PARTICLES; i++) {
+			particles.add(new Particle(p));
 		}
 	}
 }
