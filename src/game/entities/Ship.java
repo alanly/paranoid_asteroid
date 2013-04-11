@@ -1,10 +1,10 @@
 package game.entities;
 
 import game.Point;
+import game.SoundEffect;
 import game.events.BulletFiredEvent;
 import game.events.BulletFiredListener;
 import game.ui.GameCanvas;
-
 import io.InputHandler;
 
 import java.awt.Polygon;
@@ -13,6 +13,7 @@ import java.util.List;
 
 public class Ship extends Entity {
 	private static final double MAX_BULLET_FIRED_WAIT = 0.5e9;
+	private static final long MAX_HYPER_WAIT = (long) 5e9;
 	private static final double MAX_LINEAR_SPEED = 2.8e-7;
 	private static final double MIN_ANGULAR_SPEED = 4.5e-9;
 	private static final long MAX_POWERUP_TTL = (long) 10e9;
@@ -34,6 +35,7 @@ public class Ship extends Entity {
 	private long shieldTTL = 0;
 	private long tripleShotTTL = 0;
 	private long timeSinceLastFired = 0;
+	private long timeSinceLastHyper = MAX_HYPER_WAIT;
 
 	/**
 	 * Constructs a new ship.
@@ -57,10 +59,16 @@ public class Ship extends Entity {
 		updateBounds();
 		
 		timeSinceLastFired += delta;
+		timeSinceLastHyper += delta;
 		
 		if (InputHandler.getInstance().getSpaceKey().isPressed() && canFire()) {
 			fireBullet();
 			timeSinceLastFired = 0;
+		}
+		
+		if (InputHandler.getInstance().getDownKey().isPressed() && canEnterHyperSpace()) {
+			enterHyperSpace();
+			timeSinceLastHyper = 0;
 		}
 	}
 	
@@ -70,6 +78,10 @@ public class Ship extends Entity {
 	 */
 	public boolean canFire() {
 		return timeSinceLastFired > getMaxBulletFiredWait();
+	}
+	
+	public boolean canEnterHyperSpace() {
+		return timeSinceLastHyper > MAX_HYPER_WAIT;
 	}
 
 	/**
@@ -202,11 +214,19 @@ public class Ship extends Entity {
 	}
 	
 	/**
+	 * Returns true if the ship is accelerating.
+	 * @return true is the ship is accelerating
+	 */
+	private boolean isAccelerating() {
+		return InputHandler.getInstance().getUpKey().isPressed();
+	}
+	
+	/**
 	 * Updates the speed of the ship.
 	 * @param delta the time since the last update
 	 */
 	private void updateSpeed(long delta) {
-		if (InputHandler.getInstance().getUpKey().isPressed()) {
+		if (isAccelerating()) {
 			// Accelerate
 			linearSpeed += ACCELERATION * delta;
 			linearSpeed = Math.min(getMaxLinearSpeed(), linearSpeed);
@@ -283,7 +303,7 @@ public class Ship extends Entity {
 	private void updateAngle(long delta) {
 		double deltaAngle = 0;
 		double angularSpeed = MIN_ANGULAR_SPEED * (1 - linearSpeed / (1.5 * getMaxLinearSpeed()));
-
+		
 		if (InputHandler.getInstance().getLeftKey().isPressed()) {
 			// Turn CCW
 			deltaAngle = -angularSpeed * delta;
@@ -364,6 +384,15 @@ public class Ship extends Entity {
 				listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle + TRIPLE_SHOT_OFFSET_ANGLE));
 				listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle - TRIPLE_SHOT_OFFSET_ANGLE));
 			}
+		}
+	}
+	
+	private void enterHyperSpace() {
+		setCenter(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, getCenter(), 0));
+		initializeVertices();
+		
+		for (Point vertex : vertices) {
+			vertex.rotate(getCenter(), Math.PI/2 - angle);
 		}
 	}
 }
