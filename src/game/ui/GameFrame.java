@@ -4,6 +4,7 @@ import game.GameController;
 import game.GameController.GameType;
 import game.ui.menu.CreditsPanel;
 import game.ui.menu.GamePanel;
+import game.ui.menu.HelpPanel;
 import game.ui.menu.HighScoresPanel;
 import game.ui.menu.MainPanel;
 
@@ -24,6 +25,7 @@ public class GameFrame extends JFrame {
 	private CreditsPanel creditsPanel;
 	private HighScoresPanel highScoresPanel;
 	private GamePanel gamePanel;
+	private HelpPanel helpPanel;
 	
 	public GameFrame() {
 		this.addKeyListener(InputHandler.getInstance());
@@ -88,11 +90,16 @@ public class GameFrame extends JFrame {
 		layout.show(cardPanel, "credits");
 	}
 	
+	public void showHelpPanel() {
+		layout.show(cardPanel, "help");
+	}
+	
 	private void initPanels() {
 		layout = new CardLayout();
 		cardPanel = new JPanel(layout);
 		creditsPanel = new CreditsPanel(this);
 		highScoresPanel = new HighScoresPanel(this);
+		helpPanel = new HelpPanel(this);
 		
 		mainPanel = new MainPanel(this);
 		gamePanel = new GamePanel();
@@ -101,6 +108,7 @@ public class GameFrame extends JFrame {
 		cardPanel.add(gamePanel, "game");
 		cardPanel.add(creditsPanel, "credits");
 		cardPanel.add(highScoresPanel, "highScores");
+		cardPanel.add(helpPanel, "help");
 		
 		this.add(cardPanel);
 	}

@@ -16,6 +16,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
 	private JButton loadGameButton;
 	private JButton highScoresButton;
 	private JButton creditsButton;
+	private JButton helpButton;
 	private GameFrame frame;
 	
 	public ButtonPanel(GameFrame frame) {
@@ -45,6 +46,8 @@ public class ButtonPanel extends JPanel implements ActionListener {
 			frame.showHighScores();
 		} else if (source == creditsButton) {
 			frame.showCreditsPanel();
+		} else if (source == helpButton) {
+			frame.showHelpPanel();
 		}
 	}
 	
@@ -58,10 +61,14 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		loadGameButton = new JButton("Load Game");
 		this.add(loadGameButton);
 		
-		highScoresButton = new JButton("High Scores");
+		highScoresButton = new JButton("Scores");
 		this.add(highScoresButton);
+		
+		helpButton = new JButton("?");
+		this.add(helpButton);
 		
 		creditsButton = new JButton("Credits");
 		this.add(creditsButton);
+		
 	}
 }
