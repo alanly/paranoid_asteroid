@@ -5,6 +5,7 @@ import game.Game;
 import game.entities.Alien;
 import game.entities.Asteroid;
 import game.entities.Bullet;
+import game.entities.Particle;
 import game.entities.Powerup;
 import game.entities.Ship;
 
@@ -37,6 +38,7 @@ public class GameCanvas extends Canvas {
 		List<Asteroid> asteroids = game.getAsteroids();
 		List<Alien> aliens = game.getAliens();
 		List<Powerup> powerups = game.getPowerups();
+		List<Particle> particles = game.getParticles();
 		long points = game.getPoints();
 		int level = game.getLevel();
 		// Prepare buffer strategy and graphics
@@ -68,6 +70,10 @@ public class GameCanvas extends Canvas {
 		}
 		
 		for (Powerup p : powerups) {
+			Renderer.render(p, g);
+		}
+
+		for (Particle p : particles) {
 			Renderer.render(p, g);
 		}
 		
