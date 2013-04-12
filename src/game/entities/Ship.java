@@ -387,12 +387,14 @@ public class Ship extends Entity {
 				for (int i = 0; i < NUM_PULSE_SHOTS; i++) {
 					listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle + i*PULSE_SHOTS_ANGLE));
 				}
-			} else if (hasTripleShot()) {
-				listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle + TRIPLE_SHOT_OFFSET_ANGLE));
-				listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle - TRIPLE_SHOT_OFFSET_ANGLE));
 			} else {
 				// Origin is the tip of the ship, the first vertex
 				listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle));
+				
+				if (hasTripleShot()) {
+					listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle + TRIPLE_SHOT_OFFSET_ANGLE));
+					listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle - TRIPLE_SHOT_OFFSET_ANGLE));
+				}
 			}
 		}
 	}
