@@ -103,6 +103,8 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	private static void renderAsteroid(Asteroid e, Graphics2D g) {
+		g.setColor(Colors.DARK_BLUE.getColor());
+		g.fill(e.getBounds());
 		g.setColor(ASTEROID_COLOR);
 		g.drawPolygon((Polygon)e.getBounds());
 	}
@@ -113,6 +115,8 @@ public class Renderer {
 	 * @param g the graphics object
 	 */
 	private static void renderAlien(Alien e, Graphics2D g) {
+		g.setColor(Colors.DARK_BLUE.getColor());
+		g.fill(e.getBounds());
 		g.setColor(ALIEN_COLOR);
 		g.drawPolygon((Polygon)e.getBounds());
 	}
