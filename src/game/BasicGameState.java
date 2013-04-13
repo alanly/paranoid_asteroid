@@ -41,6 +41,5 @@ public class BasicGameState implements Serializable {
 	
 	public static BasicGameState load() {
 		return Loader.load(BasicGameState.class, LOAD_PATH);
-		
 	}
 }
