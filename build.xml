@@ -1,0 +1,21 @@
+<project default="jar">
+	<property name="src" location="src" />
+	<property name="bin" location="bin" />
+	<property name="build" location="build" />
+	
+	<target name="compile">
+		<mkdir dir="${bin}" />
+		<javac srcdir="${src}" destdir="${bin}" classpath="jl1.0.1.jar" />
+	</target>
+	
+	<target name="jar" depends="compile">
+		<mkdir dir="${build}" />
+		<jar destfile="build/paranoid_asteroid.jar" basedir="${bin}">
+			<fileset dir="${bin}" includes="**/*.class" />
+			<zipgroupfileset dir="." includes="jl1.0.1.jar" />
+			<manifest>
+				<attribute name="Main-Class" value="game.Launcher" />
+			</manifest>
+		</jar>
+	</target>
+</project>
