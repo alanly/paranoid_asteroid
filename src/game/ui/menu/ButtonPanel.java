@@ -8,6 +8,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+/**
+ * ButtonPanel is a subclass of JPanel and implements the ActionListener interface. It represents the panel containing the main menu button and was made to be used in the MainPanel class.
+ */
 public class ButtonPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	
@@ -19,6 +22,10 @@ public class ButtonPanel extends JPanel implements ActionListener {
 	private JButton helpButton;
 	private GameFrame frame;
 	
+	/**
+	 * Creates a new ButtonPanel
+	 * @param frame the GameFrame used
+	 */
 	public ButtonPanel(GameFrame frame) {
 		this.frame = frame;
 		this.setOpaque(false);
@@ -27,11 +34,20 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		initButtons();
 	}
 	
+	/**
+	 * Adds a JButton to the panel
+	 * @param button the JButton to be added
+	 */
 	public void add(JButton button) {
 		button.addActionListener(this);
 		button.setFocusable(false);
 		super.add(button);
 	}
+	
+	/**
+	 * Responds to the event where one of the buttons is clicked. Depending on the source of the button click event, either launches the game or switches to the appropriate panel.
+	 * @param event the button-click event which triggered the method call
+	 */
 	
 	public void actionPerformed(ActionEvent event) {
 		Object source = event.getSource();
@@ -51,6 +67,9 @@ public class ButtonPanel extends JPanel implements ActionListener {
 		}
 	}
 	
+	/**
+	 * Initialized the JButtons and adds them to the panel 
+	 */
 	private void initButtons() {
 		singlePlayerButton = new JButton("Single Player");
 		this.add(singlePlayerButton);

@@ -8,9 +8,18 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+/**
+ * 
+ * CreditsPanel is a subclass of BasePanel and represents the panel displaying the development credits of the system
+ */
 public class CreditsPanel extends BasePanel {
 	private static final long serialVersionUID = 1L;
 	
+	
+	/**
+	 * Creates a new CreditsPanel
+	 * @param frame the GameFrame used
+	 */
 	public CreditsPanel(GameFrame frame) {
 		this.setLayout(new BorderLayout());
 		
