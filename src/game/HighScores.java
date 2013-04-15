@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 /**
- * 
- * 
+ * Highscores implements the Serializable interface and represents the list of top scores achieved in the game, which can be loaded and unloaded on a memory file.
+ * It implements the singleton design pattern.
  *
  */
 public class HighScores implements Serializable, Iterable<HighScores.Score> {
@@ -22,8 +22,8 @@ public class HighScores implements Serializable, Iterable<HighScores.Score> {
 	
 	private List<Score> highScores;
 	/**
-	 * 
-	 * @return
+	 * Creates and returns new Highscores if there is no instance of it. Returns the <tt>instance</tt> otherwise. 
+	 * @return singleton instance of Highscores 
 	 */
 	public synchronized static HighScores getInstance() {
 		if (instance == null) {
@@ -32,11 +32,19 @@ public class HighScores implements Serializable, Iterable<HighScores.Score> {
 		
 		return instance;
 	}
-	
+	/**
+	 * checks if the score is a highscore 
+	 * @param score score to be checked
+	 * @return <tt>true</tt> if it is a highscore. False otherwise.
+	 */
 	public boolean isHighScore(long score) {
 		return score > 0 && (highScores.size() < MAX_SCORES || (score > highScores.get(highScores.size() - 1).getScore()));
 	}
-	
+	/**
+	 * Adds ascore to <tt>highScores</tt> if it is a highscore.
+	 * @param score score to be submitted the list 
+	 * @param name name associated with the score.
+	 */
 	public void submit(long score, String name) {
 		int i = 0;
 		
@@ -48,30 +56,44 @@ public class HighScores implements Serializable, Iterable<HighScores.Score> {
 		trim();
 		save();
 	}
-	
+	/**
+	 * Unloads the object to the load file 
+	 * @return <tt>true</tt> if the unloading is successful
+	 */
 	public boolean save() {
 		return Loader.unload(this, LOAD_PATH);
 	}
-	
+	/**
+	 * Loads the highscores from the load file and assignes them to <tt>highScores</tt>
+	 */
 	public void reload() {
 		HighScores newScores = load();
 		this.highScores = newScores.highScores;
 	}
-	
+	/**
+	 * @return an Iterator for <tt>highScores</tt> 
+	 */
 	public Iterator<HighScores.Score> iterator() {
 		return highScores.iterator();
 	}
-	
+	/**
+	 * @return String representation of the object
+	 */
 	public String toString() {
 		return highScores.toString();
 	}
-	
+	/**
+	 * Removes the last highscore from <tt>highscores</tt> until the size of the ArrayList is <tt>MAX_SCORES</tt>
+	 */
 	private void trim() {
 		while (highScores.size() > MAX_SCORES) {
 			highScores.remove(highScores.size() - 1);
 		}
 	}
-	
+	/**
+	 * 
+	 * @return <tt>Highscores</tt> object loaded from the file at <tt>LOAD_PATH</tt>
+	 */
 	private static HighScores load() {
 		HighScores h = Loader.load(HighScores.class, LOAD_PATH);
 		
