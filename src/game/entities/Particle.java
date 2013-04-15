@@ -28,7 +28,6 @@ public class Particle extends Entity {
 	 * @return <tt>true</tt> if the Particle is expired.
 	 */
 	public boolean isExpired() {
-		System.out.println(ttl);
 		return ttl < 0;
 	}
 	
