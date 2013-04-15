@@ -15,6 +15,10 @@ import java.awt.CardLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+/**
+ *  GameFrame is a subclass of JFrame and
+ * 
+ */
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
@@ -27,6 +31,9 @@ public class GameFrame extends JFrame {
 	private GamePanel gamePanel;
 	private HelpPanel helpPanel;
 	
+	/**
+	 * Creates a new GameFrame by initializing its panels and adding the InputHandler singleton as a KeyListener to the JFrame
+	 */
 	public GameFrame() {
 		this.addKeyListener(InputHandler.getInstance());
 		
@@ -39,6 +46,10 @@ public class GameFrame extends JFrame {
 		this.setVisible(true);
 	}
 	
+	/**
+	 * Launches a single player game in a new Thread in which a new GameController is reassigned to the frame. The game can be a new game or a loading of a previously saved game.
+	 * @param loadGame the method loads a previously saved game when <tt>true</tt>, launches a new game otherwise.
+	 */
 	public void playSinglePlayer(final boolean loadGame) {
 		controller = null;
 		
@@ -57,6 +68,9 @@ public class GameFrame extends JFrame {
 		showGamePanel();
 	}
 	
+	/**
+	 * Launches a single player game in a new Thread in which a new GameController is reassigned to the frame. The game can be a new game or a loading of a previously saved game.
+	 */
 	public void playTwoPlayer() {
 		controller = null;
 		
@@ -73,27 +87,45 @@ public class GameFrame extends JFrame {
 		showGamePanel();
 	}
 	
+	/**
+	 * Displays the highscoresPanel
+	 */
 	public void showHighScores() {
 		highScoresPanel.reload();
 		layout.show(cardPanel, "highScores");
 	}
 	
+	/**
+	 * Displays the MainPanel
+	 */
 	public void showMainMenu() {
 		layout.show(cardPanel, "main");
 	}
 	
+	/**
+	 * Displays the GamePanel
+	 */
 	public void showGamePanel() {
 		layout.show(cardPanel, "game");
 	}
 	
+	/**
+	 * Displays the CreditsPanel
+	 */
 	public void showCreditsPanel() {
 		layout.show(cardPanel, "credits");
 	}
 	
+	/**
+	 * Displays the HelpPanel
+	 */
 	public void showHelpPanel() {
 		layout.show(cardPanel, "help");
 	}
 	
+	/**
+	 * Initializes the UI panels and lays them out in a CardLayout which permits switching between which panel is being displayed. 
+	 */
 	private void initPanels() {
 		layout = new CardLayout();
 		cardPanel = new JPanel(layout);

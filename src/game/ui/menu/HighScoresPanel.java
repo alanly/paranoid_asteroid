@@ -10,12 +10,19 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+/**
+ * HighscoresPanel is a subclass of BasePanel and represents the panel displaying the highest scores attained in the game.
+ */
 public class HighScoresPanel extends BasePanel {
 	private static final long serialVersionUID = 1L;
 	
 	private HighScores highScores;
 	private JLabel scores;
 	
+	/**
+	 * Creates a new HighScoresPanel which uses the Highscores singleton to generate the score display
+	 * @param frame the GameFrame used
+	 */
 	public HighScoresPanel(final GameFrame frame) {
 		this.setLayout(new BorderLayout());
 		
@@ -33,11 +40,17 @@ public class HighScoresPanel extends BasePanel {
 		generateScores();
 	}
 	
+	/**
+	 * Reloads the highscores from memory into the panel display.
+	 */
 	public void reload() {
 		highScores.reload();
 		generateScores();
 	}
 	
+	/**
+	 * Generates the score display from the Highscores singleton.
+	 */
 	private void generateScores() {
 		StringBuilder sb = new StringBuilder();
 		

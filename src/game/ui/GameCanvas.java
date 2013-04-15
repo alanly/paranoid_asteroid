@@ -15,23 +15,36 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 import java.util.List;
-
+/**
+ * The GameCanvas represents the canvas upon which the entities and events of the game are displayed.
+ */
 public class GameCanvas extends Canvas {
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 600;
 	
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * Creates a GameCanvas 
+	 */
 	public GameCanvas() {
 		this.setBackground(Colors.DARK_BLUE.getColor());
 		this.setFocusable(false);
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 	}
 	
+	/**
+	 * Sets this GameCanvas as the GameCanvas for <tt>game</tt>
+	 * @param game game for which the GameCanvas is set.
+	 */
 	public void setGame(Game game) {
 		game.setGameCanvas(this);
 	}
 	
+	/**
+	 * Renders the game using the Renderer class
+	 * @param game game to be rendered
+	 */
 	public void renderGame(Game game) {
 		Ship ship = game.getShip();
 		List<Bullet> bullets = game.getBullets();

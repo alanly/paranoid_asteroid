@@ -14,7 +14,9 @@ import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.plaf.ScrollBarUI;
 
-
+/**
+ * HelpPanel is a subclass of BasePanel and represent the panel displaying instructions for the user.
+ */
 public class HelpPanel extends BasePanel {
 	private static final long serialVersionUID = 1L;
 	
@@ -73,6 +75,10 @@ public class HelpPanel extends BasePanel {
 		sb.append("</body></html>");
 	}
 	
+	/**
+	 * Creates a new HelpPanel
+	 * @param frame the GameFrame used
+	 */
 	public HelpPanel(GameFrame frame) {
 		this.setLayout(new BorderLayout());
 		
