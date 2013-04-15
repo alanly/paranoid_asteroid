@@ -11,12 +11,13 @@ import java.awt.Rectangle;
  *
  */
 public class Bullet extends Entity {
+	public static final double MAX_TIME_TO_LIVE = 0.8e9;
+	
 	private boolean expired;
 	private Entity source;
 	private double angle;
 	private double linearSpeed = 4.0e-7;
-	private double maxTimeToLive = 0.8e9;
-	private double timeToLive = maxTimeToLive;
+	private double timeToLive = MAX_TIME_TO_LIVE;
 
 	/**
 	 * Creates a new Bullet from the firing source, the Bullet's initial location and the angle at which the shot is being fired
