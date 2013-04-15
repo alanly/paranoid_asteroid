@@ -19,7 +19,12 @@ import java.awt.geom.Area;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
+/**
+ * The Game class implements the BulletFiredListener, SaveHandler and HyperspaceListener interfaces.
+ * This class contains all the parameters with which the game is run as well as all the components which make up the gameplay and controles how these objects interact.
+ * It also contains variables pertaining to the current state of the game.
+ *
+ */
 public class Game implements BulletFiredListener, SaveHandler, HyperspaceListener {
 	// Time constants
 	private static final double FPS = 30;
@@ -58,11 +63,16 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	private List<Particle> particles;
 	private Ship ship;
 	private GameCanvas canvas;
-	
+	/**
+	 * Creates a new Game.
+	 */
 	public Game() {
 		this(new BasicGameState());
 	}
-	
+	/**
+	 * Creates a Game object from a BasicGameState object and assigns the values of the BasicGameState to <tt>level</tt>, <tt>multiplier</tt> and <tt>point</tt>
+	 * @param state BasicGameState from which the new Game will be constructed.
+	 */
 	public Game(BasicGameState state) {
 		this.level = state.getLevel();
 		this.points = state.getPoints();
@@ -75,7 +85,9 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		this.particles = new LinkedList<Particle>();
 		this.canvas = null;
 	}
-	
+	/**
+	 * Starts the game by creating a new Ship object and adding to it a BulletFireLister object and HyperspaceListener object. Then populates the field and starts the game loop.
+	 */
 	public void start() {
 		// Create player and listen to its bullet fired events
 		ship = new Ship(new Point(GameCanvas.WIDTH / 2, GameCanvas.HEIGHT / 2));
@@ -85,7 +97,9 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		populateField();
 		loop();
 	}
-	
+	/**
+	 * Toggles the <tt>pause</tt> variable
+	 */
 	public void togglePause() {
 		this.paused = !this.paused;
 	}
