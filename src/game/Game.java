@@ -89,11 +89,17 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	public void togglePause() {
 		this.paused = !this.paused;
 	}
-	
+	/**
+	 * Indicates if the game is paused
+	 * @return <tt>true</tt> if the game is paused
+	 */
 	public boolean isPaused() {
 		return paused;
 	}
-	
+	/**
+	 * Adds a Bullet to the game field and <tt>bullets</tt> list and plays the approrpiate sound effect
+	 * @param e BulletFiredEvent which triggered this method call
+	 */
 	public void bulletFired(BulletFiredEvent e) {
 		bullets.add(new Bullet(e.getSource(), e.getOrigin(), e.getAngle()));
 		
@@ -103,55 +109,96 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 			SoundEffect.FIRE_BULLET.play();
 		}
 	}
-	
+	/**
+	 * Return the Ship object
+	 * @return <tt>ship</tt>
+	 */
 	public Ship getShip() {
 		return this.ship;
 	}
-	
+	/**
+	 * Returns the point count
+	 * @return <tt>points</tt>
+	 */
 	public long getPoints() {
 		return points;
 	}
-	
+	/**
+	 * Returns the level
+	 * @return <tt>level</tt>
+	 */
 	public int getLevel() {
 		return level;
 	}
-	
+	/**
+	 * Returns the multiplier for this level.
+	 * @return the multiplier for this level.
+	 */
 	public double getMultipliter() {
 		return multiplier;
 	}
-	
+	/**
+	 * Returns the list of Bullet objects in the game.
+	 * @return the list of Bullet objects in the game.
+	 */
 	public List<Bullet> getBullets() {
 		return this.bullets;
 	}
-	
+	/**
+	 * Returns the list of Asteroid objects in the game.
+	 * @return the list of Asteroid objects in the game.
+	 */
 	public List<Asteroid> getAsteroids() {
 		return this.asteroids;
 	}
-	
+	/**
+	 * Returns the list of Alien objects in the game.
+	 * @return the list of Alien objects in the game.
+	 */	
 	public List<Alien> getAliens() {
 		return this.aliens;
 	}
-	
+	/**
+	 * Returns the list of Powerup objects in the game.
+	 * @return the list of Powerup object in the game.
+	 */
 	public List<Powerup> getPowerups() {
 		return this.powerups;
 	}
-	
+	/**
+	 * Returns the list of Particle objects in the game.
+	 * @return the list of Particle objects in the game.
+	 */
 	public List<Particle> getParticles() {
 		return this.particles;
 	}
-	
+	/**
+	 * Set the Game's GameCanvas to the parameter value
+	 * @param canvas GameCanvas to which </tt>canvas<tt> will be set
+	 */
 	public void setGameCanvas(GameCanvas canvas) {
 		this.canvas = canvas;
 	}
-	
+	/**
+	 * Indicates whether the Game is waiting to load the next level
+	 * @return <tt>true</tt> if the Game is waiting
+	 */
 	public boolean isWaitingForLevel() {
 		return levelStartWait > 0;
 	}
 	
+	/**
+	 * Returns the current state of the game which includes <tt>multiplier</tt>, <tt>level</tt> and the points at the beginning of the level. 
+	 * @return BasicGameState which contains the current state of the game which includes <tt>multiplier</tt>, <tt>level</tt> and the points at the beginning of the level.
+	 * 
+	 */
 	public BasicGameState extractState() {
 		return new BasicGameState(this.level, this.lastLevelPoints, this.multiplier);
 	}
 	
+	/**
+	 * Saves the state of the game and sets <tt>save</tt> to <tt>true</tt>.
+	 */
 	public void handleSave() {
 		extractState().save();
 		saved = true;
