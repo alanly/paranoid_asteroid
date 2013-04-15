@@ -2,6 +2,9 @@ package game;
 
 import java.awt.Color;
 
+/**
+ * Colors is an enum type listing the fonts used in by system
+ */
 public enum Colors {
 	WHITE(0xF0F0F0),
 	STEEL(0xB0C4DE),
@@ -14,10 +17,18 @@ public enum Colors {
 	
 	private Color color;
 	
+	/**
+	 * Creates a new Color from the color code
+	 * @param hex color code in hex
+	 */
 	Colors(int hex) {
 		this.color = new Color(hex);
 	}
 	
+	/**
+	 * Returns the color
+	 * @return the color
+	 */
 	public Color getColor() {
 		return this.color;
 	}

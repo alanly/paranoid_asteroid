@@ -1,9 +1,16 @@
 package game.entities;
 
 import game.Point;
-
+/**
+* SmallAsteroid is a subclass of Asteroid and represents an Asteroid of size SMALL.
+**/
 public class SmallAsteroid extends Asteroid {
 
+
+	/**
+	 * Creates a Small Asteroid centered at <tt>center</tt>
+	 * @param center initial center of the Asteroid 
+	 */
 	public SmallAsteroid(Point center) {
 		super(center);
 		this.size = Size.SMALL;

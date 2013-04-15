@@ -11,6 +11,11 @@ import game.events.BulletFiredEvent;
 import game.events.BulletFiredListener;
 import game.ui.GameCanvas;
 
+/**
+ * Alien is a subclass of Entity which moves on the game field and fires
+ * at the playable character which is the Ship object.
+ * 
+ **/
 public class Alien extends Entity {
 	private static double LINEAR_SPEED_VARIANCE = 0.5;
 	private static double MIN_LINEAR_SPEED = 3e-8;
@@ -25,6 +30,11 @@ public class Alien extends Entity {
 	private List<BulletFiredListener> bulletFiredListeners;
 	private Entity target;
 	
+	/**
+	 * Alien object constructor
+	 * @param center the center point  of the Alien object
+	 * @param target the target at which the Alien will be firing
+	 */
 	public Alien(Point center, Entity target) {
 		this.setCenter(center);
 		this.target = target;
@@ -40,6 +50,10 @@ public class Alien extends Entity {
 		updateBounds();
 	}
 	
+	/**
+	 * Updates the state of the Alien and causes the Alien to fire.
+	 * @param delta time since last update. 
+	 */
 	public void update(long delta) {
 		bulletTimer += delta;
 		
@@ -48,10 +62,17 @@ public class Alien extends Entity {
 		fireBullet();
 	}
 	
+	/**
+	 * Adds a BulletFiredListener <tt>listener</tt> to the <tt>bulletFiredListener</tt> list.
+	 * @param listener the listener to be added to the list.
+	 */
 	public void addBulletFiredListener(BulletFiredListener listener) {
 		this.bulletFiredListeners.add(listener);
 	}
 	
+	/**
+	 * Initializes the vertices array containing the vertices of the Alien shape according to its location
+	 */
 	private void initializeVertices() {
 		this.vertices = new Point[13];
 		
@@ -71,6 +92,10 @@ public class Alien extends Entity {
 		this.vertices[12] = new Point(x - 8, y - 6);
 	}
 	
+	/**
+	 * Updates the position of the vertices according to the Alien's speed and the elapsed time since last update, <tt>delta</tt> 
+	 * @param delta time elapsed since last update.
+	 */
 	private void updateVertices(long delta) {
 		double distance = speed * delta;
 		double dx = distance * Math.cos(angle);
@@ -89,6 +114,9 @@ public class Alien extends Entity {
 		
 	}
 	
+	/**
+	 * Updates the position of the bounds of the Alien shape according to the Alien's vertices
+	 */
 	private void updateBounds() {
 		int[] x = new int[this.vertices.length];
 		int[] y = new int[this.vertices.length];
@@ -101,6 +129,9 @@ public class Alien extends Entity {
 		setBounds(new Polygon(x, y, x.length));
 	}
 	
+	/**
+	 * Causes the Alien to fire towards target.
+	 */
 	private void fireBullet() {
 		if (bulletTimer > NANOS_BEFORE_BULLET_FIRED) {
 			bulletTimer = 0;

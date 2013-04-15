@@ -12,6 +12,10 @@ public class Particle extends Entity {
 	private double ttl = maxTimeToLive;
 	private double decelleration = 2e-16;
 	
+	/**
+	 * Creates a Particle centered at <tt>center</tt> with a random <tt>angle</tt>
+	 * @param center Initial center of the Particle
+	 */
 	public Particle(Point center) {
 		setCenter((Point) center.clone());
 		
@@ -19,20 +23,36 @@ public class Particle extends Entity {
 		setBounds(new Rectangle((int)center.x, (int)center.y, 1, 1));
 	}
 	
+	/**
+	 * Indicates whether or not the Particle is expired. 
+	 * @return <tt>true</tt> if the Particle is expired.
+	 */
 	public boolean isExpired() {
 		return ttl <= 0;
 	}
 	
+	/**
+	 * Updates the state of the Particle
+	 * @param delta time elapsed since last update
+	 */
 	public void update(long delta) {
 		updateSpeed(delta);
 		updateCenter(delta);
 		updateBounds();
 	}
 	
+	/**
+	 * Updates the speed of the Particle
+	 * @param delta time elapsed since last update
+	 */
 	public void updateSpeed(long delta) {
 		linearSpeed = Math.max(0, linearSpeed - (decelleration * delta));
 	}
 	
+	/**
+	 * Updates the center of the Particle
+	 * @param delta time elapsed since last update
+	 */
 	public void updateCenter(long delta) {
 		double distance = linearSpeed * delta;
 		double dx = distance * Math.cos(angle);
@@ -47,9 +67,13 @@ public class Particle extends Entity {
 		getCenter().wrapAround(GameCanvas.WIDTH, GameCanvas.HEIGHT);
 	}
 	
+	/**
+	 * Updates the bounds of the Particle
+	 */
 	private void updateBounds() {
 		Rectangle bounds = (Rectangle) getBounds();
 		bounds.x = (int) getCenter().x;
+		
 		bounds.y = (int) getCenter().y;
 	}
 }

@@ -157,10 +157,16 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		saved = true;
 	}
 	
+	/**
+	 * Plays the sound effect for hyperspace use
+	 */
 	public void hyperspaceEntered() {
 		SoundEffect.HYPERSPACE.play();
 	}
 	
+	/**
+	 * Populates the game field with Asteroids at random locations
+	 */
 	private void populateField() {
 		int asteroidCount = getNumAsteroids();
 		Size asteroidSize = getAsteroidSize();
@@ -172,6 +178,10 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Resets the InputHandler and starts the game loop which runs until the Ship dies or the game is saved.
+	 * In the loop the game is updated and rendered, Aliens are generated, and the next level is loaded when the previous level is ended.
+	 */
 	private void loop() {
 		InputHandler.getInstance().reset();
 		SoundEffect.GAME_START.play();
@@ -242,6 +252,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 				timeSinceLastUpdate = 0;
 			}
 			
+			// Try to spawn alien
 			if (timeSinceLastAlien > NANOS_BETWEEN_ALIEN) {
 				generateAlien();
 				timeSinceLastAlien = 0;
@@ -249,6 +260,10 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Update the state of all Entities on the game field
+	 * @param delta time elapsed since last update
+	 */
 	private void update(long delta) {
 		ship.update(delta);
 		
@@ -258,6 +273,10 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		updateEntities(delta);
 	}
 	
+	/** 
+	 * Updates the state of the Bullet objects
+	 * @param delta time elapsed since last update
+	 */
 	private void updateBullets(long delta) {
 		Iterator<Bullet> i = bullets.iterator();
 		Bullet b;
@@ -273,6 +292,10 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Updates the state of the Powerup objects
+	 * @param delta time elapsed since last update
+	 */
 	private void updatePowerups(long delta) {
 		Iterator<Powerup> i = powerups.iterator();
 		Powerup p;
@@ -288,6 +311,10 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Updates the state of the Alien and Asteroid objects
+	 * @param delta time elapsed since last update
+	 */
 	private void updateEntities(long delta) {
 		for (Asteroid asteroid : asteroids) {
 			asteroid.update(delta);
@@ -298,6 +325,10 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Updates the state of the Particle objects
+	 * @param delta time  elapsed since last update
+	 */
 	private void updateParticles(long delta) {
 		Iterator<Particle> i = particles.iterator();
 		Particle p;
@@ -313,6 +344,10 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Checks for collisions and updates the level if all Aliens and
+	 * Asteroids have been destroyed
+	 */
 	private void collisionCheck() {
 		checkShipEntityCollisions();
 		checkShipPowerupCollisions();
@@ -328,6 +363,9 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Checks for collisions with the Ship. Kills the player if a collision is detected. 
+	 */
 	private void checkShipEntityCollisions() {
 		Iterator<Asteroid> asteroidIterator = asteroids.iterator();
 		
@@ -366,6 +404,10 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Checks for collisions between the Ship and Poweruop objects.
+	 * If there is collision, removes the Powerup from the game field and applies it.
+	 */
 	private void checkShipPowerupCollisions() {
 		// Check for ship-powerup collision
 		Iterator<Powerup> powerupIterator = powerups.iterator();
@@ -388,6 +430,12 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Check for collisions between Bullet objects and Alien, Ship and Asteroid objects. If a collision occurs with the Ship, the Ship is killed.
+	 * If it occurs with an Asteroid, the Asteroid is broken up or, failing that, removed from the game field and the approriate
+	 * points are allocated. If it occurs with an Alien, the Alien is removed from the game field and the approriate
+	 * points are allocated.
+	 */
 	private void checkBulletEntityCollisions() {
 		List<Asteroid> newAsteroids = new LinkedList<Asteroid>();
 		List<Powerup> newPowerups = new LinkedList<Powerup>();
@@ -499,6 +547,10 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Checks for collisions between Alien and Asteroid objects. If a collision is detected the Alien is removed from the playing field and the Asteroid is either broken up,
+	 * or failing that, remove from the playing field
+	 */
 	private void checkAlienAsteroidCollisions() {
 		Iterator<Alien> alienIterator = aliens.iterator();
 		
@@ -533,6 +585,10 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Applies the Powerup <tt>p</tt> to the Ship
+	 * @param p Powerup to be applied
+	 */
 	private void applyPowerup(Powerup p) {
 		Powerup.Power type = p.getType();
 		
@@ -547,6 +603,9 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Ends the current level, clears the playing field of all Entities other than the ship then populates the field for the next level
+	 */
 	private void nextLevel() {
 		if (levelEnded) {
 			levelEnded = false;
@@ -556,6 +615,10 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Returns the initial size of the Asteroid objects for this level 
+	 * @return Size of the initial Asteroids
+	 */
 	private Size getAsteroidSize() {
 		if (this.level < 3) {
 			return Size.SMALL;
@@ -566,10 +629,17 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Returns the initial number of Asteroid objects for this level
+	 * @return the initial number of Asteroid objects for this level
+	 */
 	private int getNumAsteroids() {
 		return this.level / 2 + this.level % 2 + 1;
 	}
 	
+	/**
+	 * Has a probability of creating an Alien object at a random point in the game field
+	 */
 	private void generateAlien() {
 		// Chance of an alien appearing
 		if (Math.random() < this.level / 10.0) {
@@ -580,6 +650,11 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Has a probability of creating a Powerup object at a point <tt>p</tt> and adding it to a Powerup list
+	 * @param p Point at which the Powerup will appear
+	 * @param newPowerups list to which the Powerup will be added
+	 */
 	private void dropPowerup(Point p, List<Powerup> newPowerups) {
 		// Chance of powerup dropping when alien is destroyed
 		if (Math.random() < 0.5) {
@@ -592,6 +667,10 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Increments the points by an amount depending on depending the Entity destroyed and multiplier 
+	 * @param destroyed Entity which has been destroyed or <tt>null</tt> if the point allocation is not a result of Entity destruction
+	 */
 	private void allocatePoints(Entity destroyed) {
 		if (destroyed == null) {
 			// Not an interaction with an entity
@@ -607,6 +686,10 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		}
 	}
 	
+	/**
+	 * Generates a particle at the point <tt>p</tt> and adds its to the list of particles
+	 * @param p Point at which particle is to be generated
+	 */
 	private void generateParticles(Point p) {
 		for (int i = 0; i < NUM_PARTICLES; i++) {
 			particles.add(new Particle(p));
