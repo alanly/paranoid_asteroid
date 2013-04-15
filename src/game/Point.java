@@ -81,14 +81,14 @@ public class Point extends Point2D.Double {
 		double cos = Math.cos(angle);
 		double sin = Math.sin(angle);
 
-		this.x -= origin.x;
-		this.y -= origin.y;
+		this.x -= origin.getX();
+		this.y -= origin.getY();
 
 		double x = this.x * cos - this.y * sin;
 		double y = this.x * sin + this.y * cos;
 
-		this.x = x + origin.x;
-		this.y = y + origin.y;
+		this.x = x + origin.getX();
+		this.y = y + origin.getY();
 	}
 	
 	/**
@@ -137,7 +137,7 @@ public class Point extends Point2D.Double {
 			y = (int)((yMax + 1) * Math.random());
 			
 			// Calculate distance d = sqrt(dx^2 + dy^2)
-			distance = (int)Math.sqrt((p.x - x)*(p.x - x) + (p.y - y)*(p.y - y));
+			distance = (int)Math.sqrt((p.getX() - x)*(p.getX() - x) + (p.getY() - y)*(p.getY() - y));
 		} while (distance < radius);
 		
 		return new Point(x, y);
