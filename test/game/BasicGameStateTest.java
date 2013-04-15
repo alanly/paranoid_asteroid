@@ -15,4 +15,17 @@ public class BasicGameStateTest {
 		assertEquals(0, state.getPoints());
 		assertEquals(1, state.getMultiplier(), DELTA);
 	}
+	
+	@Test
+	public void testConstructorWithArgs() {
+		int level = 10;
+		long points = 1000;
+		double multiplier = 2.0;
+		
+		BasicGameState state = new BasicGameState(level, points, multiplier);
+		
+		assertEquals(level, state.getLevel());
+		assertEquals(points, state.getPoints());
+		assertEquals(multiplier, state.getMultiplier(), DELTA);
+	}
 }
