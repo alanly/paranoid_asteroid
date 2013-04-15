@@ -8,6 +8,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import game.Point;
+import game.entities.Alien;
 import game.entities.Bullet;
 import game.entities.Ship;
 
@@ -78,6 +79,30 @@ public class BulletTest {
 		
 		// Much later
 		bullet.update((long) Bullet.MAX_TIME_TO_LIVE * 10);
+		assertTrue(bullet.isExpired());
+	}
+	
+	@Test
+	public void testIsExpiredFromAlien() {
+		bullet = new Bullet(mock(Alien.class), center, 0.0);
+		
+		// Not expired, just created
+		assertFalse(bullet.isExpired());
+		
+		// Reached half of lifetime, not yet expired
+		bullet.update((long) (Bullet.MAX_TIME_TO_LIVE * Bullet.ALIEN_TIME_TO_LIVE_MULTIPLIER / 2));
+		assertFalse(bullet.isExpired());
+		
+		// 1 lifetime, not yet expired (must pass one full lifetime)
+		bullet.update((long) (Bullet.MAX_TIME_TO_LIVE * Bullet.ALIEN_TIME_TO_LIVE_MULTIPLIER / 2));
+		assertFalse(bullet.isExpired());
+		
+		// Over 1 lifetime, must be expired
+		bullet.update(1);
+		assertTrue(bullet.isExpired());
+		
+		// Much later
+		bullet.update((long) (Bullet.MAX_TIME_TO_LIVE * Bullet.ALIEN_TIME_TO_LIVE_MULTIPLIER * 10));
 		assertTrue(bullet.isExpired());
 	}
 }
