@@ -24,16 +24,16 @@ public class GameController implements PauseHandler, SaveHandler {
 		this.gamePanel = gamePanel;
 	}
 	/**
-	 * Calls the playGame method with the parameter
+	 * Calls the playGame method with the parameter <tt>type</tt> and <tt>false</tt> as the second parameter 
 	 * @param type
 	 */
 	public void playGame(GameType type) {
 		playGame(type, false);
 	}
 	/**
-	 * 
-	 * @param type
-	 * @param loadSaved
+	 * launches a single player if <tt>type</tt> is <tt>SINGLE_PLAYER</tt> and a two player game if it is <tt>TWO_PLAYER</tt>.
+	 * @param type desire GameType
+	 * @param loadSaved If <tt>true</tt> and <tt>type</tt> is <tt>SINGLE_PLAYER</tt>, loads a single player. Starts a new two player game otherwise.
 	 */
 	public void playGame(GameType type, boolean loadSaved) {
 		GameCanvas canvas = gamePanel.getGameCanvas();
@@ -62,9 +62,10 @@ public class GameController implements PauseHandler, SaveHandler {
 		}
 	}
 	/**
-	 * 
-	 * @param canvas
-	 * @param loadGame
+	 * Starts a new single player game or loads one from the load from BasicGameState. After the game is over without being saved, the method gets the points from the game and checks if a highscore was reached.
+	 * If a highscore is reached a dialogue box prompts the user for their name.
+	 * @param canvas GameCanvas on which the game field exists
+	 * @param loadGame if <tt>true</tt>, loads a game from BasicGameState. Starts a new game otherwise.
 	 */
 	private void playSinglePlayer(GameCanvas canvas, boolean loadGame) {
 		BasicGameState state;
@@ -101,7 +102,10 @@ public class GameController implements PauseHandler, SaveHandler {
 			JOptionPane.showMessageDialog(gamePanel, "Sorry, you didn't get a high score!", "Game Over", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
-	
+	/**
+	 * Starts a new two player game or loads one from the load from BasicGameState.
+	 * @param canvas
+	 */
 	private void playTwoPlayer(GameCanvas canvas) {
 		BasicGameState playerOneState = new BasicGameState();
 		BasicGameState playerTwoState = new BasicGameState();
@@ -125,7 +129,11 @@ public class GameController implements PauseHandler, SaveHandler {
 		
 		announceWinner(playerOnePoints, playerTwoPoints);
 	}
-	
+	/**
+	 * Binds the <tt>game</tt> to <tt>canvas</tt>, revalidates and repaint <tt>gamepanel</tt> and starts the game.
+	 * @param game
+	 * @param canvas
+	 */
 	private void bindAndStartGame(Game game, GameCanvas canvas) {
 		canvas.setGame(game);
 		
@@ -134,7 +142,11 @@ public class GameController implements PauseHandler, SaveHandler {
 		
 		game.start();
 	}
-	
+	/**
+	 * Announces the winner of a two player game in a dialogue box. 
+	 * @param p1 points accumulated by player one
+	 * @param p2 points accumulated by player two
+	 */
 	private void announceWinner(long p1, long p2) {
 		String message = "Player One: " + p1 + " points\nPlayer Two: " + p2 + " points\n";
 		
