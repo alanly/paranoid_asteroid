@@ -8,7 +8,11 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-
+/**
+ * SoundEffect is an Enum type listing the different sound effects used by the system.
+ * 
+ *
+ */
 public enum SoundEffect {
 	ALIEN_APPEAR("alien_appear.wav"),
 	ALIEN_DIE("alien_die.wav"),
@@ -23,7 +27,10 @@ public enum SoundEffect {
 	private static final String RESOURCE_PATH = "resources/sounds/";
 	
 	private Clip clip;
-	
+	/**
+	 * Creates a new SoundEffect from an audio file
+	 * @param filename the audio file name
+	 */
 	SoundEffect(String filename) {
 		try {
 			// Get URL to resource
@@ -43,7 +50,9 @@ public enum SoundEffect {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Plays the Clip
+	 */
 	public void play() {
 		// Stop clip if it is playing already
 		if (clip.isRunning()) {
@@ -54,11 +63,16 @@ public enum SoundEffect {
 		clip.setFramePosition(0);
 		clip.start();
 	}
-	
+	/**
+	 * Inidicates if the Clip is playing
+	 * @return <tt>true</tt> if the clip is playing
+	 */
 	public boolean isPlaying() {
 		return clip.isRunning();
 	}
-	
+	/**
+	 * Loads all sound files
+	 */
 	static void init() {
 		// Load all sound files
 		values();
