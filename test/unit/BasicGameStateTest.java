@@ -1,6 +1,7 @@
-package game;
+package unit;
 
 import static org.junit.Assert.assertEquals;
+import game.BasicGameState;
 
 import org.junit.Test;
 
