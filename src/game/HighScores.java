@@ -7,7 +7,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+/**
+ * 
+ * 
+ *
+ */
 public class HighScores implements Serializable, Iterable<HighScores.Score> {
 	private static final long serialVersionUID = 1L;
 	
@@ -17,7 +21,10 @@ public class HighScores implements Serializable, Iterable<HighScores.Score> {
 	private static HighScores instance;
 	
 	private List<Score> highScores;
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public synchronized static HighScores getInstance() {
 		if (instance == null) {
 			instance = HighScores.load();
@@ -74,25 +81,41 @@ public class HighScores implements Serializable, Iterable<HighScores.Score> {
 		
 		return h;
 	}
-	
+	/**
+	 * creates a new <tt>Score</tt> ArrayList of size <tt>MAX_SCORES + 1</tt> and assigns it to <tt>highScores</tt> 
+	 */
 	private HighScores() {
 		highScores = new ArrayList<Score>(MAX_SCORES + 1);
 	}
-	
+	/**
+	 * 
+	 * Score is a Nested Class which implements the Serializable interface and has consists of a name and a score.
+	 *
+	 */
 	public class Score implements Serializable {
 		private static final long serialVersionUID = 1L;
 		private long score;
 		private String name;
-		
+		/**
+		 * Creates a new score
+		 * @param score <tt>score</tt> of the new Score
+		 * @param name <tt>name</tt> of the new Score
+ 		 */
 		Score(long score, String name) {
 			this.score = score;
 			this.name = name;
 		}
-		
+		/**
+		 * 
+		 * @return the <tt>score</tt> of the object
+		 */
 		public long getScore(){
 			return score;
 		}
-
+		/**
+		 * 
+		 * @return the <tt>name</tt> of the object
+		 */
 		public String getName(){
 			return name;
 		}
