@@ -16,15 +16,25 @@ public class GameController implements PauseHandler, SaveHandler {
 	private Game game;
 	private GamePanel gamePanel;
 	private boolean saved = false;
-	
+	/**
+	 * Creates a new GameController and assigns to it a GamePanel
+	 * @param gamePanel GamePanel which will be assigned to the controller
+	 */
 	public GameController(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 	}
-	
+	/**
+	 * Calls the playGame method with the parameter
+	 * @param type
+	 */
 	public void playGame(GameType type) {
 		playGame(type, false);
 	}
-	
+	/**
+	 * 
+	 * @param type
+	 * @param loadSaved
+	 */
 	public void playGame(GameType type, boolean loadSaved) {
 		GameCanvas canvas = gamePanel.getGameCanvas();
 		
@@ -34,20 +44,28 @@ public class GameController implements PauseHandler, SaveHandler {
 			playTwoPlayer(canvas);
 		}
 	}
-	
+	/**
+	 * calls the <tt>game</tt> handlePause() method
+	 */
 	public void handlePause() {
 		if (game != null) {
 			game.togglePause();
 		}
 	}
-	
+	/**
+	 * Changes <tt>saved</tt> to <tt>true</tt> and calls the <tt>game</tt> handleSave() method 
+	 */
 	public void handleSave() {
 		if (game != null) {
 			saved = true;
 			game.handleSave();
 		}
 	}
-	
+	/**
+	 * 
+	 * @param canvas
+	 * @param loadGame
+	 */
 	private void playSinglePlayer(GameCanvas canvas, boolean loadGame) {
 		BasicGameState state;
 		
