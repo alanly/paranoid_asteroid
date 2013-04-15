@@ -1,14 +1,23 @@
 package game.entities;
 
 import game.Point;
-
+/**
+ * LargeAsteroid is a subclass of Asteroid and represents an Asteroid of size LARGE
+ */
 public class LargeAsteroid extends Asteroid {
 
+	/**
+	 * Creates a Large Asteroid centered at <tt>center</tt>
+	 * @param center initial center of the Asteroid 
+	 */
 	public LargeAsteroid(Point center) {
 		super(center);
 		this.size = Size.LARGE;
 	}
-
+	
+	/**
+	 * Initializes the Asteroid's vertices
+	 */
 	protected void initializeVertices() {
 		this.vertices = new Point[9];
 		

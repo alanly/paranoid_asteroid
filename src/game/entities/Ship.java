@@ -11,6 +11,11 @@ import java.awt.Polygon;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * The Ship object is a subclass of Entity and represents the playable character which is controlled by the user through keyboard input handled by the InputHandler class.
+ * The Ship can fire, pick up Powerup objects on collision and enter hyperspace which assigns the Ship a random location on the game field. 
+ * The Ship dies on collision with Bullets from sources other than itself and collision with Asteroid objects.
+ */
 public class Ship extends Entity {
 	private static final double MAX_BULLET_FIRED_WAIT = 0.5e9;
 	private static final long MAX_HYPER_WAIT = (long) 5e9;
@@ -76,12 +81,16 @@ public class Ship extends Entity {
 	
 	/**
 	 * Returns true if the player can fire.
-	 * @return true if the player can fire
+	 * @return true if the player can fire 
 	 */
 	public boolean canFire() {
 		return timeSinceLastFired > getMaxBulletFiredWait();
 	}
 	
+	/**
+	 * Indicates whether or not the ship can enter hyperspace. 
+	 * @return <tt>true</tt> if the ship can enter hyperspace
+	 */
 	public boolean canEnterHyperspace() {
 		return timeSinceLastHyper > MAX_HYPER_WAIT;
 	}
@@ -187,6 +196,10 @@ public class Ship extends Entity {
 		return MAX_LINEAR_SPEED * speedBoost;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public double getMaxBulletFiredWait() {
 		return MAX_BULLET_FIRED_WAIT / speedBoost;
 	}

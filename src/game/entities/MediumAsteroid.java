@@ -2,11 +2,22 @@ package game.entities;
 
 import game.Point;
 
+/**
+* MediumAsteroid is a subclass of Asteroid and represents an Asteroid of size MEDIUM
+**/
 public class MediumAsteroid extends Asteroid {
+	/**
+	 * Creates a Medium Asteroid centered at <tt>center</tt>
+	 * @param center initial center of the Asteroid 
+	 */
 	public MediumAsteroid(Point center) {
 		super(center);
 		this.size = Size.MEDIUM;
 	}
+	
+	/**
+	 * Initializes the Asteroid's vertices
+	 */
 	protected void initializeVertices() {
 		this.vertices = new Point[9];
 		
