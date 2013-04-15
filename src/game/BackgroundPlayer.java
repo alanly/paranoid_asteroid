@@ -16,11 +16,15 @@ public class BackgroundPlayer extends PlaybackListener {
 	
 	private AdvancedPlayer player;
 	private URL url;
-	
+	/**
+	 * Creates a new BackgroundPlayer from the file at <tt>RESOURCE_PATH</tt>
+	 */
 	public BackgroundPlayer() {
 		url = this.getClass().getClassLoader().getResource(RESOURCE_PATH);
 	}
-	
+	/**
+	 * Causes the <tt>player</tt> to play 
+	 */
 	public void play() {
 		try {
 			this.player = new AdvancedPlayer(
@@ -37,7 +41,9 @@ public class BackgroundPlayer extends PlaybackListener {
 	
 	public void playbackStarted(PlaybackEvent playbackEvent) {
 	}
-	
+	/**
+	 * Calls the play() method
+	 */
 	public void playbackFinished(PlaybackEvent playbackEvent) {
 		this.play();
 	}
