@@ -11,12 +11,15 @@ import java.awt.Rectangle;
  *
  */
 public class Bullet extends Entity {
+	public static final long MAX_TIME_TO_LIVE = (long) 0.8e9;
+	public static final double ALIEN_LINEAR_SPEED_MULTIPLIER = 0.7;
+	public static final double ALIEN_TIME_TO_LIVE_MULTIPLIER = 1.7;
+	
 	private boolean expired;
 	private Entity source;
 	private double angle;
 	private double linearSpeed = 4.0e-7;
-	private double maxTimeToLive = 0.8e9;
-	private double timeToLive = maxTimeToLive;
+	private long timeToLive = MAX_TIME_TO_LIVE;
 
 	/**
 	 * Creates a new Bullet from the firing source, the Bullet's initial location and the angle at which the shot is being fired
@@ -32,8 +35,9 @@ public class Bullet extends Entity {
 		this.angle = angle;
 		
 		if (source instanceof Alien) {
-			linearSpeed *= 0.7;
-			timeToLive *= 1.7;
+			// Alien bullets move slower but last longer
+			linearSpeed *= ALIEN_LINEAR_SPEED_MULTIPLIER;
+			timeToLive *= ALIEN_TIME_TO_LIVE_MULTIPLIER;
 		}
 		
 		setBounds(new Rectangle((int)center.x, (int)center.y, 2, 2));
