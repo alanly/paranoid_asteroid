@@ -12,21 +12,24 @@ public class Powerup extends Entity {
 		TRIPLE_SHOT;
 	}
 	
-	protected static final long MAX_POWERUP_TTL = (long) 6e9;
+	public static final long MAX_TIME_TO_LIVE = (long) 6e9;
 	
 	private Power type;
-	private double ttl = MAX_POWERUP_TTL;
+	private double ttl = MAX_TIME_TO_LIVE;
 	
 	/**
 	 * Creates a new Powerup object centered at <tt>center</tt>
 	 * @param center <tt>Point</tt> at which the Powerup is initially centered
+	 * @param type <tt>Power</tt> that the powerup gives
 	 */
-	public Powerup(Point center) {
+	public Powerup(Point center, Power type) {
 		this.setCenter(center);
 		this.setBounds(new Ellipse2D.Double(center.x - 10, center.y - 10, 20, 20));
-		
-		Power[] powers = Power.values();
-		this.type = powers[(int)(Math.random() * powers.length)];
+		this.type = type;
+	}
+	
+	public Powerup(Point center) {
+		this(center, Power.values()[(int)(Math.random() * Power.values().length)]);
 	}
 	
 	/**
@@ -35,7 +38,7 @@ public class Powerup extends Entity {
 	 */
 	public void update(long delta) {
 		if (isExpired()) {
-			ttl = 0;
+			ttl = -1;
 		} else {
 			ttl -= delta;
 		}
@@ -46,7 +49,7 @@ public class Powerup extends Entity {
 	 * @return <tt>true</tt> if the Powerup is expired
 	 */
 	public boolean isExpired() {
-		return ttl <= 0;
+		return ttl < 0;
 	}
 	
 	/**
