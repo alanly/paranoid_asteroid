@@ -43,7 +43,7 @@ public class ParticleTest {
 	}
 	
 	@Test
-	public void testBulletMoves() {
+	public void testParticleMoves() {
 		Shape oldBounds = particle.getBounds();
 		particle.update(1000);
 		
