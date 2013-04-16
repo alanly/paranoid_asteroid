@@ -64,12 +64,14 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	private List<Particle> particles;
 	private Ship ship;
 	private GameCanvas canvas;
+	
 	/**
 	 * Creates a new Game.
 	 */
 	public Game() {
 		this(new BasicGameState());
 	}
+	
 	/**
 	 * Creates a Game object from a BasicGameState object and assigns the values of the BasicGameState to <tt>level</tt>, <tt>multiplier</tt> and <tt>point</tt>
 	 * @param state BasicGameState from which the new Game will be constructed.
@@ -86,6 +88,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		this.particles = new LinkedList<Particle>();
 		this.canvas = null;
 	}
+	
 	/**
 	 * Starts the game by creating a new Ship object and adding to it a BulletFireLister object and HyperspaceListener object. Then populates the field and starts the game loop.
 	 */
@@ -98,12 +101,14 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		populateField();
 		loop();
 	}
+	
 	/**
 	 * Toggles the <tt>pause</tt> variable
 	 */
 	public void togglePause() {
 		this.paused = !this.paused;
 	}
+	
 	/**
 	 * Indicates if the game is paused
 	 * @return <tt>true</tt> if the game is paused
@@ -111,6 +116,15 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	public boolean isPaused() {
 		return paused;
 	}
+	
+	/**
+	 * Returns true if the game is saved.
+	 * @return true if the game is saved
+	 */
+	public boolean isSaved() {
+		return saved;
+	}
+	
 	/**
 	 * Adds a Bullet to the game field and <tt>bullets</tt> list and plays the approrpiate sound effect
 	 * @param e BulletFiredEvent which triggered this method call
@@ -124,6 +138,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 			SoundEffect.FIRE_BULLET.play();
 		}
 	}
+	
 	/**
 	 * Return the Ship object
 	 * @return <tt>ship</tt>
@@ -131,6 +146,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	public Ship getShip() {
 		return this.ship;
 	}
+	
 	/**
 	 * Returns the point count
 	 * @return <tt>points</tt>
@@ -138,6 +154,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	public long getPoints() {
 		return points;
 	}
+	
 	/**
 	 * Returns the level
 	 * @return <tt>level</tt>
@@ -145,6 +162,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	public int getLevel() {
 		return level;
 	}
+	
 	/**
 	 * Returns the multiplier for this level.
 	 * @return the multiplier for this level.
@@ -152,6 +170,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	public double getMultipliter() {
 		return multiplier;
 	}
+	
 	/**
 	 * Returns the list of Bullet objects in the game.
 	 * @return the list of Bullet objects in the game.
@@ -159,6 +178,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	public List<Bullet> getBullets() {
 		return this.bullets;
 	}
+	
 	/**
 	 * Returns the list of Asteroid objects in the game.
 	 * @return the list of Asteroid objects in the game.
@@ -166,6 +186,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	public List<Asteroid> getAsteroids() {
 		return this.asteroids;
 	}
+	
 	/**
 	 * Returns the list of Alien objects in the game.
 	 * @return the list of Alien objects in the game.
@@ -173,6 +194,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	public List<Alien> getAliens() {
 		return this.aliens;
 	}
+	
 	/**
 	 * Returns the list of Powerup objects in the game.
 	 * @return the list of Powerup object in the game.
@@ -180,6 +202,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	public List<Powerup> getPowerups() {
 		return this.powerups;
 	}
+	
 	/**
 	 * Returns the list of Particle objects in the game.
 	 * @return the list of Particle objects in the game.
@@ -187,6 +210,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	public List<Particle> getParticles() {
 		return this.particles;
 	}
+	
 	/**
 	 * Set the Game's GameCanvas to the parameter value
 	 * @param canvas GameCanvas to which </tt>canvas<tt> will be set
@@ -194,6 +218,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	public void setGameCanvas(GameCanvas canvas) {
 		this.canvas = canvas;
 	}
+	
 	/**
 	 * Indicates whether the Game is waiting to load the next level
 	 * @return <tt>true</tt> if the Game is waiting
@@ -229,14 +254,36 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	/**
 	 * Populates the game field with Asteroids at random locations
 	 */
-	private void populateField() {
-		int asteroidCount = getNumAsteroids();
-		Size asteroidSize = getAsteroidSize();
+	public void populateField() {
+		int asteroidCount = getNumAsteroidsForCurrentLevel();
+		Size asteroidSize = getAsteroidSizeForCurrentLevel();
 		Point center;
 		
 		for (int i = 0; i < asteroidCount; i++) {
 			center = Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, ship.getCenter(), SAFE_RADIUS);
 			asteroids.add(Asteroid.buildAsteroid(asteroidSize, center));
+		}
+	}
+	
+	/**
+	 * Returns the initial number of Asteroid objects for this level
+	 * @return the initial number of Asteroid objects for this level
+	 */
+	public int getNumAsteroidsForCurrentLevel() {
+		return this.level / 2 + this.level % 2 + 1;
+	}
+	
+	/**
+	 * Returns the initial size of the Asteroid objects for this level 
+	 * @return Size of the initial Asteroids
+	 */
+	public Size getAsteroidSizeForCurrentLevel() {
+		if (this.level < 3) {
+			return Size.SMALL;
+		} else if (this.level < 7) {
+			return Size.MEDIUM;
+		} else {
+			return Size.LARGE;
 		}
 	}
 	
@@ -675,28 +722,6 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 			bullets.clear();
 			populateField();
 		}
-	}
-	
-	/**
-	 * Returns the initial size of the Asteroid objects for this level 
-	 * @return Size of the initial Asteroids
-	 */
-	private Size getAsteroidSize() {
-		if (this.level < 3) {
-			return Size.SMALL;
-		} else if (this.level < 7) {
-			return Size.MEDIUM;
-		} else {
-			return Size.LARGE;
-		}
-	}
-	
-	/**
-	 * Returns the initial number of Asteroid objects for this level
-	 * @return the initial number of Asteroid objects for this level
-	 */
-	private int getNumAsteroids() {
-		return this.level / 2 + this.level % 2 + 1;
 	}
 	
 	/**
