@@ -17,16 +17,17 @@ import game.ui.GameCanvas;
  * 
  **/
 public class Alien extends Entity {
+	public static long BULLET_FIRED_WAIT = (long) 2e9;
+	
 	private static double LINEAR_SPEED_VARIANCE = 0.5;
 	private static double MIN_LINEAR_SPEED = 3e-8;
-	private static double NANOS_BEFORE_BULLET_FIRED = 2e9;
 	
 	protected Point[] vertices;
 	protected Size size = Size.SMALL;
 	
 	private double angle;
 	private double speed = MIN_LINEAR_SPEED;
-	private double bulletTimer = 0;
+	private long bulletTimer = 0;
 	private List<BulletFiredListener> bulletFiredListeners;
 	private Entity target;
 	
@@ -59,7 +60,10 @@ public class Alien extends Entity {
 		
 		updateVertices(delta);
 		updateBounds();
-		fireBullet();
+		
+		if (canFire()) {
+			fireBullet();
+		}
 	}
 	
 	/**
@@ -68,6 +72,29 @@ public class Alien extends Entity {
 	 */
 	public void addBulletFiredListener(BulletFiredListener listener) {
 		this.bulletFiredListeners.add(listener);
+	}
+	
+	/**
+	 * Returns true if the alien can fire.
+	 * @return true if the alien can fire
+	 */
+	public boolean canFire() {
+		return bulletTimer > BULLET_FIRED_WAIT;
+	}
+	
+	/**
+	 * Causes the Alien to fire towards target.
+	 */
+	public void fireBullet() {
+		bulletTimer = 0;
+		
+		for (BulletFiredListener listener : bulletFiredListeners) {
+			double shipAngle = 3.0 / 2.0 * Math.PI - Math.atan2(getX() - target.getX(), target.getY() - getY());
+			double aimVariance = ((Math.random() > 0.5) ? -1 : 1) * FULL_CIRCLE_RAD * Math.random() / 18;
+			shipAngle += aimVariance;
+			
+			listener.bulletFired(new BulletFiredEvent(this, new Point(getX(), getY()+9), shipAngle));
+		}
 	}
 	
 	/**
@@ -127,22 +154,5 @@ public class Alien extends Entity {
 		}
 		
 		setBounds(new Polygon(x, y, x.length));
-	}
-	
-	/**
-	 * Causes the Alien to fire towards target.
-	 */
-	private void fireBullet() {
-		if (bulletTimer > NANOS_BEFORE_BULLET_FIRED) {
-			bulletTimer = 0;
-			
-			for (BulletFiredListener listener : bulletFiredListeners) {
-				double shipAngle = 3.0 / 2.0 * Math.PI - Math.atan2(getX() - target.getX(), target.getY() - getY());
-				double aimVariance = ((Math.random() > 0.5) ? -1 : 1) * FULL_CIRCLE_RAD * Math.random() / 18;
-				shipAngle += aimVariance;
-				
-				listener.bulletFired(new BulletFiredEvent(this, new Point(getX(), getY()+9), shipAngle));
-			}
-		}
 	}
 }

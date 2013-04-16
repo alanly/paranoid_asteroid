@@ -26,7 +26,7 @@ public abstract class Entity {
 	 * @return the x-coordinate of the entity's center Point
 	 */
 	public double getX() {
-		return center.x;
+		return center.getX();
 	}
 	
 	/**
@@ -34,7 +34,7 @@ public abstract class Entity {
 	 * @return the y-coordinate of the entity's center Point
 	 */
 	public double getY() {
-		return center.y;
+		return center.getY();
 	}
 	
 	/**

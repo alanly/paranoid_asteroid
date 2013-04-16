@@ -17,11 +17,12 @@ import java.util.List;
  * The Ship dies on collision with Bullets from sources other than itself and collision with Asteroid objects.
  */
 public class Ship extends Entity {
-	private static final double MAX_BULLET_FIRED_WAIT = 0.5e9;
-	private static final long MAX_HYPER_WAIT = (long) 5e9;
-	private static final double MAX_LINEAR_SPEED = 2.8e-7;
+	public static final long MAX_POWERUP_TTL = (long) 10e9;
+	public static final long MAX_HYPER_WAIT = (long) 5e9;
+	public static final long MAX_BULLET_FIRED_WAIT = (long) 0.5e9;
+	public static final double MAX_LINEAR_SPEED = 2.8e-7;
+	
 	private static final double MIN_ANGULAR_SPEED = 4.5e-9;
-	private static final long MAX_POWERUP_TTL = (long) 10e9;
 	private static final double ACCELERATION = 6.0e-16;
 	private static final double DECELERATION = -0.3e-15;
 	private static final double TRIPLE_SHOT_OFFSET_ANGLE = FULL_CIRCLE_RAD / 72;
@@ -70,12 +71,10 @@ public class Ship extends Entity {
 		
 		if (InputHandler.getInstance().getSpaceKey().isPressed() && canFire()) {
 			fireBullet();
-			timeSinceLastFired = 0;
 		}
 		
 		if (InputHandler.getInstance().getDownKey().isPressed() && canEnterHyperspace()) {
 			enterHyperspace();
-			timeSinceLastHyper = 0;
 		}
 	}
 	
@@ -84,7 +83,7 @@ public class Ship extends Entity {
 	 * @return true if the player can fire 
 	 */
 	public boolean canFire() {
-		return timeSinceLastFired > getMaxBulletFiredWait();
+		return timeSinceLastFired > getBulletFiredWait();
 	}
 	
 	/**
@@ -189,6 +188,24 @@ public class Ship extends Entity {
 	}
 	
 	/**
+	 * The ship enters hyperspace and teleports to a random location.
+	 */
+	public void enterHyperspace() {
+		timeSinceLastHyper = 0;
+		
+		setCenter(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, getCenter(), 0));
+		initializeVertices();
+		
+		for (Point vertex : vertices) {
+			vertex.rotate(getCenter(), Math.PI/2 - angle);
+		}
+		
+		for (HyperspaceListener l : hyperspaceListeners) {
+			l.hyperspaceEntered();
+		}
+	}
+	
+	/**
 	 * Returns the max linear speed of the ship.
 	 * @return the max linear speed of the ship
 	 */
@@ -197,10 +214,10 @@ public class Ship extends Entity {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the actual bullet fire wait time.
+	 * @return the actual bullet fire wait time
 	 */
-	public double getMaxBulletFiredWait() {
+	public double getBulletFiredWait() {
 		return MAX_BULLET_FIRED_WAIT / speedBoost;
 	}
 	
@@ -237,10 +254,33 @@ public class Ship extends Entity {
 	}
 	
 	/**
+	 * Fires bullets.
+	 */
+	public void fireBullet() {
+		timeSinceLastFired = 0;
+		
+		for (BulletFiredListener listener : bulletFiredListeners) {
+			if (hasPulse()) {
+				for (int i = 0; i < NUM_PULSE_SHOTS; i++) {
+					listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle + i*PULSE_SHOTS_ANGLE));
+				}
+			} else {
+				// Origin is the tip of the ship, the first vertex
+				listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle));
+				
+				if (hasTripleShot()) {
+					listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle + TRIPLE_SHOT_OFFSET_ANGLE));
+					listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle - TRIPLE_SHOT_OFFSET_ANGLE));
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Returns true if the ship is accelerating.
 	 * @return true is the ship is accelerating
 	 */
-	private boolean isAccelerating() {
+	public boolean isAccelerating() {
 		return InputHandler.getInstance().getUpKey().isPressed();
 	}
 	
@@ -389,42 +429,5 @@ public class Ship extends Entity {
 		}
 		
 		setBounds(new Polygon(x, y, x.length));
-	}
-	
-	/**
-	 * Fires bullets.
-	 */
-	private void fireBullet() {
-		for (BulletFiredListener listener : bulletFiredListeners) {
-			if (hasPulse()) {
-				for (int i = 0; i < NUM_PULSE_SHOTS; i++) {
-					listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle + i*PULSE_SHOTS_ANGLE));
-				}
-			} else {
-				// Origin is the tip of the ship, the first vertex
-				listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle));
-				
-				if (hasTripleShot()) {
-					listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle + TRIPLE_SHOT_OFFSET_ANGLE));
-					listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle - TRIPLE_SHOT_OFFSET_ANGLE));
-				}
-			}
-		}
-	}
-	
-	/**
-	 * The ship enters hyperspace and teleports to a random location.
-	 */
-	private void enterHyperspace() {
-		setCenter(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, getCenter(), 0));
-		initializeVertices();
-		
-		for (Point vertex : vertices) {
-			vertex.rotate(getCenter(), Math.PI/2 - angle);
-		}
-		
-		for (HyperspaceListener l : hyperspaceListeners) {
-			l.hyperspaceEntered();
-		}
 	}
 }

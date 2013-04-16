@@ -6,10 +6,10 @@ import game.Point;
 import game.ui.GameCanvas;
 
 public class Particle extends Entity {
-	private double maxTimeToLive = 1.3e9;
+	public static final long MAX_TIME_TO_LIVE = (long) 1.3e9;
 	private double linearSpeed = 3.0e-7;
 	private double angle;
-	private double ttl = maxTimeToLive;
+	private long ttl = MAX_TIME_TO_LIVE;
 	private double decelleration = 2e-16;
 	
 	/**
@@ -28,7 +28,7 @@ public class Particle extends Entity {
 	 * @return <tt>true</tt> if the Particle is expired.
 	 */
 	public boolean isExpired() {
-		return ttl <= 0;
+		return ttl < 0;
 	}
 	
 	/**
@@ -39,6 +39,8 @@ public class Particle extends Entity {
 		updateSpeed(delta);
 		updateCenter(delta);
 		updateBounds();
+		
+		ttl -= delta;
 	}
 	
 	/**
@@ -58,8 +60,6 @@ public class Particle extends Entity {
 		double dx = distance * Math.cos(angle);
 		double dy = -distance * Math.sin(angle);
 		
-		ttl -= delta;
-
 		// Move center
 		getCenter().move(dx, dy);
 
