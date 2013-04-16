@@ -9,7 +9,6 @@ import game.entities.Entity;
  */
 public class BulletFiredEvent {
 	private Entity source;
-	private long timeFired;
 	Point origin;
 	double angle;
 	
@@ -21,7 +20,6 @@ public class BulletFiredEvent {
 	 */
 	public BulletFiredEvent(Entity source, Point origin, double angle) {
 		this.source = source;
-		this.timeFired = System.nanoTime();
 		this.origin = origin;
 		this.angle = angle;
 	}
@@ -34,14 +32,6 @@ public class BulletFiredEvent {
 		return source;
 	}
 	
-	/**
-	 * Gets the time the bullet was fired.
-	 * @return the time the bullet was fired
-	 */
-	public long getTimeFired() {
-		return timeFired;
-	}
-
 	/**
 	 * Gets the origin of the bullet.
 	 * @return the origin of the bullet
