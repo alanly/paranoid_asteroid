@@ -1,0 +1,223 @@
+Feb 01 2013
+Trottier 5th Floor
+Minute taker: Yi Qing
+Meeting manager: Payom Meshgin
+Members present: All
+
+Problems encountered:
+- SRS-document creation: what to do?  What are required.
+	control over space ship, game instructions, high score board, buttons, number of frams.
+	input handling for different users
+	
+- User classes and characteristics  
+- no online game.
+- use cases done by diagrams or tables.
+- constraints = one person task
+- extra features (boss? no, powerups? yes, 2 player mode? yes, etc.)
+
+- Language used: java
+- Use of extra libraries?  allowed or not.
+- Team of 2 will work on project.
+
+Tasks allocated:
+Payom: 
+	overall how the game works?
+	product function.
+	Basic design of doc (presentation, format)
+		
+Jad: 
+	purpose and scopes
+	Intro
+	overview of doc
+
+Daniel: 
+	Design constraints?
+	3. a,b,c,d
+	
+Alex(coco): 
+	Functional requirements?
+	3. a,b,c,d
+
+Alex: 
+	Design of the document.
+	product perspective
+	2- a,c,d,e
+	
+Yi Qing: 
+	Use case table
+	
+	
+	
+	
+	
+	
+	
+	
+Uncut notes taken during meeting:
+
+Feb 01 2013
+Trottier 5th Floor
+Minute taker: Yi Qing
+Meeting manager: Payom Meshgin
+Members present: All
+
+
+5:30 - 
+5:43 talking about Product Perspective (looking at srs_template-1)
+	Trying to define what are we doing.
+5:45 Product function
+	The player control a space ship 
+	with open window which show options like game instructions, high school board
+	the actualy game start button.
+	Maybe also the game mode of 2p and 1p
+	also the option menu where the player can change control or other options
+	3 basic frames using java?
+	
+	Then on sub-functions.
+	How we react to different user input.
+	
+	product function may be mainly taken cared by one person, though team 
+	input is required.
+	
+5:48 User classes and characteristics.
+	maintenance or not ... Daniel doesn't want maintenance for finished
+	porduct.
+	
+	lets just say human beings with fingers...
+	We only have one user type: palyer/human
+	
+	It is NOT an online game, but we might have second player (on network)
+	
+	So this section will be rather short.
+	
+	One person can probably do that.
+	
+5:50 Section 2 of phase 1 deliverables
+	Use cases will be done using diagrams or tables.
+	will take team effort.
+	
+	What are the assumed input/output.
+	
+	the use cases only involve actor? What are actors?
+	Things which deliver information: so even bullets ...
+	Actors are dynamic object in game.
+	
+	Button click is one use case.
+	All the menu options are use cases.
+
+5:53 Restraints?
+	Times, definitely.
+	The programming language.
+	Only Alex (coco) is in software engineering, so human resource xD?
+	Library constraint
+	
+	Constraints can be a one person task.
+	
+5:55 ...
+	We will do things in very general terms, nothing in detail.
+	
+	Extra features
+	Maybe not the boss, but we can do 2 players mode.
+	Power-ups are simple.
+	By 2 player mode, we mean one at a time, not at the same time
+	We could add the 2 players at same time BONUS ... or not.
+	Ok, let's do vs or coop mode??
+	vs is kind of easier, but .... destroy the game astroid?
+	penalties for friendly fire?? 
+	A lot of ideas about 2 players which are going crazy.
+	
+6:03 interface
+	Assume player has keyboard, monitor, basically a whole set which allows him/her to play.
+	
+6:03 Functional requirements.
+	The more requirements, the less we lose point for failed requirement.
+	We need to make distinct requirements.
+	Every requirement needs to be testable.
+	Example: collision detection, weapon power-up, physics engine (space acceleration)?
+	
+	Let's be exhaustive as possible, expand on the possible requirements.
+	Requirements about player, the way we keep score, response time, 
+	
+6:09 Quality requirement
+	Time response, sound (actually, only 5 samples, so stay loyal to original).
+	Display high score?
+	naaa, make it as simple as possible.
+	We will stay loyal to original sounds (which is almost none)
+	Memory requirement, 
+	
+6:12 Design constraints
+	well, 2D ... (like before)
+	english/french/
+	desirable and optionals?
+	
+	
+6:16
+	Use flash??
+	Seems to be too easy, very java script.
+	Python? A lot of game stuff in python (collision), but we cannot use all the features (libraries).
+	We may use a java game library, but need permission.
+	
+	A game engine will make everything easier.
+	Payom wants to use sneaky way of asking the teacher about a game library without 
+	letting it be apparent that it is a python game library ... 
+	
+6:20 
+	Let's see what people over the years have done for this project.
+	90% of the users will find out which buttons to use at start menu
+	need how to play instructions
+	Control/key optimization seems like a very good bonus.
+	French keyboard vs English keyboard?
+	Everything must be very controllable.
+	
+	a collaborate document?
+	
+	Teams of 2 to work about specific parts!!!
+	Someone has to do the list of use cases, on a graph? 
+	Basic use cases first, then expand, branches to other sub use-cases.
+	
+	Special teams for each task?
+	For the overall description.  For functional requirements
+	Might have lots of overlaps.
+
+	So apparently, Python is ok, but teacher permission pending.
+6:30	
+
+
+Roles?
+Payom: 
+	overall how the game works?
+	product function.
+	Basic design of doc (presentation, format)
+		
+Jad: 
+	purpose and scopes
+	Intro
+	overview of doc
+
+Daniel: 
+	Design constraints?
+	3. a,b,c,d
+	
+Alex(coco): 
+	Functional requirements?
+	3. a,b,c,d
+
+Alex: 
+	Design of the document.
+	product perspective
+	2- a,c,d,e
+	
+Yi Qing: 
+	Use case table
+	
+Bonus Features
+
+6:52
+Bosses.
+Everything one shot on kill or health for player or bosses?
+Enemy which counts for more points.
+More enemy types instead of a fully fledged boss?
+Any enemies should be copy of the origin stuffs.
+
+Next Meeting: 
+Wednesday, after class (general)

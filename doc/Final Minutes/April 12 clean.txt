@@ -1,0 +1,20 @@
+April 12 2013
+Start time: 5:45pmAM
+Minute Taker: Yi Qing Xiao
+Meeting Manager:  Payom Meshgin
+
+
+
+Discussion only about final allocation of tasks:
+
+Write the UserManual and Implementation Notes file (30 pts) Jad
+
+Write the MeetingMinutes file (15 pts) Jad
+
+Update the SAD with actual Class structure. Most importantly, the traceability matrix 
+should be updated to indicate which requirements have and have not been met and where 
+in the code they are met. (120 pts) Payom, Alex. B
+
+Comment all source code (for API purposes, we need to describe each method and class) (60 pts) - Alex B, Jad
+
+Testing documents (test code + use cases mentioned in the SRS) (75 pts) - Yi Qing and Daniel + anyone that is done with their part
