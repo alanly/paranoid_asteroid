@@ -79,7 +79,6 @@ public class Alien extends Entity {
 	 * @return true if the alien can fire
 	 */
 	public boolean canFire() {
-		System.out.println(bulletTimer > BULLET_FIRED_WAIT);
 		return bulletTimer > BULLET_FIRED_WAIT;
 	}
 	
