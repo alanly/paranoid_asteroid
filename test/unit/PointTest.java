@@ -14,7 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class PointTest {
-	double DELTA = 1e-15;
+	private static final double DELTA = 1e-15;
+	
 	private final double xMax = 10;
 	private final double yMax = 10;
 	private final double x = 2.0;

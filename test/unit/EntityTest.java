@@ -13,7 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class EntityTest {
-	private double DELTA = 1e-5;
+	private static final double DELTA = 1e-5;
+	
 	private Shape bounds;
 	private Point center;
 	private Entity entity;
