@@ -40,14 +40,4 @@ public class BulletFiredEventTest {
 		assertSame(origin, e.getOrigin());
 		assertEquals(angle, e.getAngle(), DELTA);
 	}
-	
-	@Test
-	public void testTimeFired() {
-		long now = System.currentTimeMillis();
-		long timeFired = e.getTimeFired();
-		
-		assertTrue((now - 10) * 1000000 < timeFired);
-		assertTrue((now + 10) * 1000000 > timeFired);
-	}
-
 }
