@@ -1,4 +1,4 @@
-package game;
+package game.events;
 /**
  *PauseHandler is an interface to be implemented by a class which handles pause commands
  */

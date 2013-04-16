@@ -1,5 +1,7 @@
 package game;
 
+import game.events.PauseHandler;
+import game.events.SaveHandler;
 import game.ui.GameCanvas;
 import game.ui.menu.GamePanel;
 

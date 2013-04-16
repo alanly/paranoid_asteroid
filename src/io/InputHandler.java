@@ -1,7 +1,7 @@
 package io;
 
-import game.PauseHandler;
-import game.SaveHandler;
+import game.events.PauseHandler;
+import game.events.SaveHandler;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
