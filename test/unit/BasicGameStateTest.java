@@ -6,7 +6,7 @@ import game.BasicGameState;
 import org.junit.Test;
 
 public class BasicGameStateTest {
-	double DELTA = 1e-5;
+	private static final double DELTA = 1e-5;
 	
 	@Test
 	public void testDefaultConstructor() {
