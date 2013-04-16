@@ -22,15 +22,15 @@ import java.awt.geom.Ellipse2D;
  *
  */
 public class Renderer {
-	private static Color ALIEN_COLOR = Colors.STEEL.getColor();
-	private static Color ASTEROID_COLOR = Colors.WHITE.getColor();
-	private static Color HUD_COLOR = Colors.WHITE.getColor();
-	private static Color SHIP_COLOR = Colors.WHITE.getColor();
-	private static Color BOOST_COLOR = Colors.YELLOW.getColor();
-	private static Color PULSE_COLOR = Colors.ORANGE.getColor();
-	private static Color SHIELD_COLOR = Colors.BLUE.getColor();
-	private static Color TRIPLE_SHOT_COLOR = Colors.PURPLE.getColor();
-	private static Color PARTICLE_COLOR = Colors.GREY.getColor();
+	public static final Color ALIEN_COLOR = Colors.STEEL.getColor();
+	public static final Color ASTEROID_COLOR = Colors.WHITE.getColor();
+	public static final Color HUD_COLOR = Colors.WHITE.getColor();
+	public static final Color SHIP_COLOR = Colors.WHITE.getColor();
+	public static final Color BOOST_COLOR = Colors.YELLOW.getColor();
+	public static final Color PULSE_COLOR = Colors.ORANGE.getColor();
+	public static final Color SHIELD_COLOR = Colors.BLUE.getColor();
+	public static final Color TRIPLE_SHOT_COLOR = Colors.PURPLE.getColor();
+	public static final Color PARTICLE_COLOR = Colors.GREY.getColor();
 	
 	/**
 	 * Delegates rendering the entity to its proper method if it exists.
