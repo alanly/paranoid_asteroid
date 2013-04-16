@@ -1,4 +1,4 @@
-package game;
+package game.events;
 /**
  * SaveHandler is an interface to be implemented by classes which handles save commands
  */
