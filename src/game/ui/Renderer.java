@@ -65,11 +65,12 @@ public class Renderer {
 	 * @param points the level to render
 	 * @param g the graphics object
 	 */
-	public static void renderHUD(long points, int level, Graphics2D g) {
+	public static void renderHUD(long points, int level, int accuracy, Graphics2D g) {
 		g.setFont(Fonts.HUD_FONT.getFont());
 		g.setColor(HUD_COLOR);
 		g.drawString("Points: " + points, 4, 16);
 		g.drawString("Level: " + level, 11, 32);
+		g.drawString("Accuracy: " + accuracy + "%", 4, 48);
 	}
 	
 	/**
