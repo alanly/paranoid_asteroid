@@ -54,6 +54,8 @@ public class GameCanvas extends Canvas {
 		List<Particle> particles = game.getParticles();
 		long points = game.getPoints();
 		int level = game.getLevel();
+		int accuracy = ship.getAccuracy();
+		
 		// Prepare buffer strategy and graphics
 		BufferStrategy bufferStrategy = getBufferStrategy();
 
@@ -91,7 +93,7 @@ public class GameCanvas extends Canvas {
 		}
 		
 		// Render HUD
-		Renderer.renderHUD(points, level, g);
+		Renderer.renderHUD(points, level, accuracy, g);
 		
 		// Clean up and show
 		g.dispose();

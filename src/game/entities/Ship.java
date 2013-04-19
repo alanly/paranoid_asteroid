@@ -32,7 +32,9 @@ public class Ship extends Entity {
 	private Point[] vertices;
 	private List<BulletFiredListener> bulletFiredListeners;
 	private List<HyperspaceListener> hyperspaceListeners;
-
+	
+	private int bulletsFired = 0;
+	private int bulletsHit = 0;
 	private double linearSpeed = 0;
 	private double angle = Math.PI / 2;
 	private boolean alive = true;
@@ -263,17 +265,22 @@ public class Ship extends Entity {
 			if (hasPulse()) {
 				for (int i = 0; i < NUM_PULSE_SHOTS; i++) {
 					listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle + i*PULSE_SHOTS_ANGLE));
+					bulletsFired++;
 				}
 			} else {
 				// Origin is the tip of the ship, the first vertex
 				listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle));
+				bulletsFired++;
 				
 				if (hasTripleShot()) {
 					listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle + TRIPLE_SHOT_OFFSET_ANGLE));
 					listener.bulletFired(new BulletFiredEvent(this, (Point) vertices[0].clone(), angle - TRIPLE_SHOT_OFFSET_ANGLE));
+					bulletsFired += 2;
 				}
 			}
 		}
+		
+		System.out.println(bulletsFired + " bullets fired");
 	}
 	
 	/**
@@ -282,6 +289,26 @@ public class Ship extends Entity {
 	 */
 	public boolean isAccelerating() {
 		return InputHandler.getInstance().getUpKey().isPressed();
+	}
+	
+	/**
+	 * Tells the ship that it fired a bullet that hit something.
+	 */
+	public void bulletHit() {
+		bulletsHit++;
+		System.out.println("Bullet hit something!");
+	}
+	
+	/**
+	 * Returns the ship's accuracy as a percentage.
+	 * @return the ship's accuracy
+	 */
+	public int getAccuracy() {
+		if (bulletsFired == 0) {
+			return 0;
+		} else {
+			return bulletsHit * 100 / bulletsFired;
+		}
 	}
 	
 	/**
