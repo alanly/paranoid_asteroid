@@ -35,6 +35,7 @@ public class GameFrame extends JFrame {
 	 * Creates a new GameFrame by initializing its panels and adding the InputHandler singleton as a KeyListener to the JFrame
 	 */
 	public GameFrame() {
+		super("Paranoid Asteroid");
 		this.addKeyListener(InputHandler.getInstance());
 		
 		initPanels();
