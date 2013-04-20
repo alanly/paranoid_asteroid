@@ -69,7 +69,7 @@ public class Renderer {
 		g.setFont(Fonts.HUD_FONT.getFont());
 		g.setColor(HUD_COLOR);
 		g.drawString("Points: " + points, 4, 16);
-		g.drawString("Level: " + level, 11, 32);
+		g.drawString("Level: " + level, 4, 32);
 		g.drawString("Accuracy: " + accuracy + "%", 4, 48);
 	}
 	
