@@ -582,16 +582,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 							
 							bulletCollided = true;
 							
-							SoundEffect.ASTEROID_BREAK.play();
-							
-							// Try to break up the asteroid
-							Asteroid.Size aSize = asteroid.getSize();
-								
-							// Only if it's not already the smallest
-							if (aSize != Asteroid.Size.SMALL) {
-								newAsteroids.add(Asteroid.buildAsteroid(aSize.getSmaller(), new Point(asteroid.getCenter())));
-								newAsteroids.add(Asteroid.buildAsteroid(aSize.getSmaller(), new Point(asteroid.getCenter())));
-							}
+							asteroidCollided(asteroid, newAsteroids);
 							
 							// If the bullet came from the player, allocate the player points based on the entity they hit
 							if (b.getSource() == ship) {
@@ -661,6 +652,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	 * or failing that, remove from the playing field
 	 */
 	private void checkAlienAsteroidCollisions() {
+		List<Asteroid> newAsteroids = new LinkedList<Asteroid>();
 		Iterator<Alien> alienIterator = aliens.iterator();
 		
 		// Iterate over all aliens
@@ -681,7 +673,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 					// If the intersection area isn't empty, then the two shapes have overlapped
 					if (!area.isEmpty()) {
 						SoundEffect.ALIEN_DIE.play();
-						SoundEffect.ASTEROID_BREAK.play();
+						asteroidCollided(asteroid, newAsteroids);
 						
 						alienIterator.remove();
 						asteroidIterator.remove();
@@ -691,6 +683,10 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 					continue;
 				}
 			}
+		}
+		
+		for (Asteroid a : newAsteroids) {
+			asteroids.add(a);
 		}
 	}
 	
@@ -783,6 +779,24 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	private void generateParticles(Point p) {
 		for (int i = 0; i < NUM_PARTICLES; i++) {
 			particles.add(new Particle(p));
+		}
+	}
+	
+	/**
+	 * Plays asteroid break sound and attempts to break asteroids up.
+	 * @param asteroid asteroid to break
+	 * @param newAsteroids list of new asteroids to add
+	 */
+	private void asteroidCollided(Asteroid asteroid, List<Asteroid> newAsteroids) {
+		SoundEffect.ASTEROID_BREAK.play();
+		
+		// Try to break up the asteroid
+		Asteroid.Size aSize = asteroid.getSize();
+			
+		// Only if it's not already the smallest
+		if (aSize != Asteroid.Size.SMALL) {
+			newAsteroids.add(Asteroid.buildAsteroid(aSize.getSmaller(), new Point(asteroid.getCenter())));
+			newAsteroids.add(Asteroid.buildAsteroid(aSize.getSmaller(), new Point(asteroid.getCenter())));
 		}
 	}
 }
