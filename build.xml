@@ -5,7 +5,7 @@
 	
 	<target name="compile">
 		<mkdir dir="${bin}" />
-		<javac srcdir="${src}" destdir="${bin}" classpath="jl1.0.1.jar" />
+		<javac includeantruntime="false" srcdir="${src}" destdir="${bin}" classpath="jl1.0.1.jar" />
 	</target>
 	
 	<target name="jar" depends="compile">
