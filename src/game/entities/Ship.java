@@ -279,8 +279,6 @@ public class Ship extends Entity {
 				}
 			}
 		}
-		
-		System.out.println(bulletsFired + " bullets fired");
 	}
 	
 	/**
@@ -296,7 +294,6 @@ public class Ship extends Entity {
 	 */
 	public void bulletHit() {
 		bulletsHit++;
-		System.out.println("Bullet hit something!");
 	}
 	
 	/**
