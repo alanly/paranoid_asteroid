@@ -26,3 +26,7 @@ local.properties
 .buildpath
 
 build/*.jar
+
+# IntelliJ IDEA ignores
+.idea
+paranoid_asteroid.iml
