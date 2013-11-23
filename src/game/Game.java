@@ -35,16 +35,11 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	private static final int SAFE_RADIUS = 100;
 	private static final int NUM_PARTICLES = 5;
 	
-	// Points constants
-	private static final long POINTS_ALIEN = 250;
-	private static final long POINTS_ASTEROID = 100;
-	private static final long POINTS_CLEAR_LEVEL = 200;
-	
 	// Game state
 	private int level;
-	private long points;
-	private long lastLevelPoints;
-	private double multiplier;
+	//private long points;
+	//private long lastLevelPoints;
+	//private double multiplier;
 	private boolean paused = false;
 	private boolean saved = false;
 	private boolean levelEnded = false;
@@ -58,7 +53,8 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	private List<Particle> particles;
 	private Ship ship;
 	private GameCanvas canvas;
-	
+    private Score score;
+
 	/**
 	 * Creates a new Game.
 	 */
@@ -71,10 +67,13 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	 * @param state BasicGameState from which the new Game will be constructed.
 	 */
 	public Game(BasicGameState state) {
-		this.level = state.getLevel();
-		this.points = state.getPoints();
-		this.lastLevelPoints = state.getPoints();
-		this.multiplier = state.getMultiplier();
+        this.level = state.getLevel();
+
+        this.score = new Score();
+        this.score.setPoints(state.getPoints());
+        this.score.setLastLevelPoints(state.getPoints());
+        this.score.setMultiplier(state.getMultiplier());
+
 		this.aliens = new LinkedList<Alien>();
 		this.asteroids = new LinkedList<Asteroid>();
 		this.bullets = new LinkedList<Bullet>();
@@ -142,29 +141,13 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	}
 	
 	/**
-	 * Returns the point count
-	 * @return <tt>points</tt>
-	 */
-	public long getPoints() {
-		return points;
-	}
-	
-	/**
 	 * Returns the level
 	 * @return <tt>level</tt>
 	 */
 	public int getLevel() {
 		return level;
 	}
-	
-	/**
-	 * Returns the multiplier for this level.
-	 * @return the multiplier for this level.
-	 */
-	public double getMultipliter() {
-		return multiplier;
-	}
-	
+
 	/**
 	 * Returns the list of Bullet objects in the game.
 	 * @return the list of Bullet objects in the game.
@@ -227,7 +210,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	 * 
 	 */
 	public BasicGameState extractState() {
-		return new BasicGameState(this.level, this.lastLevelPoints, this.multiplier);
+		return new BasicGameState(this.level, this.score.getLastLevelPoints(), this.score.getMultiplier());
 	}
 	
 	/**
@@ -462,7 +445,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 			levelEnded = true;
 			levelStartWait = NANOS_PER_LEVEL_START_WAIT;
 			
-			allocatePoints(null);
+			score.allocatePoints(null, ship);
 		}
 	}
 	
@@ -580,7 +563,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 							
 							// If the bullet came from the player, allocate the player points based on the entity they hit
 							if (b.getSource() == ship) {
-								allocatePoints(asteroid);
+								this.score.allocatePoints(asteroid, ship);
 							}
 							
 							break;
@@ -617,7 +600,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 							
 							// If the bullet came from the player, allocate the player points based on the entity they hit
 							if (b.getSource() == ship) {
-								allocatePoints(alien);
+								this.score.allocatePoints(alien, ship);
 							}
 							
 							break;
@@ -708,7 +691,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	private void nextLevel() {
 		if (levelEnded) {
 			levelEnded = false;
-			lastLevelPoints = this.points;
+			score.updatePoints();
 			bullets.clear();
 			populateField();
 		}
@@ -745,28 +728,6 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	}
 	
 	/**
-	 * Increments the points by an amount depending on depending the Entity destroyed and multiplier 
-	 * @param destroyed Entity which has been destroyed or <tt>null</tt> if the point allocation is not a result of Entity destruction
-	 */
-	private void allocatePoints(Entity destroyed) {
-		if (destroyed == null) {
-			// Not an interaction with an entity
-			points += multiplier * POINTS_CLEAR_LEVEL;
-			multiplier += 0.5;
-		} else {
-			// Tell the ship it hit something
-			ship.bulletHit();
-			
-			// Allocate points based on what entity was destroyed
-			if (destroyed instanceof Asteroid) {
-				points += multiplier * POINTS_ASTEROID;
-			} else if (destroyed instanceof Alien) {
-				points += multiplier * POINTS_ALIEN;
-			}
-		}
-	}
-	
-	/**
 	 * Generates a particle at the point <tt>p</tt> and adds its to the list of particles
 	 * @param p Point at which particle is to be generated
 	 */
@@ -793,4 +754,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 			newAsteroids.add(EntityFactory.getInstance().makeAsteroid(aSize.getSmaller(), new Point(asteroid.getCenter())));
 		}
 	}
+    public Score getScore(){
+        return this.score;
+    }
 }

@@ -52,7 +52,7 @@ public class GameCanvas extends Canvas {
 		List<Alien> aliens = game.getAliens();
 		List<Powerup> powerups = game.getPowerups();
 		List<Particle> particles = game.getParticles();
-		long points = game.getPoints();
+		long points = game.getScore().getPoints();
 		int level = game.getLevel();
 		int accuracy = ship.getAccuracy();
 		

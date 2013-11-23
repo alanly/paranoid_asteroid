@@ -74,8 +74,8 @@ public class GameTest {
 	@Test
 	public void testConstructor() {
 		assertEquals(defaultState.getLevel(), game.getLevel());
-		assertEquals(defaultState.getPoints(), game.getPoints());
-		assertEquals(defaultState.getMultiplier(), game.getMultipliter(), DELTA);
+		assertEquals(defaultState.getPoints(), game.getScore().getPoints());
+		assertEquals(defaultState.getMultiplier(), game.getScore().getMultiplier(), DELTA);
 	}
 	
 	@Test
@@ -83,8 +83,8 @@ public class GameTest {
 		game = new Game(advancedState);
 		
 		assertEquals(advancedState.getLevel(), game.getLevel());
-		assertEquals(advancedState.getPoints(), game.getPoints());
-		assertEquals(advancedState.getMultiplier(), game.getMultipliter(), DELTA);
+		assertEquals(advancedState.getPoints(),  game.getScore().getPoints());
+		assertEquals(advancedState.getMultiplier(), game.getScore().getMultiplier(), DELTA);
 	}
 	
 	@Test
