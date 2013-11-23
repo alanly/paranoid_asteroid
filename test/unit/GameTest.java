@@ -16,6 +16,7 @@ import game.events.BulletFiredEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import game.enums.Size;
 
 public class GameTest {
 	private static final double DELTA = 1e-5;
@@ -140,10 +141,10 @@ public class GameTest {
 	
 	@Test
 	public void testAsteroidSizes() {
-		assertEquals(Asteroid.Size.SMALL, game.getAsteroidSizeForCurrentLevel());
+		assertEquals(Size.SMALL, game.getAsteroidSizeForCurrentLevel());
 		
 		game = new Game(advancedState);
-		assertEquals(Asteroid.Size.MEDIUM, game.getAsteroidSizeForCurrentLevel());
+		assertEquals(Size.MEDIUM, game.getAsteroidSizeForCurrentLevel());
 	}
 	
 	@Test

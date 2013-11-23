@@ -1,6 +1,7 @@
 package game.entities;
 
 import game.Point;
+import game.enums.Size;
 
 /**
 * MediumAsteroid is a subclass of Asteroid and represents an Asteroid of size MEDIUM

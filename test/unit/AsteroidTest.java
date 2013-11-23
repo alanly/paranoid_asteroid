@@ -6,16 +6,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import game.Point;
-import game.entities.Asteroid;
-import game.entities.LargeAsteroid;
-import game.entities.MediumAsteroid;
-import game.entities.SmallAsteroid;
+import game.entities.*;
 
 import java.awt.Shape;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import game.enums.Size;
 
 public class AsteroidTest {
 	private Point center;
@@ -24,7 +22,7 @@ public class AsteroidTest {
 	@Before
 	public void setUp() {
 		center = mock(Point.class);
-		asteroid = Asteroid.buildAsteroid(Asteroid.Size.SMALL, center);
+		asteroid = EntityFactory.getInstance().makeAsteroid(Size.SMALL, center);
 	}
 	
 	@After
@@ -37,9 +35,9 @@ public class AsteroidTest {
 	public void testAsteroidBuilder() {
 		Point center = mock(Point.class);
 		
-		Asteroid small = Asteroid.buildAsteroid(Asteroid.Size.SMALL, center);
-		Asteroid medium = Asteroid.buildAsteroid(Asteroid.Size.MEDIUM, center);
-		Asteroid large = Asteroid.buildAsteroid(Asteroid.Size.LARGE, center);
+		Asteroid small = EntityFactory.getInstance().makeAsteroid(Size.SMALL, center);
+		Asteroid medium = EntityFactory.getInstance().makeAsteroid(Size.MEDIUM, center);
+		Asteroid large = EntityFactory.getInstance().makeAsteroid(Size.LARGE, center);
 		
 		assertTrue(small instanceof SmallAsteroid);
 		assertTrue(medium instanceof MediumAsteroid);
@@ -48,9 +46,9 @@ public class AsteroidTest {
 	
 	@Test
 	public void testGetSmaller() {
-		assertTrue(Asteroid.Size.SMALL == Asteroid.Size.SMALL.getSmaller());
-		assertTrue(Asteroid.Size.SMALL == Asteroid.Size.MEDIUM.getSmaller());
-		assertTrue(Asteroid.Size.MEDIUM == Asteroid.Size.LARGE.getSmaller());
+		assertTrue(Size.SMALL == Size.SMALL.getSmaller());
+		assertTrue(Size.SMALL == Size.MEDIUM.getSmaller());
+		assertTrue(Size.MEDIUM == Size.LARGE.getSmaller());
 	}
 	
 	@Test
@@ -67,12 +65,12 @@ public class AsteroidTest {
 	
 	@Test
 	public void testGetSize() {
-		Asteroid small = Asteroid.buildAsteroid(Asteroid.Size.SMALL, center);
-		Asteroid medium = Asteroid.buildAsteroid(Asteroid.Size.MEDIUM, center);
-		Asteroid large = Asteroid.buildAsteroid(Asteroid.Size.LARGE, center);
+		Asteroid small = EntityFactory.getInstance().makeAsteroid(Size.SMALL, center);
+		Asteroid medium = EntityFactory.getInstance().makeAsteroid(Size.MEDIUM, center);
+		Asteroid large =EntityFactory.getInstance().makeAsteroid(Size.LARGE, center);
 		
-		assertTrue(small.getSize() == Asteroid.Size.SMALL);
-		assertTrue(medium.getSize() == Asteroid.Size.MEDIUM);
-		assertTrue(large.getSize() == Asteroid.Size.LARGE);
+		assertTrue(small.getSize() == Size.SMALL);
+		assertTrue(medium.getSize() == Size.MEDIUM);
+		assertTrue(large.getSize() == Size.LARGE);
 	}
 }

@@ -2,7 +2,7 @@ package game.entities;
 
 import game.Point;
 import game.ui.GameCanvas;
-
+import game.enums.Size;
 import java.awt.Polygon;
 /**
  * 
@@ -11,15 +11,7 @@ import java.awt.Polygon;
  * 
  */
 public abstract class Asteroid extends Entity {
-	public enum Size {
-		SMALL,
-		MEDIUM,
-		LARGE;
-		
-		public Size getSmaller() {
-			return (this == SMALL || this == MEDIUM) ? SMALL : MEDIUM;
-		}
-	}
+
 	
 	private static double LINEAR_SPEED_VARIANCE = 0.3;
 	private static double MIN_LINEAR_SPEED = 3e-8;
@@ -30,21 +22,7 @@ public abstract class Asteroid extends Entity {
 	private double angle;
 	private double speed = MIN_LINEAR_SPEED;
 	
-	/**
-	 * Builds an Asteroid of specified size and location.
-	 * @param size desired size of the Asteroid being returned
-	 * @param center desired location of the Asteroid being returned
-	 * @return Built Asteroid object.
-	 */
-	public static Asteroid buildAsteroid(Size size, Point center) {
-		if (size == Size.SMALL) {
-			return new SmallAsteroid(center);
-		} else if (size == Size.MEDIUM) {
-			return new MediumAsteroid(center);
-		} else {
-			return new LargeAsteroid(center);
-		}
-	}
+
 	/**
 	 * This constructs an Asteroid centered at <tt>center</tt>
 	 * @param center center point of the Asteroid entity.
@@ -70,12 +48,15 @@ public abstract class Asteroid extends Entity {
 	}
 	/**
 	 * Updates the vertices and bounds of the Asteroid object
-	 * @param long delta time elapsed since last update.
+	 * @param delta time elapsed since last update.
 	 */
 	public void update(long delta) {
 		updateVertices(delta);
 		updateBounds();
 	}
+
+
+
 	/**
 	 * Returns the size of the Asteroid object
 	 * @return size of the Asteroid object

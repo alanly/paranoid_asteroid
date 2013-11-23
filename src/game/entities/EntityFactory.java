@@ -1,6 +1,7 @@
 package game.entities;
 
 import game.Point;
+import game.enums.Size;
 /**
  * Created with IntelliJ IDEA.
  * User: Thomas
@@ -32,5 +33,20 @@ public class EntityFactory {
     }
     public Particle makeParticle(Point p) {
         return new Particle(p);
+    }
+    /**
+     * Builds an Asteroid of specified size and location.
+     * @param size desired size of the Asteroid being returned
+     * @param center desired location of the Asteroid being returned
+     * @return Built Asteroid object.
+     */
+    public Asteroid makeAsteroid(Size size, Point center) {
+        if (size == Size.SMALL) {
+            return new SmallAsteroid(center);
+        } else if (size == Size.MEDIUM) {
+            return new MediumAsteroid(center);
+        } else {
+            return new LargeAsteroid(center);
+        }
     }
 }
