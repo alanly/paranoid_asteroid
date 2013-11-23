@@ -91,7 +91,7 @@ public class GameController implements PauseHandler, SaveHandler {
 			return;
 		}
 		
-		long points = game.getPoints();
+		long points = game.getScore().getPoints();
 		HighScores highScores = HighScores.getInstance();
 		
 		if (highScores.isHighScore(points)) {

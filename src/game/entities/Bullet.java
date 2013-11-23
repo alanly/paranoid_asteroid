@@ -14,7 +14,7 @@ public class Bullet extends Entity {
 	public static final long MAX_TIME_TO_LIVE = (long) 0.8e9;
 	public static final double ALIEN_LINEAR_SPEED_MULTIPLIER = 0.7;
 	public static final double ALIEN_TIME_TO_LIVE_MULTIPLIER = 1.7;
-	
+
 	private boolean expired;
 	private Entity source;
 	private double angle;
@@ -29,17 +29,17 @@ public class Bullet extends Entity {
 	 */
 	public Bullet(Entity source, Point center, double angle) {
 		setCenter(center);
-		
+
 		this.expired = false;
 		this.source = source;
 		this.angle = angle;
-		
+
 		if (source instanceof Alien) {
 			// Alien bullets move slower but last longer
 			linearSpeed *= ALIEN_LINEAR_SPEED_MULTIPLIER;
 			timeToLive *= ALIEN_TIME_TO_LIVE_MULTIPLIER;
 		}
-		
+
 		setBounds(new Rectangle((int)center.x, (int)center.y, 2, 2));
 	}
 
@@ -51,7 +51,7 @@ public class Bullet extends Entity {
 		if (expired) {
 			return;
 		}
-		
+
 		timeToLive -= delta;
 
 		updateCenter(delta);
@@ -94,7 +94,7 @@ public class Bullet extends Entity {
 
 	/**
 	 * Updates the position of the bounds of the Bullet shape according to the Bullet's bounds.
-	 * 
+	 *
 	 * */
 	private void updateBounds() {
 		Rectangle bounds = (Rectangle) getBounds();
