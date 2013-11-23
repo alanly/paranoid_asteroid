@@ -1,13 +1,6 @@
 package game;
 
-import game.entities.Alien;
-import game.entities.Asteroid;
-import game.entities.Asteroid.Size;
-import game.entities.Bullet;
-import game.entities.Entity;
-import game.entities.Particle;
-import game.entities.Powerup;
-import game.entities.Ship;
+import game.entities.*;
 import game.events.BulletFiredEvent;
 import game.events.BulletFiredListener;
 import game.events.HyperspaceListener;
@@ -20,6 +13,7 @@ import java.awt.geom.Area;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import game.enums.Size;
 /**
  * The Game class implements the BulletFiredListener, SaveHandler and HyperspaceListener interfaces.
  * This class contains all the parameters with which the game is run as well as all the components which make up the gameplay and controles how these objects interact.
@@ -261,7 +255,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		
 		for (int i = 0; i < asteroidCount; i++) {
 			center = Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, ship.getCenter(), SAFE_RADIUS);
-			asteroids.add(Asteroid.buildAsteroid(asteroidSize, center));
+			asteroids.add(EntityFactory.getInstance().makeAsteroid(asteroidSize, center));
 		}
 	}
 	
@@ -791,12 +785,12 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		SoundEffect.ASTEROID_BREAK.play();
 		
 		// Try to break up the asteroid
-		Asteroid.Size aSize = asteroid.getSize();
+		Size aSize = asteroid.getSize();
 			
 		// Only if it's not already the smallest
-		if (aSize != Asteroid.Size.SMALL) {
-			newAsteroids.add(Asteroid.buildAsteroid(aSize.getSmaller(), new Point(asteroid.getCenter())));
-			newAsteroids.add(Asteroid.buildAsteroid(aSize.getSmaller(), new Point(asteroid.getCenter())));
+		if (aSize != Size.SMALL) {
+			newAsteroids.add(EntityFactory.getInstance().makeAsteroid(aSize.getSmaller(), new Point(asteroid.getCenter())));
+			newAsteroids.add(EntityFactory.getInstance().makeAsteroid(aSize.getSmaller(), new Point(asteroid.getCenter())));
 		}
 	}
 }
