@@ -11,6 +11,7 @@ import game.Point;
 import game.entities.Alien;
 import game.entities.Bullet;
 import game.entities.Ship;
+import game.events.BulletFiredEvent;
 
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -20,27 +21,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class BulletTest {
-	private Ship source;
-	private Point center;
+	private BulletFiredEvent eBulletFired;
 	private Bullet bullet;
 	
 	@Before
 	public void setUp() {
-		source = mock(Ship.class);
-		center = mock(Point.class);
-		bullet = new Bullet(source, center, 0.0);
+		eBulletFired = new BulletFiredEvent(mock(Ship.class), mock(Point.class), 0.0);
+		bullet = new Bullet(eBulletFired);
 	}
 	
 	@After
 	public void tearDown() {
-		source = null;
-		center = null;
-		bullet = null;
+		eBulletFired = null;
 	}
 
 	@Test
 	public void testBulletSource() {
-		assertSame(source, bullet.getSource());
+		assertSame(eBulletFired.getSource(), bullet.getSource());
 	}
 	
 	@Test
@@ -54,7 +51,7 @@ public class BulletTest {
 		bullet.update(1000);
 		
 		// Move should be called once per update
-		verify(center, times(1)).move(anyDouble(), anyDouble());
+		verify(eBulletFired.getOrigin(), times(1)).move(anyDouble(), anyDouble());
 		
 		// The bounds co-ordinates are updated
 		assertSame(oldBounds, bullet.getBounds());
@@ -84,7 +81,7 @@ public class BulletTest {
 	
 	@Test
 	public void testIsExpiredFromAlien() {
-		bullet = new Bullet(mock(Alien.class), center, 0.0);
+		bullet = new Bullet(new BulletFiredEvent(mock(Alien.class), eBulletFired.getOrigin(), 0.0));
 		
 		// Not expired, just created
 		assertFalse(bullet.isExpired());
