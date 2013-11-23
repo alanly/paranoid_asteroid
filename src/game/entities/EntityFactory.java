@@ -2,6 +2,7 @@ package game.entities;
 
 import game.Point;
 import game.enums.Size;
+import game.events.BulletFiredEvent;
 /**
  * Created with IntelliJ IDEA.
  * User: Thomas
@@ -22,8 +23,8 @@ public class EntityFactory {
     public Alien makeAlien(Point center, Entity target){
         return new Alien(center, target);
     }
-    public Bullet makeBullet(Entity target, Point center, double angle){
-        return new Bullet(target,center,angle);
+    public Bullet makeBullet(BulletFiredEvent e){
+        return new Bullet(e);
     }
     public Powerup makePowerUp(Point center){
         return new Powerup(center);

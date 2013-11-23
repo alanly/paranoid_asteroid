@@ -123,7 +123,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	 * @param e BulletFiredEvent which triggered this method call
 	 */
 	public void bulletFired(BulletFiredEvent e) {
-        bullets.add(EntityFactory.getInstance().makeBullet(e.getSource(), e.getOrigin(), e.getAngle()));
+        bullets.add(EntityFactory.getInstance().makeBullet(e));
 		
 		if (e.getSource() instanceof Alien) {
 			SoundEffect.FIRE_BULLET_ALIEN.play();
