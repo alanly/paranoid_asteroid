@@ -88,7 +88,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	 */
 	public void start() {
 		// Create player and listen to its bullet fired events
-		ship = new Ship(new Point(GameCanvas.WIDTH / 2, GameCanvas.HEIGHT / 2));
+        ship = EntityFactory.getInstance().makeShip(new Point(GameCanvas.WIDTH / 2, GameCanvas.HEIGHT / 2));
 		ship.addBulletFiredListener(this);
 		ship.addHyperspaceListener(this);
 		
@@ -124,7 +124,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	 * @param e BulletFiredEvent which triggered this method call
 	 */
 	public void bulletFired(BulletFiredEvent e) {
-		bullets.add(new Bullet(e.getSource(), e.getOrigin(), e.getAngle()));
+        bullets.add(EntityFactory.getInstance().makeBullet(e.getSource(), e.getOrigin(), e.getAngle()));
 		
 		if (e.getSource() instanceof Alien) {
 			SoundEffect.FIRE_BULLET_ALIEN.play();
@@ -721,7 +721,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		// Chance of an alien appearing
 		if (Math.random() < this.level / 10.0) {
 			SoundEffect.ALIEN_APPEAR.play();
-			Alien alien = new Alien(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, ship.getCenter(), SAFE_RADIUS), ship);
+            Alien alien = EntityFactory.getInstance().makeAlien(Point.getRandom(GameCanvas.WIDTH, GameCanvas.HEIGHT, ship.getCenter(), SAFE_RADIUS), ship);
 			alien.addBulletFiredListener(this);
 			this.aliens.add(alien);
 		}
@@ -736,7 +736,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 		// Chance of powerup dropping when alien is destroyed
 		if (Math.random() < 0.5) {
 			try {
-				newPowerups.add(new Powerup(p));
+                newPowerups.add(EntityFactory.getInstance().makePowerUp(p));
 			} catch (Exception e) {
 				// Something crazy happened
 				e.printStackTrace();
@@ -772,7 +772,7 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	 */
 	private void generateParticles(Point p) {
 		for (int i = 0; i < NUM_PARTICLES; i++) {
-			particles.add(new Particle(p));
+            particles.add(EntityFactory.getInstance().makeParticle(p));
 		}
 	}
 	
