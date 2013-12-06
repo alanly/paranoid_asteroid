@@ -124,13 +124,18 @@ public class Game implements BulletFiredListener, SaveHandler, HyperspaceListene
 	 */
 	public void bulletFired(BulletFiredEvent e) {
         bullets.add(EntityFactory.getInstance().makeBullet(e));
-		
-		if (e.getSource() instanceof Alien) {
-			SoundEffect.FIRE_BULLET_ALIEN.play();
-		} else {
-			SoundEffect.FIRE_BULLET.play();
-		}
+
+        playFireBullet(e);
 	}
+
+    // New method that decides what to play
+    public void playFireBullet(BulletFiredEvent eBulletFired) {
+        if (eBulletFired.getSource() instanceof Alien) {
+            SoundEffect.FIRE_BULLET_ALIEN.play();
+        } else {
+            SoundEffect.FIRE_BULLET.play();
+        }
+    }
 	
 	/**
 	 * Return the Ship object
