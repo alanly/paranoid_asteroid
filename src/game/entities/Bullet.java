@@ -1,6 +1,6 @@
 package game.entities;
 
-import game.Point;
+import game.events.BulletFiredEvent;
 import game.ui.GameCanvas;
 
 import java.awt.Rectangle;
@@ -23,25 +23,23 @@ public class Bullet extends Entity {
 
 	/**
 	 * Creates a new Bullet from the firing source, the Bullet's initial location and the angle at which the shot is being fired
-	 * @param source <tt>Entity</tt> which fired the Bullet
-	 * @param center <tt>Point</tt> at which the Bullet initially appears
-	 * @param angle angle at which the Bullet was fired and will be traveling
+	 * @param eBulletFired the event which fired the bullet
 	 */
-	public Bullet(Entity source, Point center, double angle) {
-		setCenter(center);
+    public Bullet(BulletFiredEvent eBulletFired) {
+        setCenter(eBulletFired.getOrigin());
 
-		this.expired = false;
-		this.source = source;
-		this.angle = angle;
+        this.expired = false;
+        this.source = eBulletFired.getSource();
+        this.angle = eBulletFired.getAngle();
 
-		if (source instanceof Alien) {
-			// Alien bullets move slower but last longer
-			linearSpeed *= ALIEN_LINEAR_SPEED_MULTIPLIER;
-			timeToLive *= ALIEN_TIME_TO_LIVE_MULTIPLIER;
-		}
+        if (source instanceof Alien) {
+            // Alien bullets move slower but last longer
+            linearSpeed *= ALIEN_LINEAR_SPEED_MULTIPLIER;
+            timeToLive *= ALIEN_TIME_TO_LIVE_MULTIPLIER;
+        }
 
-		setBounds(new Rectangle((int)center.x, (int)center.y, 2, 2));
-	}
+        setBounds(new Rectangle((int)getCenter().x, (int)getCenter().y, 2, 2));
+    }
 
 	/**
 	 * Updates the state of the of the Bullet
